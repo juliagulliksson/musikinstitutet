@@ -7,6 +7,15 @@ main{
     background-color: #FFF;
 }
 
+%button{
+    padding: 0;
+    margin: 0;
+    color: #FFF; 
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+}
+
 .header-flex-wrapper{
     display: flex;
     flex-direction: column-reverse;
@@ -24,6 +33,7 @@ main{
     width: 80%;
     margin: 0px auto;
     background-color: #FFF;
+    display: flex;
     nav{
         
         ul{
@@ -41,6 +51,40 @@ main{
             li:hover{
                 background-color: rgb(236, 233, 233);
             }
+        }
+    }
+    .nav-bar{
+        flex-basis: 70%;
+    }
+    .add-button{
+        text-align: right;
+        flex-basis: 30%;
+        button{
+            @extend %button;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: rgb(17, 158, 17);
+            transition: all 400ms;
+            margin-top: 7px;
+            font-size: 1em;
+       }
+    }
+}
+
+.albums-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    .album-wrapper{
+        width: 33%;
+        border: 1px solid black;
+        text-align: center;
+    }
+   .cover-image{
+       height: 260px;
+        img{
+            height: 100%;
+            display: block;
+            margin: 0px auto;
         }
     }
 }
