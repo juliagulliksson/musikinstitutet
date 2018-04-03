@@ -18,6 +18,7 @@
                         <li id="tracksLink">Tracks</li>
                         <li id="albumsLink">Albums</li>
                         <li id="playlistsLink">Playlists</li>
+                        <li id="addNew">Add new</li>
                     </ul>
                 </nav>
             </div>
@@ -32,6 +33,19 @@
             
         <div class="tracks-wrapper" id="tracksOutput">
 
+        </div>
+
+        <div class="album-form-wrapper hidden" id="albumFormWrapper">
+            <h2>Add New Album</h2>
+                <form id="newAlbum">
+                    Title<br>
+                    <input type="text" id="newAlbumTitle" name="title">
+                    <br>
+                    Artists<br>
+                    <input type="text" id="newAlbumArtists" name="artists">
+                    <br>
+                    <input type="submit" id="newAlbumSubmit" value="Save">
+                </form>
         </div>
 
     </main>
