@@ -1,5 +1,6 @@
 const newAlbum = document.getElementById("newAlbum");
 const newArtist = document.getElementById("newArtist")
+const key = "?key=flat_eric";
 
 newAlbum.addEventListener("submit", function(event){
     event.preventDefault();
@@ -78,20 +79,23 @@ function addNewArtist(){
 
 addNewArtist();
 
-const key = "?key=flat_eric";
+/*---------- * DISPLAY * ----------*/
+
+/*----- artists -----*/
 
 class ArtistController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
-        this.key = '?key=flat_eric';
+        this.key = key; 
     }
 
     getAll(){
         return fetch(this.baseUrl + this.key)
         .then((response) => response.json())
     }
+
     getOne(id){
-        return fetch(`${this.baseUrl}/${id}?${key}`)
+        return fetch(`${this.baseUrl}/${id}${this.key}`)
         .then((response) => response.json())
     }
     deleteOne(id){
@@ -100,11 +104,50 @@ class ArtistController {
 }
 
 let Artist = new ArtistController('https://folksa.ga/api/artists');
-/*Artist.getAll()
-.then((data) => console.log(data));
 
-Artist.getOne('5aae2d13b9791d0344d8f717')
-.then((data) => console.log(data.name));*/
+Artist.getAll()
+.then((artists) => {
+    console.log(artists);
+    artistDisplayModule.displayArtist(artists);
+});
+
+class displayArtist{
+    constructor(name, id, artists, born, genres){
+        this.id = id;   
+        this.name = name; 
+        this.born = born;
+        this.artists = artists; 
+        this.genres = genres;
+    }
+
+    displayOne(){
+        console.log(this.name);
+    }
+}
+
+let artistDisplayModule = (function(){
+    const artistDiv = document.getElementById('artistsOutput');
+    return {
+        displayArtist: function(artists){
+        
+            for(let i in artists){
+                let artistInfo = ``;
+                artistInfo += `<div class="artist-wrapper">
+                 <div class="cover-image">`;
+                if (artists[i].coverImage === "" || artists[i].coverImage === undefined) {
+                     artistInfo += `<img src="images/default_album4.png">`;
+                 } else {
+                     artistInfo += `<img src="${artists[i].coverImage}">`;
+                 }
+                artistInfo += `<div class="artist-name"><h4>${artists[i].name}</h4></div>
+                </div></div>`;
+                artistDiv.innerHTML += artistInfo;
+            }
+        }
+    }
+}()); 
+
+/*----- albums -----*/
 
 class AlbumController {
     constructor(baseUrl){
@@ -161,9 +204,9 @@ let displayModule = (function(){
                 <h4>${albums[i].title}</h4>
                 <div class="cover-image">`;
                 if (albums[i].coverImage === "" || albums[i].coverImage == undefined) {
-                    albumInfo += `<img src="images/default_album.png"><br/>`;
+                    albumInfo += `<img src="images/default_album.png">`;
                 } else {
-                    albumInfo += `<img src="${albums[i].coverImage}"><br/>`;
+                    albumInfo += `<img src="${albums[i].coverImage}">`;
                 }
                
                 albumInfo += `</div><button data-id="${albums[i]._id}">${albums[i].title}</button>
@@ -182,9 +225,9 @@ let displayModule = (function(){
             <h4>${album.title}</h4>
             <div class="cover-image">`;
             if (album.coverImage === "" || album.coverImage == undefined) {
-                albumInfo += `<img src="images/default_album.png"><br/>`;
+                albumInfo += `<img src="images/default_album.png">`;
             } else {
-                albumInfo += `<img src="${album.coverImage}"><br/>`;
+                albumInfo += `<img src="${album.coverImage}">`;
             }
             albumInfo += `</div>`;
 
@@ -234,7 +277,8 @@ let eventController = (function(){
 }());
 
 
-/*--- Emmelie Testing ---*/
+/*----- playlists -----*/
+
 class PlaylistController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
@@ -255,7 +299,7 @@ class PlaylistController {
     }
 }
 
-let Playlist = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=9');
+let Playlist = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=8');
 
 Playlist.getAll()
 .then((playlists) => {
@@ -264,11 +308,12 @@ Playlist.getAll()
 });
 
 class displayPlaylists{
-    constructor(title, id, artists){
+    constructor(title, id, artists, createdBy){
         this.id = id;   
         this.title = title; 
         this.artists = artists;
         this.tracks = tracks;
+        this.createdBy = createdBy; 
     }
 
     displayOne(){
@@ -282,24 +327,18 @@ let playlistDisplayModule = (function(){
         displayPlaylists: function(playlists){
         
             for(let i in playlists){
-                console.log(playlists[i].coverImage);
-
                 let playlistInfo = ``;
                 playlistInfo += `<div class="playlist-wrapper">
-                <h4>${playlists[i].title}</h4>
                  <div class="cover-image">`;
                 if (playlists[i].coverImage === "" || playlists[i].coverImage === undefined) {
-                     playlistInfo += `<img src="images/default_album.png"><br/>`;
+                     playlistInfo += `<img src="images/default_album.png">`;
                  } else {
-                     playlistInfo += `<img src="${playlists[i].coverImage}"><br/>`;
+                     playlistInfo += `<img src="${playlists[i].coverImage}">`;
                  }
-               
-                playlistInfo += `</div><button data-id="${playlists[i]._id}">${playlists[i].title}</button>
-                
-                </div>`;
-
+                playlistInfo += `<div class="playlist-name"><h4>${playlists[i].title}</h4></div>
+                <div class="playlist-creator"><h5>${playlists[i].createdBy}</h5></div>
+                </div></div>`;
                 playlistDiv.innerHTML += playlistInfo;
-
             }
         }
     }
