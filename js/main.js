@@ -42,7 +42,7 @@ function errorMessageEmptyInputfield(){
 
 addNewAlbum();
 
-const key = "key=flat_eric";
+const key = "?key=flat_eric";
 
 class ArtistController {
     constructor(baseUrl){
@@ -55,7 +55,7 @@ class ArtistController {
         .then((response) => response.json())
     }
     getOne(id){
-        return fetch(`${this.baseUrl}/${id}${this.key}`)
+        return fetch(`${this.baseUrl}/${id}?${key}`)
         .then((response) => response.json())
     }
     deleteOne(id){
@@ -76,17 +76,19 @@ class AlbumController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + this.key)
+        console.log(this.baseUrl + key);
+        return fetch(this.baseUrl + key)
         .then((response) => response.json())
     }
 
     getOne(id){
-        return fetch(`${this.baseUrl}/${id}${this.key}`)
+        console.log(`${this.baseUrl}/${id}${key}`);
+        return fetch(`${this.baseUrl}/${id}${key}`)
         .then((response) => response.json())
     }
 }
 
-let Album = new AlbumController('https://folksa.ga/api/albums?' + key + '&limit=9');
+let Album = new AlbumController('https://folksa.ga/api/albums');
 
 
 //Album.getOne('5abe82c8f6e25413a2407fe2')
@@ -112,6 +114,7 @@ class displayAlbums{
 
 let displayModule = (function(){
     const albumDiv = document.getElementById('albumsOutput');
+    const individualAlbumsDiv = document.getElementById('individualAlbums');
     return {
         displayAlbums: function(albums){
         
@@ -121,7 +124,7 @@ let displayModule = (function(){
                 albumInfo += `<div class="album-wrapper">
                 <h4>${albums[i].title}</h4>
                 <div class="cover-image">`;
-                if (albums[i].coverImage === "") {
+                if (albums[i].coverImage === "" || albums[i].coverImage == undefined) {
                     albumInfo += `<img src="images/default_album.png"><br/>`;
                 } else {
                     albumInfo += `<img src="${albums[i].coverImage}"><br/>`;
@@ -133,9 +136,68 @@ let displayModule = (function(){
 
                 albumDiv.innerHTML += albumInfo;
             }
+            eventController.bindEventListener(albumDiv);
+        },
+        displayIndividualAlbum: function(album){
+            console.log(albumDiv);
+            albumDiv.classList.add('hidden');
+            let albumInfo = ``;
+            albumInfo += `<div class="individual-wrapper">
+            <h4>${album.title}</h4>
+            <div class="cover-image">`;
+            if (album.coverImage === "" || album.coverImage == undefined) {
+                albumInfo += `<img src="images/default_album.png"><br/>`;
+            } else {
+                albumInfo += `<img src="${album.coverImage}"><br/>`;
+            }
+            albumInfo += `</div>`;
 
+            for(let i in album.tracks){
+                albumInfo += `<li>${album.tracks[i].title}</li>`;
+
+                console.log(album.tracks[i].title);
+            }
+            albumInfo += `</div>`;
+            individualAlbumsDiv.innerHTML += albumInfo;
+        },
+        bindEventListener: function(){
+            let albumButtons = albumDiv.querySelectorAll('button');
+
+            for(let albumButton of albumButtons){
+                let albumID = albumButton.dataset.id;
+                
+                albumButton.addEventListener('click', function(){
+                    Album.getOne(albumID)
+                    .then((album) => {
+                    displayModule.displayIndividualAlbum(album);
+                    })
+                });
+            }
             
         }
     }
 }());
+
+let eventController = (function(){
+    return {
+        bindEventListener: function(albumDiv){
+            let albumButtons = albumDiv.querySelectorAll('button');
+
+            for(let albumButton of albumButtons){
+                let albumID = albumButton.dataset.id;
+                
+                albumButton.addEventListener('click', function(){
+                    Album.getOne(albumID)
+                    .then((album) => {
+                    displayModule.displayIndividualAlbum(album);
+                    })
+                });
+            }
+        }
+    }
+}());
+
+
+
+
 
