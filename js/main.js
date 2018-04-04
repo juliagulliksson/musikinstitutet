@@ -199,42 +199,5 @@ let eventController = (function(){
 
 
 
-/*class newTimAlbum {
-    constructor(title, artists, releaseDate, genres, spotifyURL){
-        this.title = title;
-        this.artists = artists;
-        this.releaseDate = releaseDate,
-        this.genres = genres;
-        this.spotifyURL = spotifyURL;
-    }
-
-   // insertAlbum(){
-
-    //}
-}
-
-let tim = new newTimAlbum("Hello", "Tim Buckley", 1975, "Folk Rock, Psychadelic Rock", "https://open.spotify.com/album/1jKfTvT64lcQwA74WmkKiJ?si=nmdUZ2UpS4uUknUrGX1smg", "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Tim_Buckley_-_Goodbye_And_Hello.jpg/220px-Tim_Buckley_-_Goodbye_And_Hello.jpg");
-console.log(tim);*/
-let album = {
-    title: "Hello",
-    artists: "Tim Buckley", //Can be multiple IDs, must be comma separated string if multiple
-    releaseDate: 1967,
-    genres: "Folk rock, Psychedelic Rock", //Must be a comma separated string
-    spotifyURL: "https://open.spotify.com/album/1jKfTvT64lcQwA74WmkKiJ?si=nmdUZ2UpS4uUknUrGX1smg",
-    coverImage: "https://upload.wikimedia.org/wikipedia/en/thumb/0/02/Tim_Buckley_-_Goodbye_And_Hello.jpg/220px-Tim_Buckley_-_Goodbye_And_Hello.jpg"
-}
-
-fetch('https://folksa.ga/api/albums?key=flat_eric',{
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(album)
-  })
-  .then((response) => response.json())
-  .then((album) => {
-    console.log(album);
-  });
 
 
