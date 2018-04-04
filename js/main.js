@@ -20,7 +20,7 @@ function addNewAlbum(){
 
         let album = {
             title: albumTitleValue,
-            artist: albumArtistsValue
+            artists: albumArtistsValue
         }
         
         if(albumTitleValue === "" || albumArtistsValue === ""){
