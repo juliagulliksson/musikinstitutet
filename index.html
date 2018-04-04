@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="css/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
     <title>Musikinstitutet</title>
 </head>
 <body>
@@ -34,22 +35,25 @@
             </div>
         </div>
         <main>
-        
 
-        <div class="albums-wrapper" id="albumsOutput"></div>
-        <div class="playlist-wrapper" id="playlistsOutput"></div>
+        <div class="wrapper">
 
+            <div class="albums-wrapper" id="albumsOutput"></div>
+            <div class="individual-albums-wrapper" id="individualAlbums"></div>
+            <div class="playlist-wrapper" id="playlistsOutput"></div>
 
-        <div class="album-form-wrapper hidden" id="albumFormWrapper">
-            <h2>Add New Album</h2>
+            <div class="album-form-wrapper hidden" id="albumFormWrapper">
+                <h2>Add New Album</h2>
                 <form id="newAlbum">
                     Title<br>
                     <input type="text" id="newAlbumTitle" name="title"><br>
 
                     Artists<br>
                     <input type="text" id="newAlbumArtists" name="artists"><br>
+
                     <input type="submit" id="newAlbumSubmit" value="Save">
                 </form>
+            </div>
         </div>
 
     </main>
