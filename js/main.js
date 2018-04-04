@@ -12,12 +12,31 @@ function addNewAlbum(){
     const newAlbumSubmit = document.getElementById("newAlbumSubmit")
 
     newAlbumSubmit.addEventListener('click', function(){
-        let albumTitleValue = newAlbumTitle.value;
-        let albumArtistsValue = newAlbumArtists.value;
+        const albumTitleValue = newAlbumTitle.value;
+        const albumArtistsValue = newAlbumArtists.value;
+
+        let album = {
+            title: albumTitleValue,
+            artist: albumArtistsValue
+        }
         
         if(albumTitleValue === "" || albumArtistsValue === ""){
             console.log("NEJJJ")
         }else{
+            fetch('https://folksa.ga/api/albums?key=flat_eric',{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(album)
+        })
+        .then((response) => response.json())
+        .then((album) => {
+            console.log(album);
+        });
+
+
         console.log(albumArtistsValue);
         console.log(albumTitleValue);
     }})
@@ -69,7 +88,7 @@ class AlbumController {
     }
 }
 
-let Album = new AlbumController('https://folksa.ga/api/albums?' + key + '&limit=9');
+let Album = new AlbumController('https://folksa.ga/api/albums?' + key + '&limit=90');
 
 
 //Album.getOne('5abe82c8f6e25413a2407fe2')
