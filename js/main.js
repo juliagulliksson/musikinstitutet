@@ -1,10 +1,8 @@
-
 const newAlbum = document.getElementById("newAlbum");
 
 newAlbum.addEventListener("submit", function(event){
     event.preventDefault();
  });
-
 
 function addNewAlbum(){
     const newAlbumTitle = document.getElementById("newAlbumTitle")
@@ -21,9 +19,9 @@ function addNewAlbum(){
         }
         
         if(albumTitleValue === "" || albumArtistsValue === ""){
-            console.log("NEJJJ")
+            errorMessageEmptyInputfield();
         }else{
-            fetch('https://folksa.ga/api/albums?key=flat_eric',{
+            fetch('https://folksa.ga/api/albums?' + key,{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -35,11 +33,11 @@ function addNewAlbum(){
         .then((album) => {
             console.log(album);
         });
-
-
-        console.log(albumArtistsValue);
-        console.log(albumTitleValue);
     }})
+}
+
+function errorMessageEmptyInputfield(){
+    console.log("Please make sure all required fields are filled out correctly")
 }
 
 addNewAlbum();
@@ -88,7 +86,7 @@ class AlbumController {
     }
 }
 
-let Album = new AlbumController('https://folksa.ga/api/albums?' + key + '&limit=90');
+let Album = new AlbumController('https://folksa.ga/api/albums?' + key + '&limit=9');
 
 
 //Album.getOne('5abe82c8f6e25413a2407fe2')
