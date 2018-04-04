@@ -117,8 +117,76 @@ let displayModule = (function(){
                 albumDiv.innerHTML += albumInfo;
             }
 
-            
         }
     }
 }());
 
+
+/*--- Emmelie Testing ---*/
+class PlaylistController {
+    constructor(baseUrl){
+        this.baseUrl = baseUrl;
+        this.key = key; 
+    }
+
+    getAll(){
+        return fetch(this.baseUrl + this.key)
+        .then((response) => response.json())
+    }
+
+    getOne(id){
+        return fetch(`${this.baseUrl}/${id}${this.key}`)
+        .then((response) => response.json())
+    }
+    deleteOne(id){
+
+    }
+}
+
+let Playlist = new PlaylistController('https://folksa.ga/api/playlists?' + key + '&limit=9');
+
+Playlist.getAll()
+.then((playlists) => {
+    console.log(playlists);
+    playlistDisplayModule.displayPlaylists(playlists);
+});
+
+class displayPlaylists{
+    constructor(title, id, artists){
+        this.id = id;
+        this.title = title; 
+        this.artists = artists;
+        this.tracks = tracks;
+    }
+
+    displayOne(){
+        console.log(this.title);
+    }
+}
+
+let playlistDisplayModule = (function(){
+    const playlistDiv = document.getElementById('playlistsOutput');
+    return {
+        displayPlaylists: function(playlists){
+        
+            for(let i in playlists){
+
+                let playlistInfo = ``;
+                playlistInfo += `<div class="playlist-wrapper">
+                <h4>${playlists[i].title}</h4>
+                <div class="cover-image-playlist">`;
+                if (playlists[i].coverImage === "") {
+                    playlistInfo += `<img src="images/default_album.png"><br/>`;
+                } else {
+                    playlistInfo += `<img src="${playlists[i].coverImage}"><br/>`;
+                }
+               
+                playlistInfo += `</div><button data-id="${playlists[i]._id}">${playlists[i].title}</button>
+                
+                </div>`;
+
+                playlistDiv.innerHTML += playlistInfo;
+            }
+        }
+    }
+}());
