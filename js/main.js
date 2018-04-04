@@ -1,6 +1,11 @@
 const newAlbum = document.getElementById("newAlbum");
+const newArtist = document.getElementById("newArtist")
 
 newAlbum.addEventListener("submit", function(event){
+    event.preventDefault();
+ });
+
+ newArtist.addEventListener("submit", function(event){
     event.preventDefault();
  });
 
@@ -41,6 +46,37 @@ function errorMessageEmptyInputfield(){
 }
 
 addNewAlbum();
+
+function addNewArtist(){
+    const newArtistName = document.getElementById("newArtistName")
+    const newArtistBirthday = document.getElementById("newArtistBirthday")
+    const newArtistSubmit = document.getElementById("newArtistSubmit")
+
+    newArtistSubmit.addEventListener('click', function(){
+        const artistNameValue = newArtistName.value;
+        const artistBirthdayValue = newArtistBirthday.value;
+
+        let artist = {
+            name: artistNameValue,
+            born: artistBirthdayValue
+        }
+
+        fetch('https://folksa.ga/api/artists' + key,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(artist)
+        })
+            .then((response) => response.json())
+            .then((artist) => {
+                console.log(artist);
+            });
+    })
+}
+
+addNewArtist();
 
 const key = "?key=flat_eric";
 
