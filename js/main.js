@@ -178,6 +178,25 @@ let displayModule = (function(){
     }
 }());
 
+let eventController = (function(){
+    return {
+        bindEventListener: function(albumDiv){
+            let albumButtons = albumDiv.querySelectorAll('button');
+
+            for(let albumButton of albumButtons){
+                let albumID = albumButton.dataset.id;
+                
+                albumButton.addEventListener('click', function(){
+                    Album.getOne(albumID)
+                    .then((album) => {
+                    displayModule.displayIndividualAlbum(album);
+                    })
+                });
+            }
+        }
+    }
+}());
+
 
 /*--- Emmelie Testing ---*/
 class PlaylistController {
@@ -200,36 +219,6 @@ class PlaylistController {
     }
 }
 
-
-let playlistDisplayModule = (function(){
-    const playlistDiv = document.getElementById('playlistsOutput');
-    return {
-        displayPlaylists: function(playlists){
-        
-            for(let i in playlists){
-
-                let playlistInfo = ``;
-                playlistInfo += `<div class="playlist-wrapper">
-                <h4>${playlists[i].title}</h4>
-                <div class="cover-image-playlist">`;
-                if (playlists[i].coverImage === "") {
-                    playlistInfo += `<img src="images/default_album.png"><br/>`;
-                } else {
-                    playlistInfo += `<img src="${playlists[i].coverImage}"><br/>`;
-                }
-               
-                playlistInfo += `</div><button data-id="${playlists[i]._id}">${playlists[i].title}</button>
-                
-                </div>`;
-
-                playlistDiv.innerHTML += playlistInfo;
-
-            }
-        }
-    }
-}()); 
-           
-
 let Playlist = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=9');
 
 Playlist.getAll()
@@ -250,22 +239,32 @@ class displayPlaylists{
         console.log(this.title);
     }
 }
-     
-let eventController = (function(){
-    return {
-        bindEventListener: function(albumDiv){
-            let albumButtons = albumDiv.querySelectorAll('button');
 
-            for(let albumButton of albumButtons){
-                let albumID = albumButton.dataset.id;
+let playlistDisplayModule = (function(){
+    const playlistDiv = document.getElementById('playlistsOutput');
+    return {
+        displayPlaylists: function(playlists){
+        
+            for(let i in playlists){
+                console.log(playlists[i].coverImage);
+
+                let playlistInfo = ``;
+                playlistInfo += `<div class="playlist-wrapper">
+                <h4>${playlists[i].title}</h4>
+                 <div class="cover-image">`;
+                if (playlists[i].coverImage === "" || playlists[i].coverImage === undefined) {
+                     playlistInfo += `<img src="images/default_album.png"><br/>`;
+                 } else {
+                     playlistInfo += `<img src="${playlists[i].coverImage}"><br/>`;
+                 }
+               
+                playlistInfo += `</div><button data-id="${playlists[i]._id}">${playlists[i].title}</button>
                 
-                albumButton.addEventListener('click', function(){
-                    Album.getOne(albumID)
-                    .then((album) => {
-                    displayModule.displayIndividualAlbum(album);
-                    })
-                });
+                </div>`;
+
+                playlistDiv.innerHTML += playlistInfo;
+
             }
         }
     }
-}());
+}()); 
