@@ -1,10 +1,8 @@
-
 const newAlbum = document.getElementById("newAlbum");
 
 newAlbum.addEventListener("submit", function(event){
     event.preventDefault();
  });
-
 
 function addNewAlbum(){
     const newAlbumTitle = document.getElementById("newAlbumTitle")
@@ -12,15 +10,34 @@ function addNewAlbum(){
     const newAlbumSubmit = document.getElementById("newAlbumSubmit")
 
     newAlbumSubmit.addEventListener('click', function(){
-        let albumTitleValue = newAlbumTitle.value;
-        let albumArtistsValue = newAlbumArtists.value;
+        const albumTitleValue = newAlbumTitle.value;
+        const albumArtistsValue = newAlbumArtists.value;
+
+        let album = {
+            title: albumTitleValue,
+            artist: albumArtistsValue
+        }
         
         if(albumTitleValue === "" || albumArtistsValue === ""){
-            console.log("NEJJJ")
+            errorMessageEmptyInputfield();
         }else{
-        console.log(albumArtistsValue);
-        console.log(albumTitleValue);
+            fetch('https://folksa.ga/api/albums?' + key,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(album)
+        })
+        .then((response) => response.json())
+        .then((album) => {
+            console.log(album);
+        });
     }})
+}
+
+function errorMessageEmptyInputfield(){
+    console.log("Please make sure all required fields are filled out correctly")
 }
 
 addNewAlbum();
