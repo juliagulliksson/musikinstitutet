@@ -21,7 +21,7 @@ function addNewAlbum(){
         if(albumTitleValue === "" || albumArtistsValue === ""){
             errorMessageEmptyInputfield();
         }else{
-            fetch('https://folksa.ga/api/albums?' + key,{
+            fetch('https://folksa.ga/api/albums' + key,{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -200,26 +200,6 @@ class PlaylistController {
     }
 }
 
-let Playlist = new PlaylistController('https://folksa.ga/api/playlists?' + key + '&limit=9');
-
-Playlist.getAll()
-.then((playlists) => {
-    console.log(playlists);
-    playlistDisplayModule.displayPlaylists(playlists);
-});
-
-class displayPlaylists{
-    constructor(title, id, artists){
-        this.id = id;
-        this.title = title; 
-        this.artists = artists;
-        this.tracks = tracks;
-    }
-
-    displayOne(){
-        console.log(this.title);
-    }
-}
 
 let playlistDisplayModule = (function(){
     const playlistDiv = document.getElementById('playlistsOutput');
@@ -243,6 +223,34 @@ let playlistDisplayModule = (function(){
                 </div>`;
 
                 playlistDiv.innerHTML += playlistInfo;
+
+            }
+        }
+    }
+}()); 
+           
+
+let Playlist = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=9');
+
+Playlist.getAll()
+.then((playlists) => {
+    console.log(playlists);
+    playlistDisplayModule.displayPlaylists(playlists);
+});
+
+class displayPlaylists{
+    constructor(title, id, artists){
+        this.id = id;   
+        this.title = title; 
+        this.artists = artists;
+        this.tracks = tracks;
+    }
+
+    displayOne(){
+        console.log(this.title);
+    }
+}
+     
 let eventController = (function(){
     return {
         bindEventListener: function(albumDiv){
