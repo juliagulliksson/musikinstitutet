@@ -73,15 +73,30 @@ addNewAlbum();
 function addNewArtist(){
     const newArtistName = document.getElementById("newArtistName")
     const newArtistBirthday = document.getElementById("newArtistBirthday")
+    const newArtistGenres = document.getElementById("newArtistGenres")
+    const newArtistGender = document.getElementById("newArtistGender")
+    const newArtistCoverImage = document.getElementById("newArtistCoverImage")
     const newArtistSubmit = document.getElementById("newArtistSubmit")
+    const newArtistCountryBorn = document.getElementById("newArtistCountryBorn")
+    const newArtistSpotifyURL = document.getElementById("newArtistSpotifyURL")
 
     newArtistSubmit.addEventListener('click', function(){
         const artistNameValue = newArtistName.value;
         const artistBirthdayValue = newArtistBirthday.value;
+        const artistGenresValue = newArtistGenres.value;
+        const artistGenderValue = newArtistGender.value;
+        const artistCountryBornValue = newArtistCountryBorn.value;
+        const artistSpotifyURLValue = newArtistSpotifyURL.value;
+        const artistCoverImageValue = newArtistCoverImage.value;
 
         let artist = {
             name: artistNameValue,
-            born: artistBirthdayValue
+            born: artistBirthdayValue,
+            genres: artistGenresValue,
+            gender: artistGenderValue,
+            countryBorn: artistCountryBornValue,
+            spotifyURL: artistSpotifyURLValue,
+            coverImage: artistCoverImageValue
         }
 
         fetch('https://folksa.ga/api/artists' + key,{
