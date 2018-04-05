@@ -1,14 +1,36 @@
 const newAlbum = document.getElementById("newAlbum");
 const newArtist = document.getElementById("newArtist")
 const key = "?key=flat_eric";
+const artistDiv = document.getElementById('artistsOutput');
+const albumDiv = document.getElementById('albumsOutput');
 
-newAlbum.addEventListener("submit", function(event){
-    event.preventDefault();
- });
+function hideDivs(divsToHide){
+    
+    console.log(divsToHide);
+    for(i = 0; i < divsToHide.length; i++){
+        if(!divsToHide[i].classList.contains("hidden")){
+            divsToHide[i].classList.add("hidden");
+        }
+    }
+}
 
- newArtist.addEventListener("submit", function(event){
-    event.preventDefault();
- });
+let divArray = [artistDiv, albumDiv];
+//hideDivs(divArray);
+
+let handleFormModule = (function(){
+    return {
+        handleForm: function(element){
+            element.addEventListener("submit", function(event){
+                event.preventDefault();
+             });
+        }
+    }
+}());
+
+handleFormModule.handleForm(newAlbum);
+
+handleFormModule.handleForm(newArtist);
+
 
 function addNewAlbum(){
     const newAlbumTitle = document.getElementById("newAlbumTitle")
@@ -73,6 +95,9 @@ function addNewArtist(){
             .then((response) => response.json())
             .then((artist) => {
                 console.log(artist);
+                if(artist.new == false){
+                    console.log("Artist already exists");
+                }
             });
     })
 }
@@ -111,22 +136,7 @@ Artist.getAll()
     artistDisplayModule.displayArtist(artists);
 });
 
-class displayArtist{
-    constructor(name, id, artists, born, genres){
-        this.id = id;   
-        this.name = name; 
-        this.born = born;
-        this.artists = artists; 
-        this.genres = genres;
-    }
-
-    displayOne(){
-        console.log(this.name);
-    }
-}
-
 let artistDisplayModule = (function(){
-    const artistDiv = document.getElementById('artistsOutput');
     return {
         displayArtist: function(artists){
         
@@ -155,8 +165,7 @@ class AlbumController {
     }
 
     getAll(){
-        console.log(this.baseUrl + key);
-        return fetch(this.baseUrl + key)
+        return fetch(this.baseUrl + key + '&populateArtists=true')
         .then((response) => response.json())
     }
 
@@ -168,10 +177,6 @@ class AlbumController {
 }
 
 let Album = new AlbumController('https://folksa.ga/api/albums');
-
-
-//Album.getOne('5abe82c8f6e25413a2407fe2')
-//.then((data) => console.log(data));
 
 Album.getAll()
 .then((albums) => {
@@ -192,7 +197,6 @@ class displayAlbums{
 }
 
 let displayModule = (function(){
-    const albumDiv = document.getElementById('albumsOutput');
     const individualAlbumsDiv = document.getElementById('individualAlbums');
     return {
         displayAlbums: function(albums){
@@ -209,6 +213,7 @@ let displayModule = (function(){
                     albumInfo += `<img src="${albums[i].coverImage}">`;
                 }
                
+                albumInfo += `<h5>${albums[i].artists[0].name}</h5>`;
                 albumInfo += `</div><button data-id="${albums[i]._id}">${albums[i].title}</button>
                 
                 </div>`;
@@ -282,16 +287,15 @@ let eventController = (function(){
 class PlaylistController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
-        this.key = key; 
     }
 
     getAll(){
-        return fetch(this.baseUrl + this.key)
+        return fetch(this.baseUrl + key)
         .then((response) => response.json())
     }
 
     getOne(id){
-        return fetch(`${this.baseUrl}/${id}${this.key}`)
+        return fetch(`${this.baseUrl}/${id}${key}`)
         .then((response) => response.json())
     }
     deleteOne(id){
@@ -306,20 +310,6 @@ Playlist.getAll()
     console.log(playlists);
     playlistDisplayModule.displayPlaylists(playlists);
 });
-
-class displayPlaylists{
-    constructor(title, id, artists, createdBy){
-        this.id = id;   
-        this.title = title; 
-        this.artists = artists;
-        this.tracks = tracks;
-        this.createdBy = createdBy; 
-    }
-
-    displayOne(){
-        console.log(this.title);
-    }
-}
 
 let playlistDisplayModule = (function(){
     const playlistDiv = document.getElementById('playlistsOutput');
