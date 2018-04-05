@@ -143,7 +143,7 @@ class ArtistController {
     }
 }
 
-let Artist = new ArtistController('https://folksa.ga/api/artists');
+let Artist = new ArtistController('https://folksa.ga/api/artists' + key + '&limit=6');
 
 Artist.getAll()
 .then((artists) => {
@@ -172,6 +172,58 @@ let artistDisplayModule = (function(){
     }
 }()); 
 
+/*----- tracks -----*/
+
+class TrackController {
+    constructor(baseUrl){
+        this.baseUrl = baseUrl;
+    }
+
+    getAll(){
+        return fetch(this.baseUrl + key)
+        .then((response) => response.json())
+    }
+
+    getOne(id){
+        return fetch(`${this.baseUrl}/${id}${key}`)
+        .then((response) => response.json())
+    }
+    deleteOne(id){
+
+    }
+}
+
+let Track = new TrackController('https://folksa.ga/api/tracks');
+
+Track.getAll()
+.then((tracks) => {
+    console.log(tracks);
+    trackDisplayModule.displayTracks(tracks);
+});
+
+let trackDisplayModule = (function(){
+    const trackDiv = document.getElementById('tracksOutput');
+    return {
+        displayTracks: function(tracks){
+        
+            for(let i in tracks){
+                let trackInfo = ``;
+                trackInfo += `<div class="track-wrapper">
+                 <div class="cover-image">`;
+                if (tracks[i].coverImage === "" || tracks[i].coverImage === undefined) {
+                     trackInfo += `<img src="images/default_album.png">`;
+                 } else {
+                     trackInfo += `<img src="${tracks[i].coverImage}">`;
+                 }
+                trackInfo += `<div class="track-name"><h4>${tracks[i].title}</h4></div>
+                <div class="track-genre"><h5>${tracks[i].genres}</h5></div>
+                </div></div>`;
+                trackDiv.innerHTML += trackInfo;
+            }
+        }
+    }
+}()); 
+
 /*----- albums -----*/
 
 class AlbumController {
@@ -191,7 +243,7 @@ class AlbumController {
     }
 }
 
-let Album = new AlbumController('https://folksa.ga/api/albums');
+let Album = new AlbumController('https://folksa.ga/api/albums' + key + '&limit=8');
 
 Album.getAll()
 .then((albums) => {
