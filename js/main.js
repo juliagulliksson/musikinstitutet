@@ -1,16 +1,40 @@
 const newAlbum = document.getElementById("newAlbum");
 const newArtist = document.getElementById("newArtist")
 const key = "?key=flat_eric";
+
 let hamburger = document.getElementById('hamburgerIcon');
-console.log(hamburger);
 
-newAlbum.addEventListener("submit", function(event){
-    event.preventDefault();
- });
+const artistDiv = document.getElementById('artistsOutput');
+const albumDiv = document.getElementById('albumsOutput');
 
- newArtist.addEventListener("submit", function(event){
-    event.preventDefault();
- });
+function hideDivs(divsToHide){
+    
+    console.log(divsToHide);
+    for(i = 0; i < divsToHide.length; i++){
+        if(!divsToHide[i].classList.contains("hidden")){
+            divsToHide[i].classList.add("hidden");
+        }
+    }
+}
+
+let divArray = [artistDiv, albumDiv];
+//hideDivs(divArray);
+
+let handleFormModule = (function(){
+    return {
+        handleForm: function(element){
+            element.addEventListener("submit", function(event){
+                event.preventDefault();
+             });
+        }
+    }
+}());
+
+
+handleFormModule.handleForm(newAlbum);
+
+handleFormModule.handleForm(newArtist);
+
 
 function addNewAlbum(){
     const newAlbumTitle = document.getElementById("newAlbumTitle")
@@ -53,15 +77,30 @@ addNewAlbum();
 function addNewArtist(){
     const newArtistName = document.getElementById("newArtistName")
     const newArtistBirthday = document.getElementById("newArtistBirthday")
+    const newArtistGenres = document.getElementById("newArtistGenres")
+    const newArtistGender = document.getElementById("newArtistGender")
+    const newArtistCoverImage = document.getElementById("newArtistCoverImage")
     const newArtistSubmit = document.getElementById("newArtistSubmit")
+    const newArtistCountryBorn = document.getElementById("newArtistCountryBorn")
+    const newArtistSpotifyURL = document.getElementById("newArtistSpotifyURL")
 
     newArtistSubmit.addEventListener('click', function(){
         const artistNameValue = newArtistName.value;
         const artistBirthdayValue = newArtistBirthday.value;
+        const artistGenresValue = newArtistGenres.value;
+        const artistGenderValue = newArtistGender.value;
+        const artistCountryBornValue = newArtistCountryBorn.value;
+        const artistSpotifyURLValue = newArtistSpotifyURL.value;
+        const artistCoverImageValue = newArtistCoverImage.value;
 
         let artist = {
             name: artistNameValue,
-            born: artistBirthdayValue
+            born: artistBirthdayValue,
+            genres: artistGenresValue,
+            gender: artistGenderValue,
+            countryBorn: artistCountryBornValue,
+            spotifyURL: artistSpotifyURLValue,
+            coverImage: artistCoverImageValue
         }
 
         fetch('https://folksa.ga/api/artists' + key,{
@@ -75,6 +114,9 @@ function addNewArtist(){
             .then((response) => response.json())
             .then((artist) => {
                 console.log(artist);
+                if(artist.new == false){
+                    console.log("Artist already exists");
+                }
             });
     })
 }
@@ -104,7 +146,7 @@ class ArtistController {
     }
 }
 
-let Artist = new ArtistController('https://folksa.ga/api/artists');
+let Artist = new ArtistController('https://folksa.ga/api/artists' + key + '&limit=6');
 
 Artist.getAll()
 .then((artists) => {
@@ -112,22 +154,7 @@ Artist.getAll()
     artistDisplayModule.displayArtist(artists);
 });
 
-class displayArtist{
-    constructor(name, id, artists, born, genres){
-        this.id = id;   
-        this.name = name; 
-        this.born = born;
-        this.artists = artists; 
-        this.genres = genres;
-    }
-
-    displayOne(){
-        console.log(this.name);
-    }
-}
-
 let artistDisplayModule = (function(){
-    const artistDiv = document.getElementById('artistsOutput');
     return {
         displayArtist: function(artists){
         
@@ -148,6 +175,58 @@ let artistDisplayModule = (function(){
     }
 }()); 
 
+/*----- tracks -----*/
+
+class TrackController {
+    constructor(baseUrl){
+        this.baseUrl = baseUrl;
+    }
+
+    getAll(){
+        return fetch(this.baseUrl + key)
+        .then((response) => response.json())
+    }
+
+    getOne(id){
+        return fetch(`${this.baseUrl}/${id}${key}`)
+        .then((response) => response.json())
+    }
+    deleteOne(id){
+
+    }
+}
+
+let Track = new TrackController('https://folksa.ga/api/tracks');
+
+Track.getAll()
+.then((tracks) => {
+    console.log(tracks);
+    trackDisplayModule.displayTracks(tracks);
+});
+
+let trackDisplayModule = (function(){
+    const trackDiv = document.getElementById('tracksOutput');
+    return {
+        displayTracks: function(tracks){
+        
+            for(let i in tracks){
+                let trackInfo = ``;
+                trackInfo += `<div class="track-wrapper">
+                 <div class="cover-image">`;
+                if (tracks[i].coverImage === "" || tracks[i].coverImage === undefined) {
+                     trackInfo += `<img src="images/default_album.png">`;
+                 } else {
+                     trackInfo += `<img src="${tracks[i].coverImage}">`;
+                 }
+                trackInfo += `<div class="track-name"><h4>${tracks[i].title}</h4></div>
+                <div class="track-genre"><h5>${tracks[i].genres}</h5></div>
+                </div></div>`;
+                trackDiv.innerHTML += trackInfo;
+            }
+        }
+    }
+}()); 
+
 /*----- albums -----*/
 
 class AlbumController {
@@ -156,8 +235,7 @@ class AlbumController {
     }
 
     getAll(){
-        console.log(this.baseUrl + key);
-        return fetch(this.baseUrl + key)
+        return fetch(this.baseUrl + key + '&populateArtists=true')
         .then((response) => response.json())
     }
 
@@ -168,11 +246,7 @@ class AlbumController {
     }
 }
 
-let Album = new AlbumController('https://folksa.ga/api/albums');
-
-
-//Album.getOne('5abe82c8f6e25413a2407fe2')
-//.then((data) => console.log(data));
+let Album = new AlbumController('https://folksa.ga/api/albums' + key + '&limit=8');
 
 Album.getAll()
 .then((albums) => {
@@ -193,7 +267,6 @@ class displayAlbums{
 }
 
 let displayModule = (function(){
-    const albumDiv = document.getElementById('albumsOutput');
     const individualAlbumsDiv = document.getElementById('individualAlbums');
     return {
         displayAlbums: function(albums){
@@ -210,6 +283,7 @@ let displayModule = (function(){
                     albumInfo += `<img src="${albums[i].coverImage}">`;
                 }
                
+                albumInfo += `<h5>${albums[i].artists[0].name}</h5>`;
                 albumInfo += `</div><button data-id="${albums[i]._id}">${albums[i].title}</button>
                 
                 </div>`;
@@ -283,16 +357,15 @@ let eventController = (function(){
 class PlaylistController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
-        this.key = key; 
     }
 
     getAll(){
-        return fetch(this.baseUrl + this.key)
+        return fetch(this.baseUrl + key)
         .then((response) => response.json())
     }
 
     getOne(id){
-        return fetch(`${this.baseUrl}/${id}${this.key}`)
+        return fetch(`${this.baseUrl}/${id}${key}`)
         .then((response) => response.json())
     }
     deleteOne(id){
@@ -307,20 +380,6 @@ Playlist.getAll()
     console.log(playlists);
     playlistDisplayModule.displayPlaylists(playlists);
 });
-
-class displayPlaylists{
-    constructor(title, id, artists, createdBy){
-        this.id = id;   
-        this.title = title; 
-        this.artists = artists;
-        this.tracks = tracks;
-        this.createdBy = createdBy; 
-    }
-
-    displayOne(){
-        console.log(this.title);
-    }
-}
 
 let playlistDisplayModule = (function(){
     const playlistDiv = document.getElementById('playlistsOutput');

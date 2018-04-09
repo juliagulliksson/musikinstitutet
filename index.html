@@ -44,14 +44,21 @@
 
         <div class="wrapper">
 
+            <h2>Top 8 - Artists</h2>
             <div class="artists-wrapper" id="artistsOutput"></div>
 
-            <h2>Top 8 - Albums</h2>
-            <div class="albums-wrapper" id="albumsOutput"></div>
+            <h2>Top 8 - Tracks</h2>
+            <div class="tracks-wrapper" id="tracksOutput"></div>
+            
+            <div class="albums-wrapper" id="albumsOutput">
+                <h2>Top 8 - Albums</h2>
+            </div>
             <div class="individual-albums-wrapper" id="individualAlbums"></div>
             
-            <h2>Top 8 - Playlists</h2>
-            <div class="playlists-wrapper" id="playlistsOutput"></div>
+            
+            <div class="playlists-wrapper" id="playlistsOutput">
+                <h2>Top 8 - Playlists</h2>
+            </div>
 
 
             <div class="album-form-wrapper " id="albumFormWrapper">
@@ -75,7 +82,27 @@
 
                     Born<br>
                     <input type="date" id="newArtistBirthday" name="born"><br>
+
+                    Genres<br>
+                    <input type="text" id="newArtistGenres" name="genres" placeholder="Separate genre with comma"><br>
+
+                    Gender<br>
+                    <input type="text" id="newArtistGender" name="gender" placeholder="male, female or other"><br>
+
+                    Country<br>
+                    <input type="text" id="newArtistCountryBorn" name="countryBorn"><br>
+
+                    Linkt to Spotify<br>
+                    <input type="text" id="newArtistSpotifyURL" name="spotifyURL"><br>
+                  
+                    Image<br>
+                    <input type="text" id="newArtistCoverImage" name="coverImage"><br>
                     <input type="submit" id="newArtistSubmit" value="Save">
+
+                    
+
+            
+                    
                 </form>
             </div>
     </div>
