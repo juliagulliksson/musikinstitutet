@@ -54,17 +54,18 @@ main{
     display: flex;
     flex-wrap: wrap;
     .album-wrapper{
-        width: 25%;
+        width: 32%;
         text-align: center;
         margin: 0px auto; 
     }
    .cover-image{
-       height: 240px;
+       height: 260px;
         img{
-            height: 70%;
+            height: 100%;
             display: block;
             margin: 0px auto;
             border: 1px solid #949A93;
+            cursor: pointer;
         }
     }
 }
