@@ -5,7 +5,148 @@ body{
     font-family: 'Roboto Condensed', sans-serif;
     color: #1F211F; 
 }
+main{
+    padding: 15px; 
+    background-color: #FFF;
+}
 
 .hidden{
     display: none !important;
+}
+
+%button{
+    padding: 0;
+    margin: 0;
+    color: #FFF; 
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+}
+
+.header-flex-wrapper{
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+ 
+   .header-image{
+       background-image: url("../images/awesome-jazz.jpg");
+       background-repeat: no-repeat;
+       background-size: 100%;
+       height: 200px;
+   } 
+}
+
+.nav-bar{
+    background-color: #ffffff;
+    color: #1F211F;    
+    border-bottom: 1px solid #949A93; 
+    font-family: 'Fjalla One', sans-serif;
+     .navigation{
+         display: none;
+     }
+    nav{
+        text-align: right;
+
+        ul{
+            margin: 0px 0px 0px 20px;
+            padding: 0;
+        
+            li{
+                list-style-type: none;
+                padding: 15px;
+                margin: 0px 7px 0px 7px;
+                font-size: 1.2em;
+            }
+            li:active{
+                color: #EE708B;
+            }
+        }
+    }
+    .add-button{
+        text-align: right;
+        button{
+            @extend %button;
+            color:#ffffff; 
+            border-radius: 4px;
+            padding: 10px;
+            background-color:#EE708B;
+            transition: all 400ms;
+            margin-top: 7px;
+            font-size: 1em;
+       }
+       button:active{
+           color: #1F211F; 
+       }
+    }
+}
+
+.artists-wrapper{  
+    .artist-wrapper{
+        text-align: center;
+    }
+   .cover-image{
+       height: 300px;
+       width: 90%;
+       margin: 0px auto;
+        img{
+            height: 100%;
+            border: 1px solid #949A93
+        }
+        .artist-name{
+            h4{
+                margin-top: 5px; 
+                margin-bottom: 0px; 
+                padding: 0px; 
+                margin-left: 8px; 
+            }
+        }
+    }
+}
+
+.albums-wrapper{
+    .album-wrapper{
+        text-align: center;
+        margin: 0px auto; 
+    }
+   .cover-image{
+       height: 300px;
+        img{
+            height: 100%;
+            border: 1px solid #949A93
+        }
+    }
+}
+
+.playlists-wrapper{
+    .playlist-wrapper{
+        margin: 0px auto; 
+    }
+   .cover-image{
+       height: 200px;
+        img{
+            height: 70%;
+            display: block;
+            margin: 0px auto;
+            border: 1px solid #949A93
+        }
+
+        .playlist-name{
+            h4{
+                margin-top: 5px; 
+                margin-bottom: 0px; 
+                padding: 0px; 
+                margin-left: 8px; 
+            }
+        }
+
+        .playlist-creator{
+            h5{
+                margin-top: 0px; 
+                padding: 0px; 
+                color: #A5A3A7; 
+                margin-left: 8px; 
+
+            }
+        }
+    }
 }
