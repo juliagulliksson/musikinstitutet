@@ -56,13 +56,12 @@ let eventController = (function(){
 }());
 
 function toggleDiv(divToShow){
-    let divs = [trackDiv, artistDiv, albumDiv, 
-        playlistDiv, individualAlbumsDiv, 
-        formDiv, individualArtistsDiv];
+    let divs = [trackDiv, artistDiv, albumDiv, playlistDiv, individualAlbumsDiv, formDiv, individualArtistsDiv];
     divToShow.classList.remove("hidden");
     const divsToHide = divs.filter(div => div != divToShow);
 
     for(let divToHide of divsToHide){
+        console.log(divToHide)
 
         if(!divToHide.classList.contains("hidden")){
             divToHide.classList.add("hidden");
@@ -70,7 +69,7 @@ function toggleDiv(divToShow){
     }
 }
 
-toggleDiv(albumDiv);
+//toggleDiv(albumDiv);
 
 const addNewButton = document.getElementById('addNew');
 eventController.toggleDivs(addNewButton, formDiv);
@@ -107,18 +106,27 @@ handleFormModule.handleForm(newArtist);
 
 
 function addNewAlbum(){
-    const newAlbumTitle = document.getElementById("newAlbumTitle")
-    const newAlbumArtists = document.getElementById("newAlbumArtists")
-    const newAlbumSubmit = document.getElementById("newAlbumSubmit")
+   
+
+    const newAlbumSubmit = document.getElementById("newAlbumSubmit");
 
     newAlbumSubmit.addEventListener('click', function(){
-        const albumTitleValue = newAlbumTitle.value;
-        const albumArtistsValue = newAlbumArtists.value;
+        const albumTitleValue = document.getElementById("newAlbumTitle").value;
+        const albumArtistsValue = document.getElementById("newAlbumArtists").value;
+        const albumGenresValue = document.getElementById("newAlbumGenres").value;
+        const albumReleaseDateValue = document.getElementById("releaseDate").value;
+        const albumSpotifyURL = document.getElementById("newAlbumSpotifyURL").value;
+        const albumCoverImage = document.getElementById("newAlbumCover").value; 
 
         let album = {
             title: albumTitleValue,
-            artists: albumArtistsValue
+            artists: albumArtistsValue,
+            releaseDate: albumReleaseDateValue,
+            genres: albumGenresValue,
+            spotifyURL: albumSpotifyURL,
+            coverImage: albumCoverImage
         }
+    
         
         if(albumTitleValue === "" || albumArtistsValue === ""){
             errorMessageEmptyInputfield();
@@ -145,24 +153,17 @@ function errorMessageEmptyInputfield(){
 addNewAlbum();
 
 function addNewArtist(){
-    const newArtistName = document.getElementById("newArtistName")
-    const newArtistBirthday = document.getElementById("newArtistBirthday")
-    const newArtistGenres = document.getElementById("newArtistGenres")
-    const newArtistGender = document.getElementById("newArtistGender")
-    const newArtistCoverImage = document.getElementById("newArtistCoverImage")
+    const artistNameValue = document.getElementById("newArtistName").value;
+    const artistBirthdayValue = document.getElementById("newArtistBirthday").value;
+    const artistGenresValue = document.getElementById("newArtistGenres").value;
+    const artistGenderValue = document.getElementById("newArtistGender").value;
+    const artistCoverImageValue = document.getElementById("newArtistCoverImage").value;
+    const artistCountryBornValue = document.getElementById("newArtistCountryBorn").value;
+    const artistSpotifyURLValue = document.getElementById("newArtistSpotifyURL").value;
     const newArtistSubmit = document.getElementById("newArtistSubmit")
-    const newArtistCountryBorn = document.getElementById("newArtistCountryBorn")
-    const newArtistSpotifyURL = document.getElementById("newArtistSpotifyURL")
 
     newArtistSubmit.addEventListener('click', function(){
-        const artistNameValue = newArtistName.value;
-        const artistBirthdayValue = newArtistBirthday.value;
-        const artistGenresValue = newArtistGenres.value;
-        const artistGenderValue = newArtistGender.value;
-        const artistCountryBornValue = newArtistCountryBorn.value;
-        const artistSpotifyURLValue = newArtistSpotifyURL.value;
-        const artistCoverImageValue = newArtistCoverImage.value;
-
+    
         let artist = {
             name: artistNameValue,
             born: artistBirthdayValue,
