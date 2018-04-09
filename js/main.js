@@ -8,6 +8,7 @@ const artistDiv = document.getElementById('artistsOutput');
 const albumDiv = document.getElementById('albumsOutput');
 const trackDiv = document.getElementById('tracksOutput');
 const playlistDiv = document.getElementById('playlistsOutput');
+const formDiv = document.getElementById('formWrapper'); 
 
 function hideDivs(divsToHide){
     
@@ -58,6 +59,12 @@ const playlistsLink = document.getElementById('playlistsLink');
 playlistsLink.addEventListener('click', function(){
     hideDivs([trackDiv, artistDiv,  albumDiv]);
     showDivs([playlistDiv]);   
+})
+
+const addNewButton = document.getElementById('addNew');
+addNewButton.addEventListener('click', function(){
+    hideDivs([trackDiv, artistDiv,  albumDiv, playlistDiv]);
+    showDivs([formDiv]);
 })
 
 //hideDivs(divArray);
@@ -277,7 +284,7 @@ class AlbumController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key + '&populateArtists=true')
+        return fetch(this.baseUrl + key + '&populateArtists=true&limit=8')
         .then((response) => response.json())
     }
 
@@ -288,7 +295,7 @@ class AlbumController {
     }
 }
 
-let Album = new AlbumController('https://folksa.ga/api/albums' + key + '&limit=8');
+let Album = new AlbumController('https://folksa.ga/api/albums');
 
 Album.getAll()
 .then((albums) => {

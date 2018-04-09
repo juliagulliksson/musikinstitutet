@@ -61,51 +61,47 @@
                 <h2>Top 8 - Playlists</h2>
             </div>
 
+            <div class="form-wrapper hidden" id="formWrapper">
+                <div class="album-form-wrapper " id="albumFormWrapper">
+                    <h2>Add New Album</h2>
+                    <form id="newAlbum">
+                        Title<br>
+                        <input type="text" id="newAlbumTitle" name="title"><br>
 
-            <div class="album-form-wrapper " id="albumFormWrapper">
-                <h2>Add New Album</h2>
-                <form id="newAlbum">
-                    Title<br>
-                    <input type="text" id="newAlbumTitle" name="title"><br>
+                        Artists<br>
+                        <input type="text" id="newAlbumArtists" name="artists"><br>
 
-                    Artists<br>
-                    <input type="text" id="newAlbumArtists" name="artists"><br>
+                        <input type="submit" id="newAlbumSubmit" value="Save">
+                    </form>
+                </div>
 
-                    <input type="submit" id="newAlbumSubmit" value="Save">
-                </form>
-            </div>
+                <div class="artist-form-wrapper" id="artistFormWrapper">
+                    <h2>Add New Artist</h2>
+                    <form id="newArtist">
+                        Name<br>
+                        <input type="text" id="newArtistName" name="name"><br>
 
-            <div class="artist-form-wrapper" id="artistFormWrapper">
-                <h2>Add New Artist</h2>
-                <form id="newArtist">
-                    Name<br>
-                    <input type="text" id="newArtistName" name="name"><br>
+                        Born<br>
+                        <input type="date" id="newArtistBirthday" name="born"><br>
 
-                    Born<br>
-                    <input type="date" id="newArtistBirthday" name="born"><br>
+                        Genres<br>
+                        <input type="text" id="newArtistGenres" name="genres" placeholder="Separate genre with comma"><br>
 
-                    Genres<br>
-                    <input type="text" id="newArtistGenres" name="genres" placeholder="Separate genre with comma"><br>
+                        Gender<br>
+                        <input type="text" id="newArtistGender" name="gender" placeholder="male, female or other"><br>
 
-                    Gender<br>
-                    <input type="text" id="newArtistGender" name="gender" placeholder="male, female or other"><br>
+                        Country<br>
+                        <input type="text" id="newArtistCountryBorn" name="countryBorn"><br>
 
-                    Country<br>
-                    <input type="text" id="newArtistCountryBorn" name="countryBorn"><br>
-
-                    Linkt to Spotify<br>
-                    <input type="text" id="newArtistSpotifyURL" name="spotifyURL"><br>
-                  
-                    Image<br>
-                    <input type="text" id="newArtistCoverImage" name="coverImage"><br>
-                    <input type="submit" id="newArtistSubmit" value="Save">
-
+                        Linkt to Spotify<br>
+                        <input type="text" id="newArtistSpotifyURL" name="spotifyURL"><br>
                     
-
-            
-                    
-                </form>
-            </div>
+                        Image<br>
+                        <input type="text" id="newArtistCoverImage" name="coverImage"><br>
+                        <input type="submit" id="newArtistSubmit" value="Save">
+                    </form>
+                </div>
+        </div>
     </div>
 
     </main>
