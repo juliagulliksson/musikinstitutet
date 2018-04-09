@@ -134,29 +134,3 @@ main{
     }
 }
 
-.tracks-wrapper{
-    display: flex;
-    flex-wrap: wrap;    
-    .track-wrapper{
-        width: 25%;
-        text-align: center;
-        margin: 0px auto; 
-    }
-   .cover-image{
-       height: 245px;
-        img{
-            height: 70%;
-            display: block;
-            margin: 0px auto;
-            border: 1px solid #949A93
-        }
-        .track-name{
-            h4{
-                margin-top: 5px; 
-                margin-bottom: 0px; 
-                padding: 0px; 
-                margin-left: 8px; 
-            }
-        }
-    }
-}

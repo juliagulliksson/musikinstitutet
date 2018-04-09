@@ -6,6 +6,8 @@ let hamburger = document.getElementById('hamburgerIcon');
 
 const artistDiv = document.getElementById('artistsOutput');
 const albumDiv = document.getElementById('albumsOutput');
+const trackDiv = document.getElementById('tracksOutput');
+const playlistDiv = document.getElementById('playlistsOutput');
 
 function hideDivs(divsToHide){
     
@@ -17,7 +19,47 @@ function hideDivs(divsToHide){
     }
 }
 
-let divArray = [artistDiv, albumDiv];
+function showDivs(divsToShow){
+    
+    for(i = 0; i < divsToShow.length; i++){
+        if(divsToShow[i].classList.contains("hidden")){
+            divsToShow[i].classList.remove("hidden");
+        }
+    }
+}
+
+hideDivs([artistDiv, trackDiv,  playlistDiv]);
+
+const homeLink = document.getElementById('homeLink');
+homeLink.addEventListener('click', function(){
+    hideDivs([artistDiv, trackDiv,  playlistDiv]);
+    showDivs([albumDiv]);
+});
+
+const artistsLink = document.getElementById('artistsLink');
+artistsLink.addEventListener('click', function(){
+    hideDivs([albumDiv, trackDiv,  playlistDiv]);
+    showDivs([artistDiv]);
+});
+
+const tracksLink = document.getElementById('tracksLink');
+tracksLink.addEventListener('click', function(){
+    hideDivs([albumDiv, artistDiv,  playlistDiv]);
+    showDivs([trackDiv]);
+})
+
+const albumsLink = document.getElementById('albumsLink');
+albumsLink.addEventListener('click', function(){
+    hideDivs([trackDiv, artistDiv,  playlistDiv]);
+    showDivs([albumDiv]);
+})
+
+const playlistsLink = document.getElementById('playlistsLink');
+playlistsLink.addEventListener('click', function(){
+    hideDivs([trackDiv, artistDiv,  albumDiv]);
+    showDivs([playlistDiv]);   
+})
+
 //hideDivs(divArray);
 
 let handleFormModule = (function(){
@@ -205,7 +247,7 @@ Track.getAll()
 });
 
 let trackDisplayModule = (function(){
-    const trackDiv = document.getElementById('tracksOutput');
+  
     return {
         displayTracks: function(tracks){
         
@@ -382,7 +424,7 @@ Playlist.getAll()
 });
 
 let playlistDisplayModule = (function(){
-    const playlistDiv = document.getElementById('playlistsOutput');
+  
     return {
         displayPlaylists: function(playlists){
         

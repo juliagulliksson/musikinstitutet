@@ -103,6 +103,31 @@ main{
     }
 }
 
+.tracks-wrapper{ 
+    .track-wrapper{
+        text-align: left;
+        margin-bottom: 10px; 
+    }
+   .cover-image{
+       height: 10px;
+       display: inline-flex; 
+       flex-wrap: wrap; 
+    
+        img{
+            height: 450%;
+            border: 1px solid #949A93
+        }
+        .track-name{
+            h4{
+                margin-top: 5px; 
+                margin-bottom: 0px; 
+                padding: 0px; 
+                margin-left: 8px;
+            }
+        }
+    }
+}
+
 .albums-wrapper{
     .album-wrapper{
         text-align: center;
