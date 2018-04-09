@@ -366,6 +366,7 @@ let displayModule = (function(){
         displayIndividualAlbum: function(album){
             hideDivs([trackDiv, artistDiv,  playlistDiv, albumDiv, formDiv]);
             showDivs([individualAlbumsDiv]);
+            individualAlbumsDiv.innerHTML = "";
             let albumInfo = ``;
             albumInfo += `<div class="individual-wrapper">
             <h4>${album.title}</h4>
@@ -386,12 +387,12 @@ let displayModule = (function(){
             individualAlbumsDiv.innerHTML += albumInfo;
         },
         bindEventListener: function(){
-            let albumButtons = albumDiv.querySelectorAll('button');
+            let albumImages = albumDiv.querySelectorAll('img');
 
-            for(let albumButton of albumButtons){
-                let albumID = albumButton.dataset.id;
+            for(let albumImage of albumImages){
+                let albumID = albumImages.dataset.id;
                 
-                albumButton.addEventListener('click', function(){
+                albumImage.addEventListener('click', function(){
                     Album.getOne(albumID)
                     .then((album) => {
                     displayModule.displayIndividualAlbum(album);
