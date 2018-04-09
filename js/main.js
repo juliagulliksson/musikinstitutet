@@ -4,12 +4,15 @@ const key = "?key=flat_eric";
 
 let hamburger = document.getElementById('hamburgerIcon');
 
-const artistDiv = document.getElementById('artistsOutput');
-const albumDiv = document.getElementById('albumsOutput');
+const artistDiv = document.getElementById('artistsWrapper');
+const albumDiv = document.getElementById('albumsWrapper');
+const trackDiv = document.getElementById('tracksWrapper');
+const playlistDiv = document.getElementById('playlistsWrapper');
+const formDiv = document.getElementById('formWrapper'); 
+const individualAlbumsDiv = document.getElementById('individualAlbums');
 
 function hideDivs(divsToHide){
     
-    console.log(divsToHide);
     for(i = 0; i < divsToHide.length; i++){
         if(!divsToHide[i].classList.contains("hidden")){
             divsToHide[i].classList.add("hidden");
@@ -17,8 +20,72 @@ function hideDivs(divsToHide){
     }
 }
 
-let divArray = [artistDiv, albumDiv];
-//hideDivs(divArray);
+function showDivs(divsToShow){
+    
+    for(i = 0; i < divsToShow.length; i++){
+        if(divsToShow[i].classList.contains("hidden")){
+            divsToShow[i].classList.remove("hidden");
+        }
+    }
+}
+
+let eventController = (function(){
+  
+    return {
+        bindEventListener: function(albumDiv){
+            let albumImages = albumDiv.querySelectorAll('img');
+
+            for(let albumImage of albumImages){
+                let albumID = albumImage.dataset.id;
+                
+                albumImage.addEventListener('click', function(){
+                    Album.getOne(albumID)
+                    .then((album) => {
+                    displayModule.displayIndividualAlbum(album);
+                    })
+                });
+            }
+        },
+        toggleDivs: function(element, divToShow){
+            element.addEventListener('click', function(){
+               toggleDiv(divToShow);
+            });
+        }
+    }
+}());
+
+function toggleDiv(divToShow){
+    let divs = [trackDiv, artistDiv, albumDiv, playlistDiv, individualAlbumsDiv, formDiv];
+    divToShow.classList.remove("hidden");
+    const divsToHide = divs.filter(div => div != divToShow);
+
+    for(let divToHide of divsToHide){
+
+        if(!divToHide.classList.contains("hidden")){
+            divToHide.classList.add("hidden");
+        }
+    }
+}
+
+toggleDiv(albumDiv);
+
+const addNewButton = document.getElementById('addNew');
+eventController.toggleDivs(addNewButton, formDiv);
+
+const homeLink = document.getElementById('homeLink');
+eventController.toggleDivs(homeLink, albumDiv);
+
+const artistsLink = document.getElementById('artistsLink');
+eventController.toggleDivs(artistsLink, artistDiv);
+
+const tracksLink = document.getElementById('tracksLink');
+eventController.toggleDivs(tracksLink, trackDiv);
+
+const albumsLink = document.getElementById('albumsLink');
+eventController.toggleDivs(albumsLink, albumDiv)
+
+const playlistsLink = document.getElementById('playlistsLink');
+eventController.toggleDivs(playlistsLink, playlistDiv);
 
 let handleFormModule = (function(){
     return {
@@ -155,6 +222,7 @@ Artist.getAll()
 });
 
 let artistDisplayModule = (function(){
+    const artistsOutput = document.getElementById('artistsOutput')
     return {
         displayArtist: function(artists){
         
@@ -169,7 +237,7 @@ let artistDisplayModule = (function(){
                  }
                 artistInfo += `</div><div class="artist-name"><h4>${artists[i].name}</h4></div>
                 </div>`;
-                artistDiv.innerHTML += artistInfo;
+                artistsOutput.innerHTML += artistInfo;
             }
         }
     }
@@ -205,7 +273,7 @@ Track.getAll()
 });
 
 let trackDisplayModule = (function(){
-    const trackDiv = document.getElementById('tracksOutput');
+    const tracksOutput = document.getElementById('tracksOutput');
     return {
         displayTracks: function(tracks){
         
@@ -221,7 +289,7 @@ let trackDisplayModule = (function(){
                 trackInfo += `<div class="track-name"><h4>${tracks[i].title}</h4></div>
                 <div class="track-genre"><h5>${tracks[i].genres}</h5></div>
                 </div></div>`;
-                trackDiv.innerHTML += trackInfo;
+                tracksOutput.innerHTML += trackInfo;
             }
         }
     }
@@ -235,7 +303,7 @@ class AlbumController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key + '&populateArtists=true')
+        return fetch(this.baseUrl + key + '&populateArtists=true&limit=9&sort=desc')
         .then((response) => response.json())
     }
 
@@ -246,7 +314,7 @@ class AlbumController {
     }
 }
 
-let Album = new AlbumController('https://folksa.ga/api/albums' + key + '&limit=8');
+let Album = new AlbumController('https://folksa.ga/api/albums');
 
 Album.getAll()
 .then((albums) => {
@@ -267,7 +335,7 @@ class displayAlbums{
 }
 
 let displayModule = (function(){
-    const individualAlbumsDiv = document.getElementById('individualAlbums');
+   const albumsOutput = document.getElementById('albumsOutput');
     return {
         displayAlbums: function(albums){
         
@@ -275,26 +343,29 @@ let displayModule = (function(){
 
                 let albumInfo = ``;
                 albumInfo += `<div class="album-wrapper">
-                <h4>${albums[i].title}</h4>
-                <div class="cover-image">`;
-                if (albums[i].coverImage === "" || albums[i].coverImage == undefined) {
-                    albumInfo += `<img src="images/default_album.png">`;
-                } else {
-                    albumInfo += `<img src="${albums[i].coverImage}">`;
-                }
-               
-                albumInfo += `<h5>${albums[i].artists[0].name}</h5>`;
-                albumInfo += `</div><button data-id="${albums[i]._id}">${albums[i].title}</button>
                 
-                </div>`;
+                <div class="cover-image" >`;
+                if (albums[i].coverImage === "" || albums[i].coverImage == undefined) {
+                    albumInfo += `<img src="images/default_album.png" data-id="${albums[i]._id}">`;
+                } else {
+                    albumInfo += `<img src="${albums[i].coverImage}" data-id="${albums[i]._id}">`;
+                }
 
-                albumDiv.innerHTML += albumInfo;
+                albumInfo += `</div>`;
+                
+                albumInfo += `
+                <h4>${albums[i].title}</h4>
+                <h5>by ${albums[i].artists[0].name}</h5>`;
+                
+                albumInfo += `</div>`;
+
+                albumsOutput.innerHTML += albumInfo;
             }
-            eventController.bindEventListener(albumDiv);
+            eventController.bindEventListener(albumsOutput);
         },
         displayIndividualAlbum: function(album){
-            console.log(albumDiv);
-            albumDiv.classList.add('hidden');
+            hideDivs([trackDiv, artistDiv,  playlistDiv, albumDiv, formDiv]);
+            showDivs([individualAlbumsDiv]);
             let albumInfo = ``;
             albumInfo += `<div class="individual-wrapper">
             <h4>${album.title}</h4>
@@ -332,24 +403,7 @@ let displayModule = (function(){
     }
 }());
 
-let eventController = (function(){
-    return {
-        bindEventListener: function(albumDiv){
-            let albumButtons = albumDiv.querySelectorAll('button');
 
-            for(let albumButton of albumButtons){
-                let albumID = albumButton.dataset.id;
-                
-                albumButton.addEventListener('click', function(){
-                    Album.getOne(albumID)
-                    .then((album) => {
-                    displayModule.displayIndividualAlbum(album);
-                    })
-                });
-            }
-        }
-    }
-}());
 
 
 /*----- playlists -----*/
@@ -382,7 +436,7 @@ Playlist.getAll()
 });
 
 let playlistDisplayModule = (function(){
-    const playlistDiv = document.getElementById('playlistsOutput');
+  const playlistOutput = document.getElementById('playlistsOutput');
     return {
         displayPlaylists: function(playlists){
         
@@ -398,7 +452,7 @@ let playlistDisplayModule = (function(){
                 playlistInfo += `<div class="playlist-name"><h4>${playlists[i].title}</h4></div>
                 <div class="playlist-creator"><h5>${playlists[i].createdBy}</h5></div>
                 </div></div>`;
-                playlistDiv.innerHTML += playlistInfo;
+                playlistOutput.innerHTML += playlistInfo;
             }
         }
     }
