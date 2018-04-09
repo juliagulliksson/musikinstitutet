@@ -43,12 +43,12 @@
         <main>
 
         <div class="wrapper">
-            <div id="artistsWrapper">
+            <div id="artistsWrapper" class="hidden">
                 <h2>Top 8 - Artists</h2>
                 <div class="artists-wrapper" id="artistsOutput"></div>
             </div>
             
-            <div id="tracksWrapper">
+            <div id="tracksWrapper" class="hidden">
                 <h2>Top 8 - Tracks</h2>
                 <div class="tracks-wrapper" id="tracksOutput"></div>
             </div>
@@ -60,8 +60,9 @@
                 
             </div>
             <div class="individual-albums-wrapper hidden" id="individualAlbums"></div>
+            <div class="individual-artists-wrapper hidden" id="individualArtists"></div>
             
-            <div id="playlistsWrapper">
+            <div id="playlistsWrapper" class="hidden">
                 <h2>Top 8 - Playlists</h2>
                 <div class="playlists-wrapper" id="playlistsOutput"></div>
             </div>
@@ -70,11 +71,23 @@
                 <div class="album-form-wrapper " id="albumFormWrapper">
                     <h2>Add New Album</h2>
                     <form id="newAlbum">
-                        Title<br>
-                        <input type="text" id="newAlbumTitle" name="title"><br>
+                        <label for="newAlbumTitle">Title</label>
+                        <input type="text" id="newAlbumTitle"><br>
 
-                        Artists<br>
-                        <input type="text" id="newAlbumArtists" name="artists"><br>
+                        <label for="newAlbumArtists">Artists</label>
+                        <input type="text" id="newAlbumArtists"><br>
+
+                        <label for="newAlbumGenres">Genres</label>
+                        <input type="text" id="newAlbumGenres">
+
+                        <label for="releaseDate">Release Date</label>
+                        <input type="text" id="releaseDate" placeholder="YYYY">
+
+                        <label for="newAlbumSpotifyURL">Link to Spotify</label>
+                        <input type="text" id="newAlbumSpotifyURL">
+                        
+                        <label for="newAlbumCover">Cover Image</label>
+                        <input type="text" id="newAlbumCover" placeholder="Link to image host">
 
                         <input type="submit" id="newAlbumSubmit" value="Save">
                     </form>
