@@ -29,10 +29,8 @@ function showDivs(divsToShow){
     }
 }
 
-hideDivs([artistDiv, trackDiv,  playlistDiv]);
-
-
 let eventController = (function(){
+  
     return {
         bindEventListener: function(albumDiv){
             let albumImages = albumDiv.querySelectorAll('img');
@@ -48,32 +46,46 @@ let eventController = (function(){
                 });
             }
         },
-        toggleDivs: function(element, divsToHide, divsToShow){
+        toggleDivs: function(element, divToShow){
             element.addEventListener('click', function(){
-                hideDivs(divsToHide);
-                showDivs(divsToShow);
+               toggleDiv(divToShow);
             });
         }
     }
 }());
 
+function toggleDiv(divToShow){
+    let divs = [trackDiv, artistDiv, albumDiv, playlistDiv, individualAlbumsDiv, formDiv];
+    divToShow.classList.remove("hidden");
+    const divsToHide = divs.filter(div => div != divToShow);
+
+    for(let divToHide of divsToHide){
+
+        if(!divToHide.classList.contains("hidden")){
+            divToHide.classList.add("hidden");
+        }
+    }
+}
+
+toggleDiv(albumDiv);
+
 const addNewButton = document.getElementById('addNew');
-eventController.toggleDivs(addNewButton, [trackDiv, artistDiv, albumDiv, playlistDiv, individualAlbumsDiv], [formDiv]);
+eventController.toggleDivs(addNewButton, formDiv);
 
 const homeLink = document.getElementById('homeLink');
-eventController.toggleDivs(homeLink, [artistDiv, trackDiv,  playlistDiv, individualAlbumsDiv], [albumDiv]);
+eventController.toggleDivs(homeLink, albumDiv);
 
 const artistsLink = document.getElementById('artistsLink');
-eventController.toggleDivs(artistsLink, [albumDiv, trackDiv,  playlistDiv, individualAlbumsDiv], [artistDiv]);
+eventController.toggleDivs(artistsLink, artistDiv);
 
 const tracksLink = document.getElementById('tracksLink');
-eventController.toggleDivs(tracksLink, [albumDiv, artistDiv,  playlistDiv, individualAlbumsDiv], [trackDiv]);
+eventController.toggleDivs(tracksLink, trackDiv);
 
 const albumsLink = document.getElementById('albumsLink');
-eventController.toggleDivs(albumsLink, [trackDiv, artistDiv,  playlistDiv, individualAlbumsDiv], [albumDiv])
+eventController.toggleDivs(albumsLink, albumDiv)
 
 const playlistsLink = document.getElementById('playlistsLink');
-eventController.toggleDivs(playlistsLink, [trackDiv, artistDiv,  albumDiv, individualAlbumsDiv], [playlistDiv]);
+eventController.toggleDivs(playlistsLink, playlistDiv);
 
 let handleFormModule = (function(){
     return {
