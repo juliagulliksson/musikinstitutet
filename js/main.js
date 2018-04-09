@@ -312,6 +312,20 @@ class AlbumController {
         return fetch(`${this.baseUrl}/${id}${key}`)
         .then((response) => response.json())
     }
+
+    deleteOne(id){
+        fetch(`${this.baseUrl}/${id}${key}`,{
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+        .then((response) => response.json())
+        .then((album) => {
+            console.log(album);
+        });
+    }
 }
 
 let Album = new AlbumController('https://folksa.ga/api/albums');
@@ -369,14 +383,16 @@ let displayModule = (function(){
             individualAlbumsDiv.innerHTML = "";
             let albumInfo = ``;
             albumInfo += `<div class="individual-wrapper">
-            <h4>${album.title}</h4>
             <div class="cover-image">`;
             if (album.coverImage === "" || album.coverImage == undefined) {
                 albumInfo += `<img src="images/default_album.png">`;
             } else {
                 albumInfo += `<img src="${album.coverImage}">`;
             }
-            albumInfo += `</div>`;
+            albumInfo += `<h4>${album.title}</h4>
+            <h5>by ${album.artists[0].name}</h5>
+            <button data-id="${album._id}">Delete Album</button>
+            </div>`;
 
             for(let i in album.tracks){
                 albumInfo += `<li>${album.tracks[i].title}</li>`;
@@ -385,6 +401,13 @@ let displayModule = (function(){
             }
             albumInfo += `</div>`;
             individualAlbumsDiv.innerHTML += albumInfo;
+
+            let individualAlbumButton = individualAlbumsDiv.querySelector('button');
+
+            individualAlbumButton.addEventListener('click', function(){
+                let albumID = individualAlbumButton.dataset.id;
+                Album.deleteOne(albumID);
+            })
         },
         bindEventListener: function(){
             let albumImages = albumDiv.querySelectorAll('img');
