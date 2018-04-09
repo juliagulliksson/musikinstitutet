@@ -1,6 +1,8 @@
 const newAlbum = document.getElementById("newAlbum");
 const newArtist = document.getElementById("newArtist")
 const key = "?key=flat_eric";
+let hamburger = document.getElementById('hamburgerIcon');
+console.log(hamburger);
 
 newAlbum.addEventListener("submit", function(event){
     event.preventDefault();
@@ -86,16 +88,15 @@ addNewArtist();
 class ArtistController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
-        this.key = key; 
     }
 
     getAll(){
-        return fetch(this.baseUrl + this.key)
+        return fetch(this.baseUrl + key)
         .then((response) => response.json())
     }
 
     getOne(id){
-        return fetch(`${this.baseUrl}/${id}${this.key}`)
+        return fetch(`${this.baseUrl}/${id}${key}`)
         .then((response) => response.json())
     }
     deleteOne(id){
@@ -139,8 +140,8 @@ let artistDisplayModule = (function(){
                  } else {
                      artistInfo += `<img src="${artists[i].coverImage}">`;
                  }
-                artistInfo += `<div class="artist-name"><h4>${artists[i].name}</h4></div>
-                </div></div>`;
+                artistInfo += `</div><div class="artist-name"><h4>${artists[i].name}</h4></div>
+                </div>`;
                 artistDiv.innerHTML += artistInfo;
             }
         }
