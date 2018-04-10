@@ -60,10 +60,12 @@ main{
     }
    .cover-image{
        height: 260px;
+       width: 270px;
+       overflow: hidden;
         img{
-            height: 100%;
-            display: block;
-            margin: 0px auto;
+            width: 100%;
+            //display: block;
+            //margin: 0px auto;
             border: 1px solid #949A93;
             cursor: pointer;
         }
@@ -117,7 +119,9 @@ main{
         margin: 0px auto; 
     }
    .cover-image{
-       height: 245px;
+        height: 260px;
+        width: 270px;
+        overflow: hidden;
         img{
             height: 100%;
             //display: block;
