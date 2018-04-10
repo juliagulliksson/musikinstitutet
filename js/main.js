@@ -64,10 +64,18 @@ let eventController = (function(){
                 let newPlaylist = new Playlist(playlistTitle, playlistGenres, playlistImage);
                 newPlaylist.addNew();
              });
+        },
+        search: function(){
+            let searchAlbumForm = document.getElementById('searchAlbumForm');
+            let searchAlbumButton = document.getElementById('searchAlbumButton');
+            handleFormModule.handleForm(searchAlbumForm);
+            searchAlbumButton.addEventListener('click', function(){
+                let albumSearchField = document.getElementById('albumSearchField').value;
+                Album.searchByTitle(albumSearchField);
+            });
         }
     }
 }());
-
 
 function toggleDiv(divToShow){
     divToShow.classList.remove("hidden");
@@ -85,7 +93,6 @@ function toggleDiv(divToShow){
             divToHide.classList.add("hidden");
         }
     }
-    
 }
 
 //toggleDiv(albumDiv);
@@ -123,6 +130,8 @@ handleFormModule.handleForm(newAlbum);
 
 handleFormModule.handleForm(newArtist);
 
+eventController.search();
+
 
 function addNewAlbum(){
    
@@ -145,7 +154,6 @@ function addNewAlbum(){
             spotifyURL: albumSpotifyURL,
             coverImage: albumCoverImage
         }
-    
         
         if(albumTitleValue === "" || albumArtistsValue === ""){
             errorMessageEmptyInputfield();
@@ -459,6 +467,14 @@ class AlbumController {
         .then((response) => response.json())
         .then((album) => {
             console.log(album);
+        });
+    }
+
+    searchByTitle(title){
+        fetch('https://folksa.ga/api/albums' + key + '&title=' + title)
+        .then((response) => response.json())
+        .then((albums) => {
+            console.log(albums);
         });
     }
 }
