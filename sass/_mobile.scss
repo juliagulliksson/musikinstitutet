@@ -104,6 +104,14 @@ main{
 }
 
 .tracks-wrapper{ 
+    ul{
+        li{
+            cursor: pointer;
+        }
+        li:hover{
+            background: $lightPink;
+        }
+    }
     .track-wrapper{
         text-align: left;
         margin-bottom: 10px; 
@@ -198,3 +206,4 @@ main{
         }
     }
 }
+

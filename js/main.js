@@ -390,19 +390,40 @@ let trackDisplayModule = (function(){
                             <div class="track-genre"><h4> - ${tracks[i].artists[0].name}</h4></div>
                         </div>
                         <div class="add-to-playlist">
-                            <div class="playlistDropdown">`;
+                            <button>Add To Playlist</button>
+                            <div class="playlistDropdown hidden">
                             
+                            <ul>`;
                             for(let j in playlists){
-                                trackInfo += `<ul><li>${playlists[j].title}</li></ul>`;
+                                trackInfo += `
+                                <li data-id="${playlists[j]._id}" data-trackid=${tracks[i]._id}>
+                                ${playlists[j].title}
+                                </li>`;
                             }
                            
-                            trackInfo +=  `</div>
-                        <button>Add</button>
+                        trackInfo +=  `</ul>
+                        </div>
                         </div>
                     </div>`;
                     tracksOutput.innerHTML += trackInfo;
 
                 }
+
+                let playlistDropdownButtons = tracksOutput.querySelectorAll('button');
+                for(let playlistDropdownButton of playlistDropdownButtons){
+                    playlistDropdownButton.addEventListener('click', function(){
+                        this.nextElementSibling.classList.toggle('hidden');
+                        let playlistOptions = this.nextElementSibling.querySelectorAll('li');
+                        for(let playlistOption of playlistOptions){
+                            playlistOption.addEventListener('click', function(){
+                                let playlistID = playlistOption.dataset.id;
+                                let trackID = playlistOption.dataset.trackid;
+                                Playlists.addTrack(playlistID, trackID)
+                            })
+                        }
+                    })
+                }
+              
                 
             }
         }
@@ -477,14 +498,13 @@ Album.getAll()
     displayModule.displayAlbums(albums);
 });
 
-
 let displayModule = (function(){
    const albumsOutput = document.getElementById('albumsOutput');
     return {
         displayAlbums: function(albums){
         
             for(let i in albums){
-                //if(albums[i].artists[0].name !== undefined){
+                if(albums[i].artists.length > 0){
 
                     let albumInfo = ``;
                     albumInfo += `<div class="album-wrapper">
@@ -507,7 +527,7 @@ let displayModule = (function(){
 
                     albumsOutput.innerHTML += albumInfo;
                 }
-            //}
+            }
             eventController.bindEventListener(albumsOutput);
         },
         displayIndividualAlbum: function(album){
@@ -610,7 +630,7 @@ class PlaylistController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key + '&createdBy=Power Puff Pinglorna')
+        return fetch(`${this.baseUrl}${key}&createdBy=Power Puff Pinglorna`)
         .then((response) => response.json())
     }
 
@@ -620,6 +640,22 @@ class PlaylistController {
     }
     deleteOne(id){
 
+    }
+
+    addTrack(playlistID, trackID){
+
+    fetch(`https://folksa.ga/api/playlists/${playlistID}/tracks${key}`,{
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tracks: trackID })
+    })
+    .then((response) => response.json())
+    .then((playlist) => {
+        console.log(playlist);
+    });
     }
 }
 
@@ -674,7 +710,17 @@ let playlistDisplayModule = (function(){
                  }
                 playlistInfo += `<div class="playlist-name"><h4>${playlists[i].title}</h4></div>
                 <div class="playlist-creator"><h5>${playlists[i].createdBy}</h5></div>
-                </div></div>`;
+                </div></div>
+                
+                <ul>`;
+                
+
+                for(let j in playlists[i].tracks){
+                    playlistInfo += `<li>${playlists[i].tracks[j].title}</li>`
+                }
+
+                playlistInfo += `</ul>`;
+
                 playlistOutput.innerHTML += playlistInfo;
             }
         }
