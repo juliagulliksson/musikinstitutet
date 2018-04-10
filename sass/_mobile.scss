@@ -175,3 +175,19 @@ main{
         }
     }
 }
+
+.individual-albums-wrapper{
+    .individual-flex-wrapper{
+        display: flex;
+        justify-content: space-around;
+        .cover-image{
+            height: 200px;
+            width: 200px;
+            overflow: hidden;
+            
+            img{
+                width: 100%;
+            }
+        }
+    }
+}
