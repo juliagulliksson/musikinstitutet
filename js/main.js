@@ -358,27 +358,52 @@ let Tracks = new TrackController('https://folksa.ga/api/tracks');
 Tracks.getAll()
 .then((tracks) => {
     console.log(tracks);
-    trackDisplayModule.displayTracks(tracks);
+    Playlists.getAll()
+    .then((playlists) => {
+        trackDisplayModule.displayTracks(tracks, playlists);
+    })
+  
 });
 
 let trackDisplayModule = (function(){
     const tracksOutput = document.getElementById('tracksOutput');
     return {
-        displayTracks: function(tracks){
+        displayTracks: function(tracks, playlists){
+            console.log(tracks);
+            console.log(playlists);
         
             for(let i in tracks){
-                let trackInfo = ``;
-                trackInfo += `<div class="track-wrapper">
-                 <div class="cover-image">`;
-                if (tracks[i].coverImage === "" || tracks[i].coverImage === undefined) {
-                     trackInfo += `<img src="images/default_album.png">`;
-                 } else {
-                     trackInfo += `<img src="${tracks[i].coverImage}">`;
-                 }
-                trackInfo += `<div class="track-name"><h4>${tracks[i].title}</h4></div>
-                <div class="track-genre"><h5>${tracks[i].genres}</h5></div>
-                </div></div>`;
-                tracksOutput.innerHTML += trackInfo;
+                if(tracks[i].artists.length > 0){
+                    let trackInfo = ``;
+                    trackInfo += `
+                    <div class="track-wrapper">
+                        <div class="cover-image">`;
+                            if (tracks[i].coverImage === "" || tracks[i].coverImage === undefined) {
+                                trackInfo += `<img src="images/default_album.png">`;
+                            } else {
+                                trackInfo += `<img src="${tracks[i].coverImage}">`;
+                            }
+                            trackInfo += `
+                        </div>
+                        <div class="track-info-wrapper">
+                            <div class="track-name"><h4>${tracks[i].title}</h4></div>
+                            <div class="track-genre"><h4> - ${tracks[i].artists[0].name}</h4></div>
+                        </div>
+                        <div class="add-to-playlist">
+                            <div class="playlistDropdown">`;
+                            
+                            for(let j in playlists){
+                                trackInfo += `<ul><li>${playlists[j].title}</li></ul>`;
+                            }
+                           
+                            trackInfo +=  `</div>
+                        <button>Add</button>
+                        </div>
+                    </div>`;
+                    tracksOutput.innerHTML += trackInfo;
+
+                }
+                
             }
         }
     }
@@ -392,7 +417,7 @@ class AlbumController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key + '&populateArtists=true&limit=8&sort=desc')
+        return fetch(this.baseUrl + key + '&populateArtists=true&limit=20&sort=desc')
         .then((response) => response.json())
     }
 
@@ -415,7 +440,6 @@ class AlbumController {
             console.log(album);
         });
     }
-
 }
 
 class Track{
@@ -426,7 +450,7 @@ class Track{
         this.artists = artistID;
     }
 
-    addTrack(){
+    addNew(){
         console.log(this);
         
         fetch('https://folksa.ga/api/tracks'+ key,{
@@ -548,7 +572,7 @@ let displayModule = (function(){
 
                 let newTrack = new Track(trackTitle, albumID, artistID);
                 
-                newTrack.addTrack();
+                newTrack.addNew();
             })
 
             let albumTracksDiv = document.getElementById('albumTracks');
@@ -586,7 +610,7 @@ class PlaylistController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key)
+        return fetch(this.baseUrl + key + '&createdBy=Power Puff Pinglorna')
         .then((response) => response.json())
     }
 
