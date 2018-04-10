@@ -44,17 +44,17 @@
 
         <div class="wrapper">
             <div id="artistsWrapper" class="hidden">
-                <h2>Top 8 - Artists</h2>
+                <h2>Top 9 - Artists</h2>
                 <div class="artists-wrapper" id="artistsOutput"></div>
             </div>
             
             <div id="tracksWrapper" class="hidden">
-                <h2>Top 8 - Tracks</h2>
+                <h2>Top 9 - Tracks</h2>
                 <div class="tracks-wrapper" id="tracksOutput"></div>
             </div>
 
             <div id="albumsWrapper">
-                <h2>Top 8 - Albums</h2>
+                <h2>Top 9 - Albums</h2>
                 <div class="albums-wrapper" id="albumsOutput">
             </div>
                 
@@ -63,7 +63,7 @@
             <div class="individual-artists-wrapper hidden" id="individualArtists"></div>
             
             <div id="playlistsWrapper" class="hidden">
-                <h2>Top 8 - Playlists</h2>
+                <h2>Playlists</h2>
                 <div class="playlists-wrapper" id="playlistsOutput"></div>
             </div>
 
@@ -117,6 +117,21 @@
                         Image<br>
                         <input type="text" id="newArtistCoverImage" name="coverImage"><br>
                         <input type="submit" id="newArtistSubmit" value="Save">
+                    </form>
+                </div>
+
+                <div class="playlist-form-wrapper" id="playlistFormWrapper">
+                    <h2>Add New Playlist</h2>
+                    <form id="newPlaylistForm">
+                        <label for="newPlaylistName">Playlist Name</label>
+                        <input type="text" id="newPlaylistName">
+
+                        <label for="newPlaylistImage">Image Link</label>
+                        <input type="text" id="newPlaylistImage">
+
+                        <label for="newPlaylistGenres">Playlist Genres</label>
+                        <input type="text" id="newPlaylistGenres" placeholder="Separate genre with comma">
+                        <button id="newPlaylist">Save</button>
                     </form>
                 </div>
         </div>

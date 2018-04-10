@@ -104,12 +104,20 @@ main{
 }
 
 .tracks-wrapper{ 
+    ul{
+        li{
+            cursor: pointer;
+        }
+        li:hover{
+            background: $lightPink;
+        }
+    }
     .track-wrapper{
         text-align: left;
         margin-bottom: 10px; 
     }
    .cover-image{
-       height: 10px;
+       height: 12px;
        display: inline-flex; 
        flex-wrap: wrap; 
     
@@ -117,11 +125,18 @@ main{
             height: 450%;
             border: 1px solid #949A93
         }
+       
+    }
+    .track-info-wrapper{
+        display: inline-flex; 
         .track-name{
             h4{
-                margin-top: 5px; 
-                margin-bottom: 0px; 
-                padding: 0px; 
+                margin-left: 8px;
+            }
+        }
+        .track-genre{
+            h4{
+                color:#A5A3A7;  
                 margin-left: 8px;
             }
         }
@@ -191,3 +206,4 @@ main{
         }
     }
 }
+

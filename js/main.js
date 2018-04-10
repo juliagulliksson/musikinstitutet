@@ -31,6 +31,7 @@ function showDivs(divsToShow){
 }
 
 let eventController = (function(){
+    let addPlaylistButton = document.getElementById('newPlaylist');
   
     return {
         bindEventListener: function(albumDiv){
@@ -51,9 +52,22 @@ let eventController = (function(){
             element.addEventListener('click', function(){
                toggleDiv(divToShow);
             });
+        },
+        addPlaylist: function(){
+            let playlistForm = document.getElementById('newPlaylistForm');
+            handleFormModule.handleForm(playlistForm);
+            addPlaylistButton.addEventListener('click', function(){
+                let playlistTitle = document.getElementById('newPlaylistName').value;
+                let playlistGenres = document.getElementById('newPlaylistGenres').value;
+                let playlistImage = document.getElementById('newPlaylistImage').value;
+
+                let newPlaylist = new Playlist(playlistTitle, playlistGenres, playlistImage);
+                newPlaylist.addNew();
+             });
         }
     }
 }());
+
 
 function toggleDiv(divToShow){
     divToShow.classList.remove("hidden");
@@ -344,27 +358,73 @@ let Tracks = new TrackController('https://folksa.ga/api/tracks');
 Tracks.getAll()
 .then((tracks) => {
     console.log(tracks);
-    trackDisplayModule.displayTracks(tracks);
+    Playlists.getAll()
+    .then((playlists) => {
+        trackDisplayModule.displayTracks(tracks, playlists);
+    })
+  
 });
 
 let trackDisplayModule = (function(){
     const tracksOutput = document.getElementById('tracksOutput');
     return {
-        displayTracks: function(tracks){
+        displayTracks: function(tracks, playlists){
+            console.log(tracks);
+            console.log(playlists);
         
             for(let i in tracks){
-                let trackInfo = ``;
-                trackInfo += `<div class="track-wrapper">
-                 <div class="cover-image">`;
-                if (tracks[i].coverImage === "" || tracks[i].coverImage === undefined) {
-                     trackInfo += `<img src="images/default_album.png">`;
-                 } else {
-                     trackInfo += `<img src="${tracks[i].coverImage}">`;
-                 }
-                trackInfo += `<div class="track-name"><h4>${tracks[i].title}</h4></div>
-                <div class="track-genre"><h5>${tracks[i].genres}</h5></div>
-                </div></div>`;
-                tracksOutput.innerHTML += trackInfo;
+                if(tracks[i].artists.length > 0){
+                    let trackInfo = ``;
+                    trackInfo += `
+                    <div class="track-wrapper">
+                        <div class="cover-image">`;
+                            if (tracks[i].coverImage === "" || tracks[i].coverImage === undefined) {
+                                trackInfo += `<img src="images/default_album.png">`;
+                            } else {
+                                trackInfo += `<img src="${tracks[i].coverImage}">`;
+                            }
+                            trackInfo += `
+                        </div>
+                        <div class="track-info-wrapper">
+                            <div class="track-name"><h4>${tracks[i].title}</h4></div>
+                            <div class="track-genre"><h4> - ${tracks[i].artists[0].name}</h4></div>
+                        </div>
+                        <div class="add-to-playlist">
+                            <button>Add To Playlist</button>
+                            <div class="playlistDropdown hidden">
+                            
+                            <ul>`;
+                            for(let j in playlists){
+                                trackInfo += `
+                                <li data-id="${playlists[j]._id}" data-trackid=${tracks[i]._id}>
+                                ${playlists[j].title}
+                                </li>`;
+                            }
+                           
+                        trackInfo +=  `</ul>
+                        </div>
+                        </div>
+                    </div>`;
+                    tracksOutput.innerHTML += trackInfo;
+
+                }
+
+                let playlistDropdownButtons = tracksOutput.querySelectorAll('button');
+                for(let playlistDropdownButton of playlistDropdownButtons){
+                    playlistDropdownButton.addEventListener('click', function(){
+                        this.nextElementSibling.classList.toggle('hidden');
+                        let playlistOptions = this.nextElementSibling.querySelectorAll('li');
+                        for(let playlistOption of playlistOptions){
+                            playlistOption.addEventListener('click', function(){
+                                let playlistID = playlistOption.dataset.id;
+                                let trackID = playlistOption.dataset.trackid;
+                                Playlists.addTrack(playlistID, trackID)
+                            })
+                        }
+                    })
+                }
+              
+                
             }
         }
     }
@@ -378,7 +438,7 @@ class AlbumController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key + '&populateArtists=true&limit=8&sort=desc')
+        return fetch(this.baseUrl + key + '&populateArtists=true&limit=20&sort=desc')
         .then((response) => response.json())
     }
 
@@ -401,7 +461,6 @@ class AlbumController {
             console.log(album);
         });
     }
-
 }
 
 class Track{
@@ -412,7 +471,7 @@ class Track{
         this.artists = artistID;
     }
 
-    addTrack(){
+    addNew(){
         console.log(this);
         
         fetch('https://folksa.ga/api/tracks'+ key,{
@@ -439,14 +498,13 @@ Album.getAll()
     displayModule.displayAlbums(albums);
 });
 
-
 let displayModule = (function(){
    const albumsOutput = document.getElementById('albumsOutput');
     return {
         displayAlbums: function(albums){
         
             for(let i in albums){
-                //if(albums[i].artists[0].name !== undefined){
+                if(albums[i].artists.length > 0){
 
                     let albumInfo = ``;
                     albumInfo += `<div class="album-wrapper">
@@ -469,7 +527,7 @@ let displayModule = (function(){
 
                     albumsOutput.innerHTML += albumInfo;
                 }
-            //}
+            }
             eventController.bindEventListener(albumsOutput);
         },
         displayIndividualAlbum: function(album){
@@ -534,7 +592,7 @@ let displayModule = (function(){
 
                 let newTrack = new Track(trackTitle, albumID, artistID);
                 
-                newTrack.addTrack();
+                newTrack.addNew();
             })
 
             let albumTracksDiv = document.getElementById('albumTracks');
@@ -564,9 +622,6 @@ let displayModule = (function(){
     }
 }());
 
-
-
-
 /*----- playlists -----*/
 
 class PlaylistController {
@@ -575,7 +630,7 @@ class PlaylistController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key)
+        return fetch(`${this.baseUrl}${key}&createdBy=Power Puff Pinglorna`)
         .then((response) => response.json())
     }
 
@@ -586,11 +641,54 @@ class PlaylistController {
     deleteOne(id){
 
     }
+
+    addTrack(playlistID, trackID){
+
+    fetch(`https://folksa.ga/api/playlists/${playlistID}/tracks${key}`,{
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tracks: trackID })
+    })
+    .then((response) => response.json())
+    .then((playlist) => {
+        console.log(playlist);
+    });
+    }
 }
 
-let Playlist = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=8');
+class Playlist{
 
-Playlist.getAll()
+    constructor(title, genres, coverImage){
+        this.title = title;
+        this.genres = genres;
+        this.coverImage = coverImage;
+        this.createdBy = "Power Puff Pinglorna";
+    }
+
+    addNew(){
+        console.log(this);
+        
+        fetch('https://folksa.ga/api/playlists' + key,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this)
+        })
+        .then((response) => response.json())
+        .then((playlist) => {
+            console.log(playlist);
+        });
+    }
+}
+
+let Playlists = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=8');
+
+Playlists.getAll()
 .then((playlists) => {
     console.log(playlists);
     playlistDisplayModule.displayPlaylists(playlists);
@@ -612,9 +710,21 @@ let playlistDisplayModule = (function(){
                  }
                 playlistInfo += `<div class="playlist-name"><h4>${playlists[i].title}</h4></div>
                 <div class="playlist-creator"><h5>${playlists[i].createdBy}</h5></div>
-                </div></div>`;
+                </div></div>
+                
+                <ul>`;
+                
+
+                for(let j in playlists[i].tracks){
+                    playlistInfo += `<li>${playlists[i].tracks[j].title}</li>`
+                }
+
+                playlistInfo += `</ul>`;
+
                 playlistOutput.innerHTML += playlistInfo;
             }
         }
     }
 }()); 
+
+eventController.addPlaylist();
