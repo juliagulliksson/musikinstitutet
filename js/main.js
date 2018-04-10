@@ -234,13 +234,13 @@ let Artist = new ArtistController('https://folksa.ga/api/artists');
 Artist.getAll()
 .then((artists) => {
     console.log(artists);
-    artistDisplayModule.displayArtist(artists);
+    artistDisplayModule.displayArtists(artists);
 });
 
 let artistDisplayModule = (function(){
     const artistsOutput = document.getElementById('artistsOutput');
     return {
-        displayArtist: function(artists){
+        displayArtists: function(artists){
         
             for(let i in artists){
                 let artistInfo = ``;
@@ -363,7 +363,7 @@ class AlbumController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key + '&populateArtists=true&limit=13&sort=desc')
+        return fetch(this.baseUrl + key + '&populateArtists=true&limit=8&sort=desc')
         .then((response) => response.json())
     }
 
@@ -387,12 +387,7 @@ class AlbumController {
         });
     }
 
-    addTrack(albumID, artistID, trackTitle){
-        let track = {
-            title: trackTitle,
-            artists: artistID, 
-            album: albumID
-        }
+    addTrack(track){
         
         fetch('https://folksa.ga/api/tracks'+ key,{
             method: 'POST',
@@ -417,17 +412,6 @@ Album.getAll()
     displayModule.displayAlbums(albums);
 });
 
-class displayAlbums{
-    constructor(title, id, artists){
-        this.title = title;
-        this.id = id;
-        this.artists = artists;
-    }
-
-    displayOne(){
-        console.log(this.title);
-    }
-}
 
 let displayModule = (function(){
    const albumsOutput = document.getElementById('albumsOutput');
@@ -435,26 +419,28 @@ let displayModule = (function(){
         displayAlbums: function(albums){
         
             for(let i in albums){
+                if(albums[i].artists[0].name !== undefined){
 
-                let albumInfo = ``;
-                albumInfo += `<div class="album-wrapper">
-                
-                <div class="cover-image" >`;
-                if (albums[i].coverImage === "" || albums[i].coverImage == undefined) {
-                    albumInfo += `<img src="images/default_album.png" data-id="${albums[i]._id}">`;
-                } else {
-                    albumInfo += `<img src="${albums[i].coverImage}" data-id="${albums[i]._id}">`;
+                    let albumInfo = ``;
+                    albumInfo += `<div class="album-wrapper">
+                    
+                    <div class="cover-image" >`;
+                    if (albums[i].coverImage === "" || albums[i].coverImage == undefined) {
+                        albumInfo += `<img src="images/default_album.png" data-id="${albums[i]._id}">`;
+                    } else {
+                        albumInfo += `<img src="${albums[i].coverImage}" data-id="${albums[i]._id}">`;
+                    }
+
+                    albumInfo += `</div>`;
+                    
+                    albumInfo += `
+                    <h4>${albums[i].title}</h4>
+                    <h5>by ${albums[i].artists[0].name}</h5>`;
+                    
+                    albumInfo += `</div>`;
+
+                    albumsOutput.innerHTML += albumInfo;
                 }
-
-                albumInfo += `</div>`;
-                
-                albumInfo += `
-                <h4>${albums[i].title}</h4>
-                <h5>by ${albums[i].artists[0].name}</h5>`;
-                
-                albumInfo += `</div>`;
-
-                albumsOutput.innerHTML += albumInfo;
             }
             eventController.bindEventListener(albumsOutput);
         },
@@ -488,9 +474,11 @@ let displayModule = (function(){
             </div>`;
 
             albumInfo +=`
-            <div class="album-tracks">`;
+            <div class="album-tracks" id="albumTracks">`;
                 for (let i=0; i < album.tracks.length; i++) {
-                    albumInfo += `<ul><li>${album.tracks[i].title}</li></ul>`;
+                    albumInfo += `<ul><li>${album.tracks[i].title}
+                    <button id="deleteTrack" data-id="${album.tracks[i]._id}">delete track</button>
+                    </li></ul>`;
                 }
             albumInfo += `</div>`;
             albumInfo += `<div class="album-delete-button">
@@ -507,7 +495,7 @@ let displayModule = (function(){
             deleteAlbumButton.addEventListener('click', function(){
                 let albumID = deleteAlbumButton.dataset.id;
                 Album.deleteOne(albumID);
-                location.reload();
+                //location.reload();
             })
 
             let addTrackButton = document.getElementById('addTrack');
@@ -515,12 +503,27 @@ let displayModule = (function(){
             addTrackButton.addEventListener('click', function(){
                 let albumID = addTrackButton.dataset.id;
                 let artistID = addTrackButton.dataset.artistid;
-                console.log(albumID);
-                console.log(artistID);
-                
                 let trackTitle = document.getElementById('trackTitle').value;
-                Album.addTrack(albumID, artistID, trackTitle);
+
+                let track = {
+                    title: trackTitle,
+                    artists: artistID, 
+                    album: albumID
+                }
+                
+                Album.addTrack(track);
             })
+
+            let albumTracksDiv = document.getElementById('albumTracks');
+            let deleteTrackButtons = albumTracksDiv.querySelectorAll('button');
+            for(let deleteTrackButton of deleteTrackButtons){
+                deleteTrackButton.addEventListener('click', function(){
+                    let trackID = this.dataset.id;
+                    console.log(trackID);
+                })
+            }
+
+            
         },
         bindEventListener: function(){
             let albumImages = albumDiv.querySelectorAll('img');
