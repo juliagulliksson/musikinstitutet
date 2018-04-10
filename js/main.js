@@ -31,6 +31,7 @@ function showDivs(divsToShow){
 }
 
 let eventController = (function(){
+    let addPlaylistButton = document.getElementById('newPlaylist');
   
     return {
         bindEventListener: function(albumDiv){
@@ -51,9 +52,22 @@ let eventController = (function(){
             element.addEventListener('click', function(){
                toggleDiv(divToShow);
             });
+        },
+        addPlaylist: function(){
+            let playlistForm = document.getElementById('newPlaylistForm');
+            handleFormModule.handleForm(playlistForm);
+            addPlaylistButton.addEventListener('click', function(){
+                let playlistTitle = document.getElementById('newPlaylistName').value;
+                let playlistGenres = document.getElementById('newPlaylistGenres').value;
+                let playlistImage = document.getElementById('newPlaylistImage').value;
+
+                let newPlaylist = new Playlist(playlistTitle, playlistGenres, playlistImage);
+                newPlaylist.addNew();
+             });
         }
     }
 }());
+
 
 function toggleDiv(divToShow){
     divToShow.classList.remove("hidden");
@@ -564,9 +578,6 @@ let displayModule = (function(){
     }
 }());
 
-
-
-
 /*----- playlists -----*/
 
 class PlaylistController {
@@ -588,9 +599,36 @@ class PlaylistController {
     }
 }
 
-let Playlist = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=8');
+class Playlist{
 
-Playlist.getAll()
+    constructor(title, genres, coverImage){
+        this.title = title;
+        this.genres = genres;
+        this.coverImage = coverImage;
+        this.createdBy = "Power Puff Pinglorna";
+    }
+
+    addNew(){
+        console.log(this);
+        
+        fetch('https://folksa.ga/api/playlists' + key,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this)
+        })
+        .then((response) => response.json())
+        .then((playlist) => {
+            console.log(playlist);
+        });
+    }
+}
+
+let Playlists = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=8');
+
+Playlists.getAll()
 .then((playlists) => {
     console.log(playlists);
     playlistDisplayModule.displayPlaylists(playlists);
@@ -618,3 +656,5 @@ let playlistDisplayModule = (function(){
         }
     }
 }()); 
+
+eventController.addPlaylist();
