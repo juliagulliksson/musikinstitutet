@@ -56,8 +56,11 @@ let eventController = (function(){
 }());
 
 function toggleDiv(divToShow){
+    divToShow.classList.remove("hidden");
     let divs = [trackDiv, artistDiv, albumDiv, playlistDiv, 
         individualAlbumsDiv, formDiv, individualArtistsDiv];
+
+   
     
     //Filter out the div that will be shown
     const divsToHide = divs.filter(div => div != divToShow);
@@ -68,7 +71,7 @@ function toggleDiv(divToShow){
             divToHide.classList.add("hidden");
         }
     }
-    divToShow.classList.remove("hidden");
+    
 }
 
 //toggleDiv(albumDiv);
@@ -470,8 +473,7 @@ let displayModule = (function(){
             eventController.bindEventListener(albumsOutput);
         },
         displayIndividualAlbum: function(album){
-            hideDivs([trackDiv, artistDiv,  playlistDiv, albumDiv, formDiv]);
-            showDivs([individualAlbumsDiv]);
+            toggleDiv(individualAlbumsDiv);
             individualAlbumsDiv.innerHTML = "";
             let albumInfo = ``;
             albumInfo += `<div class="individual-wrapper">
