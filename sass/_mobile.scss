@@ -204,9 +204,19 @@ main{
     }
 }
 
+.individual-playlist-wrapper{
+    .cover-image{
+        height: 200px;
+        width: 200px;
+        overflow: hidden;
+        
+        img{
+            width: 100%;
+        }
+    }
+}
+
 %form-wrappers{
-    //margin: 0px auto;
-   // width: 70%;
     text-align: center;
     input{
         width: 80%;
@@ -253,4 +263,3 @@ main{
         @extend %form-wrappers;
     }
 }
-
