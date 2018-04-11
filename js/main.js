@@ -175,11 +175,20 @@ class PlaylistController {
     }
 
     getOne(id){
+        console.log(`${this.baseUrl}/${id}${key}`);
         return fetch(`${this.baseUrl}/${id}${key}`)
         .then((response) => response.json())
     }
     deleteOne(id){
-
+        return fetch(`https://folksa.ga/api/playlists/${id}${key}`,
+        {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+        .then((response) => response.json())
     }
 
     addTrack(playlistID, trackID){
@@ -226,8 +235,7 @@ let Artists = new ArtistController('https://folksa.ga/api/artists');
 
 let Tracks = new TrackController('https://folksa.ga/api/tracks');
 
-let Playlists = new PlaylistController('https://folksa.ga/api/playlists' + key + '&limit=8');
-
+let Playlists = new PlaylistController('https://folksa.ga/api/playlists');
 
 let displayModule = (function(){
     
@@ -238,23 +246,17 @@ let displayModule = (function(){
             let albumInfo = ``;
             albumInfo += `<div class="albums-wrapper">`;
         
-                for(let i in albums){
-                    if(albums[i].artists.length > 0){
+                for(let album of albums){
+                    if(album.artists.length > 0){
 
                         albumInfo += `<div class="album-wrapper">
                         
                         <div class="cover-image" >`;
-                        if (albums[i].coverImage === "" || albums[i].coverImage == undefined) {
-                            albumInfo += `<img src="images/default_album.png" data-id="${albums[i]._id}">`;
-                        } else {
-                            albumInfo += `<img src="${albums[i].coverImage}" data-id="${albums[i]._id}">`;
-                        }
 
-                        albumInfo += `</div>`;
-                        
-                        albumInfo += `
-                        <h4>${albums[i].title}</h4>
-                        <h5></h5>`;
+                        albumInfo += displayModule.returnCorrectImage(album);
+                            albumInfo += `</div>
+                        <h4>${album.title}</h4>
+                        <h5>${album.artists[0].name}</h5>`;
                         
                         albumInfo += `</div>`;
                     }
@@ -262,7 +264,6 @@ let displayModule = (function(){
             albumInfo += `</div>`;
             outputDiv.innerHTML += albumInfo;
             bindEvents.bindAlbumPageEventListeners();
-            //eventController.bindEventListener(outputDiv);
         },
         displayIndividualAlbum: function(album){
           
@@ -272,11 +273,8 @@ let displayModule = (function(){
             `<div class="individual-albums-wrapper">
                 <div class="individual-flex-wrapper">
                     <div class="cover-image">`;
-                    if (album.coverImage === "" || album.coverImage == undefined) {
-                        albumInfo += `<img src="images/default_album.png">`;
-                    } else {
-                        albumInfo += `<img src="${album.coverImage}">`;
-                    }
+
+                    albumInfo += displayModule.returnCorrectImage(album);
                     albumInfo +=
                     `</div>
                     <div class="album-info">
@@ -407,65 +405,77 @@ let displayModule = (function(){
             let playlistInfo = ``;
             playlistInfo += `<div class="playlists-wrapper">`
         
-            for(let i in playlists){
-                playlistInfo += 
-                `<div class="playlist-wrapper">
+            for(let playlist of playlists){
+                playlistInfo += `
+                <div class="playlist-wrapper">
                     <div class="cover-image">`;
-                        if (playlists[i].coverImage === "" || playlists[i].coverImage === undefined) {
-                            playlistInfo += `<img src="images/default_album.png">`;
-                        } else {
-                            playlistInfo += `<img src="${playlists[i].coverImage}">`;
-                        }
-                    playlistInfo += `</div>
-                    <div class="playlist-name"><h4>${playlists[i].title}</h4></div>
-                    <div class="playlist-creator"><h5>${playlists[i].createdBy}</h5></div>
-                    
-                </div>
-                
-                <ul>`;
-                for(let j in playlists[i].tracks){
-                    playlistInfo += `<li>${playlists[i].tracks[j].title}</li>`
-                }
 
-                playlistInfo += `</ul>`;
-
+                        playlistInfo += displayModule.returnCorrectImage(playlist);
+                        
+                        playlistInfo += `</div>
+                    <div class="playlist-name"><h4>${playlist.title}</h4></div>
+                    <div class="playlist-creator"><h5>${playlist.createdBy}</h5></div>
+                   
+                </div>`;
             }
             playlistInfo += `</div>`;
             outputDiv.innerHTML += playlistInfo;
+
+            bindEvents.bindPlaylistPageEventListeners();
+        },
+        displayIndividualPlaylist: function(playlist){
+            outputDiv.innerHTML = "";
+
+            let playlistInfo = ``;
+            playlistInfo += 
+            `<div class="individual-playlist-wrapper">
+                <div class="cover-image">`;
+
+                    playlistInfo += displayModule.returnCorrectImage(playlist);
+
+                    playlistInfo += `</div>
+
+                <h4>${playlist.title}</h4>
+                <button id="deletePlaylist" data-id="${playlist._id}">Delete Playlist</button>
+            </div>`;
+
+            for(let i in playlist.tracks){
+                playlistInfo += `<li>${playlist.tracks[i].title} by ${playlist.tracks[i].artists[0].name}</li>`
+            }
+            outputDiv.innerHTML = playlistInfo;
+
+            bindEvents.bindIndividualPlaylistPageEventListeners();
+
         },
         displayTracks: function(tracks, playlists){
-            console.log(tracks);
-            console.log(playlists);
             outputDiv.innerHTML = "";
             let trackInfo = ``;
             trackInfo += `<div class="tracks-wrapper">`;
         
-            for(let i in tracks){
-                if(tracks[i].artists.length > 0){
+            for(let track of tracks){
+                if(track.artists.length > 0){
 
                     trackInfo += `
                     <div class="track-wrapper">
                         <div class="cover-image">`;
-                            if (tracks[i].coverImage === "" || tracks[i].coverImage === undefined) {
-                                trackInfo += `<img src="images/default_album.png">`;
-                            } else {
-                                trackInfo += `<img src="${tracks[i].coverImage}">`;
-                            }
-                            trackInfo += `
+
+                        trackInfo += displayModule.returnCorrectImage(track)
+
+                        trackInfo += `
                         </div>
                         <div class="track-info-wrapper">
-                            <div class="track-name"><h4>${tracks[i].title}</h4></div>
-                            <div class="track-genre"><h4> - ${tracks[i].artists[0].name}</h4></div>
+                            <div class="track-name"><h4>${track.title}</h4></div>
+                            <div class="track-genre"><h4> - ${track.artists[0].name}</h4></div>
                         </div>
                         <div class="add-to-playlist">
                             <button>Add To Playlist</button>
                             <div class="playlistDropdown hidden">
                             
                             <ul>`;
-                            for(let j in playlists){
+                            for(let playlist of playlists){
                                 trackInfo += `
-                                <li data-id="${playlists[j]._id}" data-trackid=${tracks[i]._id}>
-                                ${playlists[j].title}
+                                <li data-id="${playlist._id}" data-trackid=${track._id}>
+                                ${playlist.title}
                                 </li>`;
                             }
                            
@@ -485,17 +495,14 @@ let displayModule = (function(){
             let artistInfo = ``;
             artistInfo += `<div class="artists-wrapper">`;
         
-            for(let i in artists){
+            for(let artist of artists){
 
                 artistInfo += `
                 <div class="artist-wrapper">
                  <div class="cover-image">`;
-                if (artists[i].coverImage === "" || artists[i].coverImage === undefined) {
-                     artistInfo += `<img src="images/default_album4.png" data-id="${artists[i]._id}">`;
-                 } else {
-                     artistInfo += `<img src="${artists[i].coverImage}" data-id="${artists[i]._id}">`;
-                 }
-                artistInfo += `</div><div class="artist-name"><h4>${artists[i].name}</h4></div>
+                    artistInfo += displayModule.returnCorrectImage(artist);
+                    artistInfo += `</div>
+                <div class="artist-name"><h4>${artist.name}</h4></div>
                 </div>`;
                 
             }
@@ -506,26 +513,26 @@ let displayModule = (function(){
             
         },
         displayIndividualArtist: function(artist){
-            console.log(artist);
             let artistInfo = ``;
             artistInfo += 
             `<div class="individual-wrapper">
                 <div class="cover-image">`;
-
-                    if (artist.coverImage === "" || artist.coverImage == undefined) {
-                        artistInfo += `<img src="images/default_album.png">`;
-                    } else {
-                        artistInfo += `<img src="${artist.coverImage}">`;
-                    }
-
-                artistInfo += `</div>
+                    artistInfo += displayModule.returnCorrectImage(artist);
+                    artistInfo += `</div>
                 <h4>${artist.name}</h4>
                 <button id="deleteArtist" data-id="${artist._id}">Delete Artist</button>
-
             </div>`;
             outputDiv.innerHTML = artistInfo;
 
             bindEvents.bindIndividualArtistPageEventListeners();
+        },
+        returnCorrectImage: function(object){
+           
+            if (object.coverImage === "" || object.coverImage === undefined) {
+                return `<img src="images/default_album4.png" data-id="${object._id}">`;
+            } else {
+                return `<img src="${object.coverImage}" data-id="${object._id}">`;
+            }
         }
     }
 }());
@@ -535,8 +542,8 @@ let buttonEvents = (function(){
     return {
         getAlbums: function(){
             Albums.getAll()
-            .then((albums) => {
-              displayModule.displayAlbums(albums);
+              .then((albums) => {
+                displayModule.displayAlbums(albums);
             });
         }, 
         getArtists: function(){
@@ -566,11 +573,16 @@ let buttonEvents = (function(){
             let trackTitle = document.getElementById('trackTitle').value;
 
             let newTrack = new Track(trackTitle, albumID, artistID);
+
+            if(handleForms.validate([trackTitle])){
+                newTrack.addNew()
+                .then((postedTrack) => {
+                    console.log(postedTrack);
+                });
+            }//else{
+                //displayError();
+            //}
             
-            newTrack.addNew()
-            .then((postedTrack) => {
-                console.log(postedTrack);
-            });
         },
         addNewPlaylist: function(){
             let playlistTitle = document.getElementById('newPlaylistName').value;
@@ -578,11 +590,15 @@ let buttonEvents = (function(){
             let playlistImage = document.getElementById('newPlaylistImage').value;
 
             let newPlaylist = new Playlist(playlistTitle, playlistGenres, playlistImage);
-
-            newPlaylist.addNew()
-            .then((playlist) => {
-                console.log(playlist);
-            });
+            if(handleForms.validate([playlistTitle])){
+                newPlaylist.addNew()
+                  .then((playlist) => {
+                   buttonEvents.getPlaylists();
+                });
+            }//else{
+                //displayError();
+            //}
+            
         },
         addNewArtist: function(){
          
@@ -594,16 +610,20 @@ let buttonEvents = (function(){
             const countryBorn = document.getElementById("newArtistCountryBorn").value;
             const spotifyURL = document.getElementById("newArtistSpotifyURL").value;
     
-    
             let newArtist = new Artist(artistName, birthday, genres, gender, countryBorn, spotifyURL, coverImage);
             
-            newArtist.addNew()
-            .then((artist) => {
-                console.log(artist);
-                if(artist.new == false){
-                    console.log("Artist already exists");
-                }
-            });
+            if(handleForms.validate([artistName])){
+                newArtist.addNew()
+                .then((artist) => {
+                    console.log(artist);
+                    if(artist.new == false){
+                        console.log("Artist already exists");
+                    }
+                });
+            }//else{
+                //displayError();
+            //}
+            
         },
         addNewAlbum: function(){
             const title = document.getElementById("newAlbumTitle").value;
@@ -634,6 +654,13 @@ let buttonEvents = (function(){
             Artists.getOne(artistID)
               .then((artist) => {
                 displayModule.displayIndividualArtist(artist);
+              })
+        },
+        getIndividualPlaylist: function(playlistID){
+            Playlists.getOne(playlistID)
+            .then((playlist) => {
+                console.log(playlist);
+                displayModule.displayIndividualPlaylist(playlist);
               })
         },
         deleteOneAlbum: function(albumID){
@@ -775,6 +802,28 @@ let bindEvents = (function(){
                     }
                 });
             }
+        },
+        bindPlaylistPageEventListeners: function(){
+            let playlistImages = outputDiv.querySelectorAll('img');
+
+            for(let playlistImage of playlistImages){
+                let playlistID = playlistImage.dataset.id;
+                
+                playlistImage.addEventListener('click', function(){
+                    buttonEvents.getIndividualPlaylist(playlistID);
+                });
+            }
+        },
+        bindIndividualPlaylistPageEventListeners: function(){
+            let deletePlaylistButton = document.getElementById('deletePlaylist');
+            let playlistID = deletePlaylistButton.dataset.id;
+
+            deletePlaylistButton.addEventListener('click', function(){
+                Playlists.deleteOne(playlistID)
+                .then((playlist) => {
+                    buttonEvents.getPlaylists();
+                });
+            });
         }
     }
 
