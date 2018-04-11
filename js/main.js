@@ -292,13 +292,15 @@ let displayModule = (function(){
                 </div>`;
 
                 albumInfo +=`
-                <div class="album-tracks" id="albumTracks">`;
-                    for (let i=0; i < album.tracks.length; i++) {
-                        albumInfo += `<ul><li>${album.tracks[i].title}
-                        <button id="deleteTrack" data-id="${album.tracks[i]._id}">delete track</button>
-                        </li></ul>`;
-                    }
-                albumInfo += `</div>`;
+                <div class="album-tracks" id="albumTracks">
+                    <ul id="albumTracksList">`;
+                        for (let i=0; i < album.tracks.length; i++) {
+                            albumInfo += `<li>${album.tracks[i].title}
+                            <button data-id="${album.tracks[i]._id}">Delete Track</button>
+                            </li>`;
+                        }
+                    albumInfo += `</ul>
+                </div>`;
                 albumInfo += `<div class="album-delete-button">
                 <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
                 </div>
@@ -306,21 +308,6 @@ let displayModule = (function(){
             outputDiv.innerHTML += albumInfo;
 
             bindEvents.bindIndividualAlbumPageEventListeners();
-        },
-        bindEventListener: function(){
-            let albumImages = albumDiv.querySelectorAll('img');
-
-            for(let albumImage of albumImages){
-                let albumID = albumImages.dataset.id;
-                
-                albumImage.addEventListener('click', function(){
-                    Albums.getOne(albumID)
-                    .then((album) => {
-                    displayModule.displayIndividualAlbum(album);
-                    })
-                });
-            }
-            
         },
         displayForms: function(){
             outputDiv.innerHTML = "";
@@ -515,7 +502,7 @@ let displayModule = (function(){
         displayIndividualArtist: function(artist){
             let artistInfo = ``;
             artistInfo += 
-            `<div class="individual-wrapper">
+            `<div class="individual-artists-wrapper">
                 <div class="cover-image">`;
                     artistInfo += displayModule.returnCorrectImage(artist);
                     artistInfo += `</div>
@@ -525,6 +512,16 @@ let displayModule = (function(){
             outputDiv.innerHTML = artistInfo;
 
             bindEvents.bindIndividualArtistPageEventListeners();
+        },
+        displayNewTrack: function(track){
+            let tracklist = document.getElementById('albumTracksList');
+            let newTrack = document.createElement('li');
+            newTrack.textContent = track.title;
+            let deleteButton = document.createElement('button');
+            deleteButton.textContent = "Delete Track";
+            deleteButton.dataset.id = track._id;
+            newTrack.appendChild(deleteButton);
+            tracklist.appendChild(newTrack);
         },
         returnCorrectImage: function(object){
            
@@ -577,6 +574,7 @@ let buttonEvents = (function(){
             if(handleForms.validate([trackTitle])){
                 newTrack.addNew()
                 .then((postedTrack) => {
+                    displayModule.displayNewTrack(postedTrack);
                     console.log(postedTrack);
                 });
             }//else{
@@ -593,7 +591,7 @@ let buttonEvents = (function(){
             if(handleForms.validate([playlistTitle])){
                 newPlaylist.addNew()
                   .then((playlist) => {
-                   buttonEvents.getPlaylists();
+                   buttonEvents.getIndividualPlaylist(playlist._id);
                 });
             }//else{
                 //displayError();
@@ -616,6 +614,7 @@ let buttonEvents = (function(){
                 newArtist.addNew()
                 .then((artist) => {
                     console.log(artist);
+                    buttonEvents.getIndividualArtist(artist._id);
                     if(artist.new == false){
                         console.log("Artist already exists");
                     }
@@ -638,7 +637,7 @@ let buttonEvents = (function(){
             if(handleForms.validate([title, artists])){
                 newAlbum.addNew()
                 .then((album) => {
-                    console.log(album);
+                    buttonEvents.getIndividualAlbum(album._id);
                 });
             }//else{
                 //displayError();
@@ -679,6 +678,7 @@ let buttonEvents = (function(){
         deleteOneArtist: function(artistID){
             Artists.deleteOne(artistID)
             .then((artist) => {
+                buttonEvents.getArtists();
                 console.log(artist);
             });
         },
