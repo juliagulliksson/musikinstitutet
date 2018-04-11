@@ -1,0 +1,9 @@
+.forms-wrapper{
+    width: 70%;
+    margin: 0px auto;
+    .artist-form-wrapper, .album-form-wrapper, .playlist-form-wrapper{
+        input{
+            width: 60%;
+        }
+    }
+}
