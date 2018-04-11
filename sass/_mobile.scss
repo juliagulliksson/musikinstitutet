@@ -42,7 +42,8 @@ li{
    .header-image{
        background-image: url("../images/awesome-jazz.jpg");
        background-repeat: no-repeat;
-       background-size: 100%;
+       background-position: center; 
+       background-size: 150%;
        height: 200px;
    } 
 }
@@ -52,6 +53,7 @@ li{
     color: #1F211F;    
     border-bottom: 1px solid #949A93; 
     font-family: 'Fjalla One', sans-serif;
+    height: 45px; 
      .navigation{
          display: none;
      }
@@ -78,6 +80,12 @@ li{
             }
         }
     }
+
+    .hamburger-icon{
+        img{
+            width: 12%; 
+        }
+    }
    
 }
 
@@ -86,20 +94,18 @@ li{
         text-align: center;
     }
    .cover-image{
-        height: 270px;
-        width: 290px;
         overflow: hidden; 
         img{
-            margin-left: 10px;
-            height: 100%;
-            border: 1px solid #949A93
+            height: 270px;
+            width: 270px;
+            border: 1px solid #949A93;
+            object-fit: cover;
         }
+        
         .artist-name{
             h4{
-                margin-top: 5px; 
-                margin-bottom: 0px; 
+                margin: 0px; 
                 padding: 0px; 
-                margin-left: 8px; 
             }
         }
     }
@@ -119,46 +125,70 @@ li{
         margin-bottom: 10px; 
     }
    .cover-image{
-       height: 12px;
-       display: inline-flex; 
-       flex-wrap: wrap; 
-    
+        height: 12px; 
         img{
             height: 450%;
-            border: 1px solid #949A93
+            border: 1px solid #949A93;
         }
        
     }
     .track-info-wrapper{
         display: inline-flex; 
-        .track-name{
+        margin-left: 55px; 
+        .track-title{
             h4{
+                font-size: 0.8rem; 
                 margin-left: 8px;
             }
         }
-        .track-genre{
+        .track-artist{
             h4{
+                font-size: 0.8rem; 
                 color:#A5A3A7;  
                 margin-left: 8px;
+            }
+        }
+
+        .add-to-playlist{
+            margin-top: 15px;
+            margin-left: 10px; 
+
+            button{
+                font-size: 0.8rem; 
             }
         }
     }
 }
 
 .albums-wrapper{
+    display: flex;
+    flex-wrap: wrap;    
     .album-wrapper{
+        width: 45%;
         text-align: center;
         margin: 0px auto; 
+        margin-bottom: 20px; 
+
     }
-    .cover-image{
-        height: 270px;
-        width: 290px;
+   .cover-image{
         overflow: hidden; 
-        img{
-            margin-left: 10px;
-            height: 100%;
-            border: 1px solid #949A93
-        }
+            img{
+                height: 170px;
+                width: 170px;
+                border: 1px solid #949A93;
+                object-fit: cover;
+            }
+    }
+
+    h4{
+        margin: 5px;
+        font-size: 0.95rem; 
+    }
+
+    h5{
+        margin: 0px; 
+        font-size: 0.8rem; 
+        color: #949A93; 
     }
 }
 

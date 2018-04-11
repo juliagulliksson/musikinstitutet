@@ -451,11 +451,12 @@ let displayModule = (function(){
                         trackInfo += `
                         </div>
                         <div class="track-info-wrapper">
-                            <div class="track-name"><h4>${track.title}</h4></div>
-                            <div class="track-genre"><h4> - ${track.artists[0].name}</h4></div>
-                        </div>
-                        <div class="add-to-playlist">
-                            <button>Add To Playlist</button>
+                            <div class="track-title"><h4>${track.title}</h4></div>
+                            <div class="track-artist"><h4> - ${track.artists[0].name}</h4></div>
+
+                            <div class="add-to-playlist">
+                                <button>Add To Playlist</button>
+
                             <div class="playlistDropdown hidden">
                             
                             <ul>`;
@@ -467,6 +468,7 @@ let displayModule = (function(){
                             }
                            
                             trackInfo +=  `</ul>
+                            </div>
                             </div>
                         </div>
                     </div>`;
