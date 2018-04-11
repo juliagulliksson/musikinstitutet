@@ -328,43 +328,43 @@ let displayModule = (function(){
             outputDiv.innerHTML = "";
             let formsOutput = ``;
             formsOutput += 
-            `<div class="form-wrapper" id="formWrapper">
+            `<div class="forms-wrapper" id="formWrapper">
 
               <div class="artist-form-wrapper" id="artistFormWrapper">
                 <h2>Add New Artist</h2>
                 <form id="newArtist">
-                    Name<br>
-                    <input type="text" id="newArtistName" name="name"><br>
+                    <label for="newArtistName">Name</label>
+                    <input type="text" id="newArtistName">
 
-                    Born<br>
-                    <input type="date" id="newArtistBirthday" name="born"><br>
+                    <label for="newArtistBirthday">Born</label>
+                    <input type="date" id="newArtistBirthday">
 
-                    Genres<br>
-                    <input type="text" id="newArtistGenres" name="genres" placeholder="Separate genre with comma"><br>
+                    <label for="newArtistGenres">Genres</label>
+                    <input type="text" id="newArtistGenres" placeholder="Separate genre with comma">
 
-                    Gender<br>
-                    <input type="text" id="newArtistGender" name="gender" placeholder="male, female or other"><br>
+                    <label for="newArtistGender">Gender</label>
+                    <input type="text" id="newArtistGender" placeholder="male, female or other">
 
-                    Country<br>
-                    <input type="text" id="newArtistCountryBorn" name="countryBorn"><br>
+                    <label for="newArtistCountryBorn">Country Born</label>
+                    <input type="text" id="newArtistCountryBorn">
 
-                    Link to Spotify<br>
-                    <input type="text" id="newArtistSpotifyURL" name="spotifyURL"><br>
+                    <label for="newArtistSpotifyURL">Link to Spotify</label>
+                    <input type="text" id="newArtistSpotifyURL" name="spotifyURL">
                 
-                    Image<br>
-                    <input type="text" id="newArtistCoverImage" name="coverImage"><br>
-                    <input type="submit" id="newArtistSubmit" value="Save">
+                    <label for="newArtistCoverImage">Image</label>
+                    <input type="text" id="newArtistCoverImage" name="coverImage"><br/>
+                    <button id="newArtistSubmit">Save</button>
                 </form>
               </div>
 
-              <div class="album-form-wrapper " id="albumFormWrapper">
+              <div class="album-form-wrapper" id="albumFormWrapper">
                 <h2>Add New Album</h2>
                 <form id="newAlbum">
                     <label for="newAlbumTitle">Title</label>
-                    <input type="text" id="newAlbumTitle"><br>
+                    <input type="text" id="newAlbumTitle">
 
                     <label for="newAlbumArtists">Artists</label>
-                    <input type="text" id="newAlbumArtists"><br>
+                    <input type="text" id="newAlbumArtists">
 
                     <label for="newAlbumGenres">Genres</label>
                     <input type="text" id="newAlbumGenres">
@@ -376,9 +376,8 @@ let displayModule = (function(){
                     <input type="text" id="newAlbumSpotifyURL">
                     
                     <label for="newAlbumCover">Cover Image</label>
-                    <input type="text" id="newAlbumCover" placeholder="Link to image host">
-
-                    <input type="submit" id="newAlbumSubmit" value="Save">
+                    <input type="text" id="newAlbumCover" placeholder="Link to image host"><br/>
+                    <button id="newAlbumSubmit">Save</button>
                 </form>
               </div>
 
@@ -392,7 +391,7 @@ let displayModule = (function(){
                     <input type="text" id="newPlaylistImage">
 
                     <label for="newPlaylistGenres">Playlist Genres</label>
-                    <input type="text" id="newPlaylistGenres" placeholder="Separate genre with comma">
+                    <input type="text" id="newPlaylistGenres" placeholder="Separate genre with comma"><br/>
                     <button id="newPlaylist">Save</button>
                 </form>
               </div>

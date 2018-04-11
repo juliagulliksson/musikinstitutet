@@ -118,24 +118,12 @@ main{
         text-align: center;
         margin: 0px auto; 
     }
-   .cover-image{
-        height: 260px;
-        width: 270px;
-        overflow: hidden;
-        img{
-            height: 100%;
-            //display: block;
-            //margin: 0px auto;
-            //border: 1px solid #949A93
-        }
-        .artist-name{
-            /*h4{
-                margin-top: 5px; 
-                margin-bottom: 0px; 
-                padding: 0px; 
-                margin-left: 8px; 
-            }*/
+}
+
+.forms-wrapper{
+    .artist-form-wrapper, .album-form-wrapper, .playlist-form-wrapper{
+        input{
+            width: 40%;
         }
     }
 }
-

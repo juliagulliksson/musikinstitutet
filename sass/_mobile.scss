@@ -15,12 +15,19 @@ main{
 }
 
 %button{
-    padding: 0;
-    margin: 0;
     color: #FFF; 
     outline: 0;
     border: 0;
     cursor: pointer;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: $pink;
+    transition: all 400ms;
+    margin-top: 7px;
+    font-size: 1em;
+    box-shadow: 3px 3px 2px 0px $lightPink;
+    -webkit-box-shadow: 3px 3px 2px 0px $lightPink;
+    -moz-box-shadow: 3px 3px 2px 0px $lightPink;
 }
 
 .header-flex-wrapper{
@@ -46,7 +53,12 @@ main{
      }
     nav{
         text-align: right;
-
+        button{
+            @extend %button;
+        }
+        button:active{
+            color: #1F211F; 
+        }
         ul{
             margin: 0px 0px 0px 20px;
             padding: 0;
@@ -62,22 +74,7 @@ main{
             }
         }
     }
-    .add-button{
-        text-align: right;
-        button{
-            @extend %button;
-            color:#ffffff; 
-            border-radius: 4px;
-            padding: 10px;
-            background-color:#EE708B;
-            transition: all 400ms;
-            margin-top: 7px;
-            font-size: 1em;
-       }
-       button:active{
-           color: #1F211F; 
-       }
-    }
+   
 }
 
 .artists-wrapper{  
@@ -85,9 +82,9 @@ main{
         text-align: center;
     }
    .cover-image{
-       height: 300px;
-       width: 90%;
-       margin: 0px auto;
+        height: 260px;
+        width: 270px;
+        overflow: hidden; 
         img{
             height: 100%;
             border: 1px solid #949A93
@@ -204,6 +201,56 @@ main{
                 width: 100%;
             }
         }
+    }
+}
+
+%form-wrappers{
+    //margin: 0px auto;
+   // width: 70%;
+    text-align: center;
+    input{
+        width: 80%;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+        background-color: #e9e9e9;
+        border: 0.9px solid #cacaca;
+        border-radius: 3px;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        font-family: 'Roboto Condensed';
+        font-size: 1em;
+    }
+    input[type=date]{
+        text-transform: uppercase;
+    }
+    label{
+        display: block;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    button{
+        @extend %button;
+        margin-bottom: 20px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    button:active, button:hover{
+        color: #1F211F; 
+    }
+
+}
+
+.forms-wrapper{
+    .artist-form-wrapper{
+        @extend %form-wrappers;
+      
+    }
+    .album-form-wrapper{
+        @extend %form-wrappers;
+    }
+    .playlist-form-wrapper{
+        @extend %form-wrappers;
     }
 }
 
