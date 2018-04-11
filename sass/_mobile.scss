@@ -11,7 +11,20 @@ main{
 }
 
 h4{
+    font-size: 0.95rem; 
     margin: 0px; 
+}
+
+h5{
+    font-size: 0.85rem;
+    margin: 0px; 
+    color: $grey;
+}
+
+h6{
+    font-size: 0.85rem;
+    margin: 0px; 
+    color: $grey;
 }
 
 .hidden{
@@ -55,7 +68,7 @@ li{
 .nav-bar{
     background-color: #ffffff;
     color: #1F211F;    
-    border-bottom: 1px solid #949A93; 
+    border-bottom: 1px solid $grey; 
     font-family: 'Fjalla One', sans-serif;
     height: 45px; 
      .navigation{
@@ -102,7 +115,7 @@ li{
         img{
             height: 270px;
             width: 270px;
-            border: 1px solid #949A93;
+            border: 1px solid $grey;
             object-fit: cover;
         }
         
@@ -124,7 +137,7 @@ li{
         height: 10px; 
         img{
             height: 450%;
-            border: 1px solid #949A93;
+            border: 1px solid $grey;
         }
        
     }
@@ -154,7 +167,7 @@ li{
         }
         .playlist-dropdown{
             background-color:#ffffff; 
-            border: 1px solid #e5e5e5;
+            border: 1px solid $lightBorderColor;
             box-shadow: 0 2px 10px rgba(0,0,0,.1); 
             position: absolute; 
             z-index: 1;    
@@ -196,7 +209,7 @@ li{
             img{
                 height: 170px;
                 width: 170px;
-                border: 1px solid #949A93;
+                border: 1px solid $grey;
                 object-fit: cover;
             }
     }
@@ -209,7 +222,7 @@ li{
     h5{
         margin: 0px; 
         font-size: 0.8rem; 
-        color: #949A93; 
+        color: $grey; 
     }
 }
 
@@ -223,7 +236,7 @@ li{
             height: 70%;
             display: block;
             margin: 0px auto;
-            border: 1px solid #949A93
+            border: 1px solid $grey; 
         }
 
         .playlist-name{
@@ -252,12 +265,41 @@ li{
         display: flex;
         .cover-image{
             overflow: hidden; 
+            margin-bottom: 10px; 
             img{
-                height: 200px;
-                width: 200px;
-                border: 1px solid #949A93;
+                height: 170px;
+                width: 170px;
+                border: 1px solid $grey;
                 object-fit: cover;
             }
+        }
+        .album-info{
+            margin-left: 10px;
+            h5{
+                color: #EE708B; 
+            } 
+        }
+    }
+    .add-track-form{
+        height: 40px; 
+        border-top: 1px solid $mediumBorderColor; 
+        border-bottom: 1px solid $mediumBorderColor;  
+        #addTrackForm{
+            margin-top: 10px; 
+        }
+        button{
+            background-color: $pink; 
+            color: #ffffff; 
+            border-radius: 0.25rem; 
+        }
+    }
+
+    .album-tracks{
+        li{
+        margin-left: -40px; 
+        margin-top: 5px; 
+        height: 30px; 
+        border-bottom: 1px solid $mediumBorderColor; 
         }
     }
 }

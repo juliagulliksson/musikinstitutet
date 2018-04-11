@@ -280,14 +280,15 @@ let displayModule = (function(){
                     <div class="album-info">
                         <h4>${album.title}</h4>
                         <h5>by ${album.artists[0].name}</h5>
+                        <h6>${album.genres} • ${album.releaseDate}</h6>
                     </div> 
                 </div>
 
                 <div class="add-track-form">
                     <form id="addTrackForm">
-                    <label for="trackTitle">Track Title</label>
-                    <input type="text" id="trackTitle">
-                    <button id="addTrack" data-id="${album._id}" data-artistid="${album.artists[0]._id}">Add Track</button>
+                    <label for="trackTitle">Add Track</label>
+                    <input type="text" id="trackTitle" placeholder="Title">
+                    <button id="addTrack" data-id="${album._id}" data-artistid="${album.artists[0]._id}">Save</button>
                     </form>
                 </div>`;
 
