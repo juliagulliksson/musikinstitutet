@@ -455,10 +455,10 @@ let displayModule = (function(){
                             <div class="track-artist"><h4> - ${track.artists[0].name}</h4></div>
 
                             <div class="add-to-playlist">
-                                <button>Add To Playlist</button>
+                                <button>. . .</button>
 
-                            <div class="playlistDropdown hidden">
-                            
+                            <div class="playlist-dropdown hidden">
+                            <h4>Add track to playlist</h4>
                             <ul>`;
                             for(let playlist of playlists){
                                 trackInfo += `
