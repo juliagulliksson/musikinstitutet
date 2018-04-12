@@ -149,6 +149,13 @@ class TrackController {
         })
         .then((response) => response.json())
     }
+    searchByTitle(title){
+        fetch('https://folksa.ga/api/albums' + key + '&tracks=' + title)
+        .then((response) => response.json())
+        .then((tracks) => {
+            console.log(tracks);
+        });
+    }
 }
 
 class Track {
@@ -454,7 +461,15 @@ let displayModule = (function(){
         displayTracks: function(tracks, playlists){
             outputDiv.innerHTML = "";
             let trackInfo = ``;
-            trackInfo += `<div class="tracks-wrapper">`;
+            trackInfo += `
+            <div class="search-tracks">
+                <form id="searchTrackForm">
+                    <input type="text" id="trackSearchField">
+                    <button id="searchTrackButton">search</button>
+                </form>
+            </div>
+            
+            <div class="tracks-wrapper">`;
         
             for(let track of tracks){
                 if(track.artists.length > 0){
@@ -819,6 +834,9 @@ let bindEvents = (function(){
             });
         },
         bindTrackPageEventListeners: function(){
+            /*const searchTrack = document.getElementById('searchTrackButton');
+            searchTrack.addEventListener('click', searchController.searchForTrack);*/
+
             let playlistDropdownButtons = outputDiv.querySelectorAll('button');
 
             for(let button of playlistDropdownButtons){
@@ -835,6 +853,7 @@ let bindEvents = (function(){
                     }
                 });
             }
+           
         },
         bindPlaylistPageEventListeners: function(){
             let playlistImages = outputDiv.querySelectorAll('img');
@@ -880,6 +899,15 @@ let searchController = (function(){
             searchArtistButton.addEventListener('click', function(){
                 let artistSearchField = document.getElementById('artistSearchField').value;
                 Artists.searchByName(artistSearchField);
+            });
+        },
+        searchForTrack: function(){
+            let searchTrackForm = document.getElementById('searchTrackForm');
+            let searchTrackButton = document.getElementById('searchTrackButton');
+            handleForms.preventDefault();
+            searchTrackButton.addEventListener('click', function(){
+                let trackSearchField = document.getElementById('trackSearchField').value;
+                Tracks.searchByName(trackSearchField);
             });
         }
     }
