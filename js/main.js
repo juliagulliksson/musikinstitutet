@@ -11,7 +11,7 @@ class ArtistController {
     }
 
     getAll(){
-        return fetch(this.baseUrl + key + '&sort=desc&limit=9')
+        return fetch(this.baseUrl + key + '&sort=desc&limit=20')
         .then((response) => response.json())
     }
 
@@ -267,21 +267,20 @@ let displayModule = (function(){
             outputDiv.innerHTML = "";
             let albumInfo = ``;
             albumInfo += `
-            <div class="search-albums">
-                <form id="searchAlbumForm">
-                    <input type="text" id="albumSearchField">
-                    <button id="searchAlbumButton">search</button>
-                </form>
-            </div>
+                <div class="search-albums">
+                    <form id="searchAlbumForm">
+                        <input type="text" id="albumSearchField" placeholder="Search for albums here">
+                        <button id="searchAlbumButton">search</button>
+                    </form>
+                </div>
             <div class="albums-wrapper">
-            
             `;
         
                 for(let album of albums){
                     if(album.artists.length > 0){
 
-                        albumInfo += `<div class="album-wrapper">
-                        
+                        albumInfo += `
+                    <div class="album-wrapper">    
                         <div class="cover-image" >`;
 
                         albumInfo += displayModule.returnCorrectImage(album);
@@ -289,7 +288,8 @@ let displayModule = (function(){
                         <h4>${album.title}</h4>
                         <h5>${album.artists[0].name}</h5>`;
                         
-                        albumInfo += `</div>`;
+                        albumInfo += `
+                    </div>`;
                     }
                 }
             albumInfo += `</div>`;
@@ -426,24 +426,25 @@ let displayModule = (function(){
             playlistInfo += `
             <div class="search-playlist">
                 <form id="searchPlaylistForm">
-                    <input type="text" id="playlistSearchField">
+                    <input type="text" id="playlistSearchField" placeholder="Search for playlists here">
                     <button id="searchPlaylistButton">search</button>
                 </form>
             </div>
-            
-            <div class="playlists-wrapper">`
+
+            <div class="playlists-wrapper">
+            `;
         
             for(let playlist of playlists){
                 playlistInfo += `
                 <div class="playlist-wrapper">
                     <div class="cover-image">`;
-
                         playlistInfo += displayModule.returnCorrectImage(playlist);
-                        
                         playlistInfo += `</div>
-                    <div class="playlist-name"><h4>${playlist.title}</h4></div>
-                    <div class="playlist-creator"><h5>${playlist.createdBy}</h5></div>
-                   
+                    <div class="playlist-wrap-info">
+                        <div class="playlist-name"><h4>${playlist.title}</h4></div>
+                        <h5>Created by</h5>
+                        <div class="playlist-creator"><h5>${playlist.createdBy}</h5></div>
+                    </div>
                 </div>`;
             }
             playlistInfo += `</div>`;
@@ -455,14 +456,13 @@ let displayModule = (function(){
             outputDiv.innerHTML = "";
 
             let playlistInfo = ``;
-            playlistInfo += 
-            `<div class="individual-playlist-wrapper">
+            playlistInfo += `
+            <div class="individual-playlist-wrapper">
                 <div class="individual-playlist-flex-wrapper">
                     <div class="cover-image">`;
-
-                    playlistInfo += displayModule.returnCorrectImage(playlist);
-                    playlistInfo += 
-                    `</div>
+                        playlistInfo += displayModule.returnCorrectImage(playlist);
+                        playlistInfo += `
+                    </div>
                     <div class="playlist-info">
                         <h4>${playlist.title}</h4>
                         <h5>Created By ${playlist.createdBy}</h5>
@@ -495,7 +495,7 @@ let displayModule = (function(){
             trackInfo += `
             <div class="search-tracks">
                 <form id="searchTrackForm">
-                    <input type="text" id="trackSearchField">
+                    <input type="text" id="trackSearchField" placeholder="Search for tracks here">
                     <button id="searchTrackButton">search</button>
                 </form>
             </div>
@@ -548,13 +548,13 @@ let displayModule = (function(){
             artistInfo += `
                 <div class="search-artists">
                     <form id="searchartistForm">
-                        <input type="text" id="artistSearchField">
+                        <input type="text" id="artistSearchField" placeholder="Search for artists here">
                         <button id="searchArtistButton">search</button>
                     </form>
                 </div>
             <div class="artists-wrapper">
             `;
-        
+
             for(let artist of artists){
 
                 artistInfo += `
@@ -563,8 +563,7 @@ let displayModule = (function(){
                     artistInfo += displayModule.returnCorrectImage(artist);
                     artistInfo += `</div>
                 <div class="artist-name"><h4>${artist.name}</h4></div>
-                </div>`;
-                
+            </div>`;
             }
             artistInfo += `</div>`;
             outputDiv.innerHTML += artistInfo;
