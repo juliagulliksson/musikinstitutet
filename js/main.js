@@ -522,6 +522,7 @@ let displayModule = (function(){
             deleteButton.dataset.id = track._id;
             newTrack.appendChild(deleteButton);
             tracklist.appendChild(newTrack);
+            bindEvents.bindIndividualAlbumPageEventListeners();
         },
         returnCorrectImage: function(object){
            
@@ -672,7 +673,6 @@ let buttonEvents = (function(){
         deleteOneTrack: function(trackID){
             Tracks.deleteOne(trackID)
               .then((track) => {
-                console.log(track);
               });
         },
         deleteOneArtist: function(artistID){
@@ -774,6 +774,9 @@ let bindEvents = (function(){
                 deleteTrackButton.addEventListener('click', function(){
                     let trackID = this.dataset.id;
                     buttonEvents.deleteOneTrack(trackID);
+                    let listItem = this.parentElement;
+                    let list = listItem.parentElement;
+                    list.removeChild(listItem);
                 })
             }
         },

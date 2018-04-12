@@ -92,7 +92,12 @@ li{
         img{
             margin-left: 10px;
             height: 100%;
-            border: 1px solid #949A93
+            border: 1px solid #949A93;
+            cursor: pointer;
+            transition: all 400ms;
+        }
+        img:hover{
+            opacity: 0.8;
         }
         .artist-name{
             h4{
@@ -157,7 +162,11 @@ li{
         img{
             margin-left: 10px;
             height: 100%;
-            border: 1px solid #949A93
+            border: 1px solid #949A93;
+            transition: all 400ms;
+        }
+        img:hover{
+            opacity: 0.8;
         }
     }
 }
@@ -172,7 +181,12 @@ li{
             height: 70%;
             display: block;
             margin: 0px auto;
-            border: 1px solid #949A93
+            border: 1px solid #949A93;
+            cursor: pointer;
+            transition: all 400ms;
+        }
+        img:hover{
+            opacity: 0.8;
         }
 
         .playlist-name{
