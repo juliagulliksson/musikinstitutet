@@ -150,7 +150,7 @@ class TrackController {
         .then((response) => response.json())
     }
     searchByTitle(title){
-        fetch('https://folksa.ga/api/albums' + key + '&tracks=' + title)
+        fetch('https://folksa.ga/api/albums' + key + '&title=' + title)
         .then((response) => response.json())
         .then((tracks) => {
             console.log(tracks);
@@ -219,7 +219,7 @@ class PlaylistController {
     }
 
     searchByTitle(title){
-        fetch('https://folksa.ga/api/playlists' + key + '&title=' + title)
+        fetch('https://folksa.ga/api/playlists' + key + '&createdBy=Power Puff Pinglorna&title=' + title)
         .then((response) => response.json())
         .then((playlists) => {
             console.log(playlists);
