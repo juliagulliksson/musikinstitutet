@@ -207,7 +207,6 @@ class PlaylistController {
     }
 
     addTrack(playlistID, trackID){
-
         return fetch(`https://folksa.ga/api/playlists/${playlistID}/tracks${key}`,{
             method: 'POST',
             headers: {
@@ -217,6 +216,14 @@ class PlaylistController {
             body: JSON.stringify({ tracks: trackID })
         })
         .then((response) => response.json())
+    }
+
+    searchByTitle(title){
+        fetch('https://folksa.ga/api/playlists' + key + '&title=' + title)
+        .then((response) => response.json())
+        .then((playlists) => {
+            console.log(playlists);
+        });
     }
 }
 
@@ -414,7 +421,15 @@ let displayModule = (function(){
         displayPlaylists: function(playlists){
             outputDiv.innerHTML = "";
             let playlistInfo = ``;
-            playlistInfo += `<div class="playlists-wrapper">`
+            playlistInfo += `
+            <div class="search-playlist">
+                <form id="searchPlaylistForm">
+                    <input type="text" id="playlistSearchField">
+                    <button id="searchPlaylistButton">search</button>
+                </form>
+            </div>
+            
+            <div class="playlists-wrapper">`
         
             for(let playlist of playlists){
                 playlistInfo += `
@@ -856,6 +871,9 @@ let bindEvents = (function(){
            
         },
         bindPlaylistPageEventListeners: function(){
+            const searchPlaylist = document.getElementById('searchPlaylistButton');
+            searchPlaylist.addEventListener('click', searchController.searchForPlaylist);
+
             let playlistImages = outputDiv.querySelectorAll('img');
 
             for(let playlistImage of playlistImages){
@@ -907,7 +925,16 @@ let searchController = (function(){
             handleForms.preventDefault();
             searchTrackButton.addEventListener('click', function(){
                 let trackSearchField = document.getElementById('trackSearchField').value;
-                Tracks.searchByName(trackSearchField);
+                Tracks.searchByTitle(trackSearchField);
+            });
+        },
+        searchForPlaylist: function(){
+            let searchPlaylistForm = document.getElementById('searchPlaylistForm');
+            let searchPlaylistButton = document.getElementById('searchPlaylistButton');
+            handleForms.preventDefault();
+            searchPlaylistButton.addEventListener('click', function(){
+                let playlistSearchField = document.getElementById('playlistSearchField').value;
+                Playlists.searchByTitle(playlistSearchField);
             });
         }
     }
