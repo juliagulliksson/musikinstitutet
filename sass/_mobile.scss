@@ -287,6 +287,13 @@ li{
         #addTrackForm{
             margin-top: 10px; 
         }
+        label{
+            font-size: 0.9rem; 
+            color: $pink; 
+        }
+        input{
+            width: 60%; 
+        }
         button{
             background-color: $pink; 
             color: #ffffff; 
@@ -297,9 +304,27 @@ li{
     .album-tracks{
         li{
         margin-left: -40px; 
-        margin-top: 5px; 
+        margin-top: 10px; 
         height: 30px; 
         border-bottom: 1px solid $mediumBorderColor; 
+        font-size: 0.85rem; 
+        }
+        button{
+            float: right; 
+            background-color: $grey;
+            color: $white; 
+            border-radius: 0.25rem; 
+        }
+    }
+
+    .album-delete-button{
+        button{
+            width: 100%; 
+            height: 30px;
+            border: none; 
+            background-color: $lightBorderColor; 
+            color: #8E2F3C; 
+            font-weight: 700; 
         }
     }
 }
