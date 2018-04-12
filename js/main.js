@@ -30,6 +30,14 @@ class ArtistController {
             })
           .then((response) => response.json())
     }
+
+    searchByName(name){
+        fetch('https://folksa.ga/api/artists' + key + '&name=' + name)
+        .then((response) => response.json())
+        .then((artists) => {
+            console.log(artists);
+        });
+    }
 }
 
 class Artist {
@@ -489,7 +497,15 @@ let displayModule = (function(){
             outputDiv.innerHTML = "";
 
             let artistInfo = ``;
-            artistInfo += `<div class="artists-wrapper">`;
+            artistInfo += `
+                <div class="search-artists">
+                    <form id="searchartistForm">
+                        <input type="text" id="artistSearchField">
+                        <button id="searchArtistButton">search</button>
+                    </form>
+                </div>
+            <div class="artists-wrapper">
+            `;
         
             for(let artist of artists){
 
@@ -710,8 +726,6 @@ let bindEvents = (function(){
 
     return {
         bindHomePageEventListeners: function(){
-            
-
             homeLink.addEventListener('click', buttonEvents.getAlbums);
             
             artistsLink.addEventListener('click', buttonEvents.getArtists);
@@ -742,7 +756,7 @@ let bindEvents = (function(){
         bindAlbumPageEventListeners: function(){
             const searchAlbum = document.getElementById('searchAlbumButton');
             searchAlbum.addEventListener('click', searchController.searchForAlbum);
-            
+
             let albumImages = outputDiv.querySelectorAll('img');
 
             for(let albumImage of albumImages){
@@ -754,6 +768,9 @@ let bindEvents = (function(){
             }
         },
         bindArtistPageEventListeners: function(){
+            const searchArtist = document.getElementById('searchArtistButton');
+            searchArtist.addEventListener('click', searchController.searchForArtist);
+
             let artistImages = outputDiv.querySelectorAll('img');
 
             for(let artistImage of artistImages){
@@ -854,6 +871,15 @@ let searchController = (function(){
             searchAlbumButton.addEventListener('click', function(){
                 let albumSearchField = document.getElementById('albumSearchField').value;
                 Albums.searchByTitle(albumSearchField);
+            });
+        },
+        searchForArtist: function(){
+            let searchArtistForm = document.getElementById('searchArtistForm');
+            let searchArtistButton = document.getElementById('searchArtistButton');
+            handleForms.preventDefault();
+            searchArtistButton.addEventListener('click', function(){
+                let artistSearchField = document.getElementById('artistSearchField').value;
+                Artists.searchByName(artistSearchField);
             });
         }
     }
