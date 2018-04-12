@@ -263,7 +263,6 @@ let displayModule = (function(){
                 }
             albumInfo += `</div>`;
             outputDiv.innerHTML += albumInfo;
-            bindEvents.bindAlbumPageEventListeners();
         },
         displayIndividualAlbum: function(album){
           
@@ -306,8 +305,6 @@ let displayModule = (function(){
                 </div>
             </div>`;
             outputDiv.innerHTML += albumInfo;
-
-            bindEvents.bindIndividualAlbumPageEventListeners();
         },
         displayForms: function(){
             outputDiv.innerHTML = "";
@@ -383,9 +380,6 @@ let displayModule = (function(){
             </div>`;
 
             outputDiv.innerHTML += formsOutput;
-
-            bindEvents.bindFormPageEventListeners();
-
         },
         displayPlaylists: function(playlists){
             outputDiv.innerHTML = "";
@@ -407,8 +401,6 @@ let displayModule = (function(){
             }
             playlistInfo += `</div>`;
             outputDiv.innerHTML += playlistInfo;
-
-            bindEvents.bindPlaylistPageEventListeners();
         },
         displayIndividualPlaylist: function(playlist){
             outputDiv.innerHTML = "";
@@ -430,8 +422,6 @@ let displayModule = (function(){
                 playlistInfo += `<li>${playlist.tracks[i].title} by ${playlist.tracks[i].artists[0].name}</li>`
             }
             outputDiv.innerHTML = playlistInfo;
-
-            bindEvents.bindIndividualPlaylistPageEventListeners();
 
         },
         displayTracks: function(tracks, playlists){
@@ -474,7 +464,6 @@ let displayModule = (function(){
             }
             trackInfo += `</div>`;
             outputDiv.innerHTML += trackInfo;
-            bindEvents.bindTrackPageEventListeners();
         },
         displayArtists: function(artists){
             outputDiv.innerHTML = "";
@@ -495,8 +484,6 @@ let displayModule = (function(){
             }
             artistInfo += `</div>`;
             outputDiv.innerHTML += artistInfo;
-
-            bindEvents.bindArtistPageEventListeners();
             
         },
         displayIndividualArtist: function(artist){
@@ -511,7 +498,7 @@ let displayModule = (function(){
             </div>`;
             outputDiv.innerHTML = artistInfo;
 
-            bindEvents.bindIndividualArtistPageEventListeners();
+           
         },
         displayNewTrack: function(track){
             let tracklist = document.getElementById('albumTracksList');
@@ -542,13 +529,15 @@ let buttonEvents = (function(){
             Albums.getAll()
               .then((albums) => {
                 displayModule.displayAlbums(albums);
+                bindEvents.bindAlbumPageEventListeners();
             });
         }, 
         getArtists: function(){
             Artists.getAll()
               .then((artists) => {
                   console.log(artists);
-                displayModule.displayArtists(artists);
+                  displayModule.displayArtists(artists);
+                  bindEvents.bindArtistPageEventListeners();
             });
         },
         getPlaylists: function(){
@@ -556,6 +545,7 @@ let buttonEvents = (function(){
               .then((playlists) => {
                 console.log(playlists);
                 displayModule.displayPlaylists(playlists);
+                bindEvents.bindPlaylistPageEventListeners();
             });
         },
         getTracksAndPlaylists: function(){
@@ -564,6 +554,7 @@ let buttonEvents = (function(){
                 Playlists.getAll()
                   .then((playlists) => {
                   displayModule.displayTracks(tracks, playlists);
+                  bindEvents.bindTrackPageEventListeners();
                 })
             });
         }, 
@@ -648,12 +639,14 @@ let buttonEvents = (function(){
             Albums.getOne(albumID)
               .then((album) => {
                 displayModule.displayIndividualAlbum(album);
+                bindEvents.bindIndividualAlbumPageEventListeners();
               })
         },
         getIndividualArtist: function(artistID){
             Artists.getOne(artistID)
               .then((artist) => {
                 displayModule.displayIndividualArtist(artist);
+                bindEvents.bindIndividualArtistPageEventListeners();
               })
         },
         getIndividualPlaylist: function(playlistID){
@@ -661,6 +654,7 @@ let buttonEvents = (function(){
             .then((playlist) => {
                 console.log(playlist);
                 displayModule.displayIndividualPlaylist(playlist);
+                bindEvents.bindIndividualPlaylistPageEventListeners();
               })
         },
         deleteOneAlbum: function(albumID){
@@ -711,7 +705,10 @@ let bindEvents = (function(){
             
             playlistsLink.addEventListener('click', buttonEvents.getPlaylists);
 
-            addNewButton.addEventListener('click', displayModule.displayForms);
+            addNewButton.addEventListener('click', function(){
+                displayModule.displayForms();
+                bindEvents.bindFormPageEventListeners();
+            });
         },
         bindFormPageEventListeners: function(){
             handleForms.preventDefault();
