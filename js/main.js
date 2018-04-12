@@ -302,8 +302,9 @@ let displayModule = (function(){
                         }
                     albumInfo += `</ul>
                 </div>`;
-                albumInfo += `<div class="album-delete-button">
-                <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
+                albumInfo += `
+                <div class="album-delete-button">
+                    <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
                 </div>
             </div>`;
             outputDiv.innerHTML += albumInfo;
@@ -417,23 +418,37 @@ let displayModule = (function(){
             let playlistInfo = ``;
             playlistInfo += 
             `<div class="individual-playlist-wrapper">
-                <div class="cover-image">`;
+                <div class="individual-playlist-flex-wrapper">
+                    <div class="cover-image">`;
 
                     playlistInfo += displayModule.returnCorrectImage(playlist);
-
-                    playlistInfo += `</div>
-
-                <h4>${playlist.title}</h4>
-                <button id="deletePlaylist" data-id="${playlist._id}">Delete Playlist</button>
-            </div>`;
-
-            for(let i in playlist.tracks){
-                playlistInfo += `<li>${playlist.tracks[i].title} by ${playlist.tracks[i].artists[0].name}</li>`
-            }
+                    playlistInfo += 
+                    `</div>
+                    <div class="playlist-info">
+                        <h4>${playlist.title}</h4>
+                        <h5>Created By ${playlist.createdBy}</h5>
+                        <h6>${playlist.genres}</h6>
+                    </div>
+                </div>`; 
+             
+                playlistInfo += `
+                <div class="playlist-tracks" id="playlistTracks>
+                    <ul id="playlistTracksList">`;
+                    for(let i in playlist.tracks){
+                        playlistInfo += `<li>${playlist.tracks[i].title} - ${playlist.tracks[i].artists[0].name}
+                        </li>`;
+                    }
+                playlistInfo += `</ul>
+                </div>`;
+                playlistInfo += `
+                <div class="playlist-delete-button">
+                    <button data-id="${playlist._id}" id="deletePlaylist">Delete Playlist</button>
+                </div>
+            </div>`; 
             outputDiv.innerHTML = playlistInfo;
 
             bindEvents.bindIndividualPlaylistPageEventListeners();
-
+            
         },
         displayTracks: function(tracks, playlists){
             outputDiv.innerHTML = "";
