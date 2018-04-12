@@ -30,6 +30,14 @@ class ArtistController {
             })
           .then((response) => response.json())
     }
+
+    searchByName(name){
+        fetch('https://folksa.ga/api/artists' + key + '&name=' + name)
+        .then((response) => response.json())
+        .then((artists) => {
+            console.log(artists);
+        });
+    }
 }
 
 class Artist {
@@ -141,6 +149,13 @@ class TrackController {
         })
         .then((response) => response.json())
     }
+    searchByTitle(title){
+        fetch('https://folksa.ga/api/albums' + key + '&title=' + title)
+        .then((response) => response.json())
+        .then((tracks) => {
+            console.log(tracks);
+        });
+    }
 }
 
 class Track {
@@ -192,7 +207,6 @@ class PlaylistController {
     }
 
     addTrack(playlistID, trackID){
-
         return fetch(`https://folksa.ga/api/playlists/${playlistID}/tracks${key}`,{
             method: 'POST',
             headers: {
@@ -202,6 +216,14 @@ class PlaylistController {
             body: JSON.stringify({ tracks: trackID })
         })
         .then((response) => response.json())
+    }
+
+    searchByTitle(title){
+        fetch('https://folksa.ga/api/playlists' + key + '&createdBy=Power Puff Pinglorna&title=' + title)
+        .then((response) => response.json())
+        .then((playlists) => {
+            console.log(playlists);
+        });
     }
 }
 
@@ -244,7 +266,16 @@ let displayModule = (function(){
             
             outputDiv.innerHTML = "";
             let albumInfo = ``;
-            albumInfo += `<div class="albums-wrapper">`;
+            albumInfo += `
+            <div class="search-albums">
+                <form id="searchAlbumForm">
+                    <input type="text" id="albumSearchField">
+                    <button id="searchAlbumButton">search</button>
+                </form>
+            </div>
+            <div class="albums-wrapper">
+            
+            `;
         
                 for(let album of albums){
                     if(album.artists.length > 0){
@@ -390,7 +421,15 @@ let displayModule = (function(){
         displayPlaylists: function(playlists){
             outputDiv.innerHTML = "";
             let playlistInfo = ``;
-            playlistInfo += `<div class="playlists-wrapper">`
+            playlistInfo += `
+            <div class="search-playlist">
+                <form id="searchPlaylistForm">
+                    <input type="text" id="playlistSearchField">
+                    <button id="searchPlaylistButton">search</button>
+                </form>
+            </div>
+            
+            <div class="playlists-wrapper">`
         
             for(let playlist of playlists){
                 playlistInfo += `
@@ -437,7 +476,15 @@ let displayModule = (function(){
         displayTracks: function(tracks, playlists){
             outputDiv.innerHTML = "";
             let trackInfo = ``;
-            trackInfo += `<div class="tracks-wrapper">`;
+            trackInfo += `
+            <div class="search-tracks">
+                <form id="searchTrackForm">
+                    <input type="text" id="trackSearchField">
+                    <button id="searchTrackButton">search</button>
+                </form>
+            </div>
+            
+            <div class="tracks-wrapper">`;
         
             for(let track of tracks){
                 if(track.artists.length > 0){
@@ -480,7 +527,15 @@ let displayModule = (function(){
             outputDiv.innerHTML = "";
 
             let artistInfo = ``;
-            artistInfo += `<div class="artists-wrapper">`;
+            artistInfo += `
+                <div class="search-artists">
+                    <form id="searchartistForm">
+                        <input type="text" id="artistSearchField">
+                        <button id="searchArtistButton">search</button>
+                    </form>
+                </div>
+            <div class="artists-wrapper">
+            `;
         
             for(let artist of artists){
 
@@ -712,6 +767,8 @@ let bindEvents = (function(){
             playlistsLink.addEventListener('click', buttonEvents.getPlaylists);
 
             addNewButton.addEventListener('click', displayModule.displayForms);
+
+            
         },
         bindFormPageEventListeners: function(){
             handleForms.preventDefault();
@@ -727,6 +784,9 @@ let bindEvents = (function(){
             newAlbumButton.addEventListener('click', buttonEvents.addNewAlbum);
         }, 
         bindAlbumPageEventListeners: function(){
+            const searchAlbum = document.getElementById('searchAlbumButton');
+            searchAlbum.addEventListener('click', searchController.searchForAlbum);
+
             let albumImages = outputDiv.querySelectorAll('img');
 
             for(let albumImage of albumImages){
@@ -738,6 +798,9 @@ let bindEvents = (function(){
             }
         },
         bindArtistPageEventListeners: function(){
+            const searchArtist = document.getElementById('searchArtistButton');
+            searchArtist.addEventListener('click', searchController.searchForArtist);
+
             let artistImages = outputDiv.querySelectorAll('img');
 
             for(let artistImage of artistImages){
@@ -786,6 +849,9 @@ let bindEvents = (function(){
             });
         },
         bindTrackPageEventListeners: function(){
+            /*const searchTrack = document.getElementById('searchTrackButton');
+            searchTrack.addEventListener('click', searchController.searchForTrack);*/
+
             let playlistDropdownButtons = outputDiv.querySelectorAll('button');
 
             for(let button of playlistDropdownButtons){
@@ -802,8 +868,12 @@ let bindEvents = (function(){
                     }
                 });
             }
+           
         },
         bindPlaylistPageEventListeners: function(){
+            const searchPlaylist = document.getElementById('searchPlaylistButton');
+            searchPlaylist.addEventListener('click', searchController.searchForPlaylist);
+
             let playlistImages = outputDiv.querySelectorAll('img');
 
             for(let playlistImage of playlistImages){
@@ -829,7 +899,6 @@ let bindEvents = (function(){
 
 }());
 
-
 let searchController = (function(){
     return {
         searchForAlbum: function(){
@@ -839,6 +908,33 @@ let searchController = (function(){
             searchAlbumButton.addEventListener('click', function(){
                 let albumSearchField = document.getElementById('albumSearchField').value;
                 Albums.searchByTitle(albumSearchField);
+            });
+        },
+        searchForArtist: function(){
+            let searchArtistForm = document.getElementById('searchArtistForm');
+            let searchArtistButton = document.getElementById('searchArtistButton');
+            handleForms.preventDefault();
+            searchArtistButton.addEventListener('click', function(){
+                let artistSearchField = document.getElementById('artistSearchField').value;
+                Artists.searchByName(artistSearchField);
+            });
+        },
+        searchForTrack: function(){
+            let searchTrackForm = document.getElementById('searchTrackForm');
+            let searchTrackButton = document.getElementById('searchTrackButton');
+            handleForms.preventDefault();
+            searchTrackButton.addEventListener('click', function(){
+                let trackSearchField = document.getElementById('trackSearchField').value;
+                Tracks.searchByTitle(trackSearchField);
+            });
+        },
+        searchForPlaylist: function(){
+            let searchPlaylistForm = document.getElementById('searchPlaylistForm');
+            let searchPlaylistButton = document.getElementById('searchPlaylistButton');
+            handleForms.preventDefault();
+            searchPlaylistButton.addEventListener('click', function(){
+                let playlistSearchField = document.getElementById('playlistSearchField').value;
+                Playlists.searchByTitle(playlistSearchField);
             });
         }
     }
