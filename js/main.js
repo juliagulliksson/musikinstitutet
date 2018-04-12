@@ -244,7 +244,16 @@ let displayModule = (function(){
             
             outputDiv.innerHTML = "";
             let albumInfo = ``;
-            albumInfo += `<div class="albums-wrapper">`;
+            albumInfo += `
+            <div class="search-albums">
+                <form id="searchAlbumForm">
+                    <input type="text" id="albumSearchField">
+                    <button id="searchAlbumButton">search</button>
+                </form>
+            </div>
+            <div class="albums-wrapper">
+            
+            `;
         
                 for(let album of albums){
                     if(album.artists.length > 0){
@@ -701,6 +710,8 @@ let bindEvents = (function(){
 
     return {
         bindHomePageEventListeners: function(){
+            
+
             homeLink.addEventListener('click', buttonEvents.getAlbums);
             
             artistsLink.addEventListener('click', buttonEvents.getArtists);
@@ -712,6 +723,8 @@ let bindEvents = (function(){
             playlistsLink.addEventListener('click', buttonEvents.getPlaylists);
 
             addNewButton.addEventListener('click', displayModule.displayForms);
+
+            
         },
         bindFormPageEventListeners: function(){
             handleForms.preventDefault();
@@ -727,6 +740,9 @@ let bindEvents = (function(){
             newAlbumButton.addEventListener('click', buttonEvents.addNewAlbum);
         }, 
         bindAlbumPageEventListeners: function(){
+            const searchAlbum = document.getElementById('searchAlbumButton');
+            searchAlbum.addEventListener('click', searchController.searchForAlbum);
+            
             let albumImages = outputDiv.querySelectorAll('img');
 
             for(let albumImage of albumImages){
@@ -828,7 +844,6 @@ let bindEvents = (function(){
     }
 
 }());
-
 
 let searchController = (function(){
     return {
