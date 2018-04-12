@@ -311,14 +311,15 @@ let displayModule = (function(){
                     <div class="album-info">
                         <h4>${album.title}</h4>
                         <h5>by ${album.artists[0].name}</h5>
+                        <h6>${album.genres} • ${album.releaseDate}</h6>
                     </div> 
                 </div>
 
                 <div class="add-track-form">
                     <form id="addTrackForm">
-                    <label for="trackTitle">Track Title</label>
-                    <input type="text" id="trackTitle">
-                    <button id="addTrack" data-id="${album._id}" data-artistid="${album.artists[0]._id}">Add Track</button>
+                    <label for="trackTitle">Add Track</label>
+                    <input type="text" id="trackTitle" placeholder="Title">
+                    <button id="addTrack" data-id="${album._id}" data-artistid="${album.artists[0]._id}">Save</button>
                     </form>
                 </div>`;
 
@@ -332,8 +333,9 @@ let displayModule = (function(){
                         }
                     albumInfo += `</ul>
                 </div>`;
-                albumInfo += `<div class="album-delete-button">
-                <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
+                albumInfo += `
+                <div class="album-delete-button">
+                    <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
                 </div>
             </div>`;
             outputDiv.innerHTML += albumInfo;
@@ -455,23 +457,37 @@ let displayModule = (function(){
             let playlistInfo = ``;
             playlistInfo += 
             `<div class="individual-playlist-wrapper">
-                <div class="cover-image">`;
+                <div class="individual-playlist-flex-wrapper">
+                    <div class="cover-image">`;
 
                     playlistInfo += displayModule.returnCorrectImage(playlist);
-
-                    playlistInfo += `</div>
-
-                <h4>${playlist.title}</h4>
-                <button id="deletePlaylist" data-id="${playlist._id}">Delete Playlist</button>
-            </div>`;
-
-            for(let i in playlist.tracks){
-                playlistInfo += `<li>${playlist.tracks[i].title} by ${playlist.tracks[i].artists[0].name}</li>`
-            }
+                    playlistInfo += 
+                    `</div>
+                    <div class="playlist-info">
+                        <h4>${playlist.title}</h4>
+                        <h5>Created By ${playlist.createdBy}</h5>
+                        <h6>${playlist.genres}</h6>
+                    </div>
+                </div>`; 
+             
+                playlistInfo += `
+                <div class="playlist-tracks" id="playlistTracks>
+                    <ul id="playlistTracksList">`;
+                    for(let i in playlist.tracks){
+                        playlistInfo += `<li>${playlist.tracks[i].title} - ${playlist.tracks[i].artists[0].name}
+                        </li>`;
+                    }
+                playlistInfo += `</ul>
+                </div>`;
+                playlistInfo += `
+                <div class="playlist-delete-button">
+                    <button data-id="${playlist._id}" id="deletePlaylist">Delete Playlist</button>
+                </div>
+            </div>`; 
             outputDiv.innerHTML = playlistInfo;
 
             bindEvents.bindIndividualPlaylistPageEventListeners();
-
+            
         },
         displayTracks: function(tracks, playlists){
             outputDiv.innerHTML = "";
@@ -498,13 +514,14 @@ let displayModule = (function(){
                         trackInfo += `
                         </div>
                         <div class="track-info-wrapper">
-                            <div class="track-name"><h4>${track.title}</h4></div>
-                            <div class="track-genre"><h4> - ${track.artists[0].name}</h4></div>
-                        </div>
-                        <div class="add-to-playlist">
-                            <button>Add To Playlist</button>
-                            <div class="playlistDropdown hidden">
-                            
+                            <div class="track-title"><h4>${track.title}</h4></div>
+                            <div class="track-artist"><h4> - ${track.artists[0].name}</h4></div>
+
+                            <div class="add-to-playlist">
+                                <button>. . .</button>
+
+                            <div class="playlist-dropdown hidden">
+                            <h4>Add track to playlist</h4>
                             <ul>`;
                             for(let playlist of playlists){
                                 trackInfo += `
@@ -514,6 +531,7 @@ let displayModule = (function(){
                             }
                            
                             trackInfo +=  `</ul>
+                            </div>
                             </div>
                         </div>
                     </div>`;
