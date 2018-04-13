@@ -1,7 +1,6 @@
 const key = "?key=flat_eric";
 
 const hamburgerMenu = document.getElementById('hamburgerIcon');
-const outputDiv = document.getElementById('output');
 
 /*** Classes ***/
 
@@ -260,6 +259,7 @@ let Tracks = new TrackController('https://folksa.ga/api/tracks');
 let Playlists = new PlaylistController('https://folksa.ga/api/playlists');
 
 let displayModule = (function(){
+    const outputDiv = document.getElementById('output');
     
     return {
         displayAlbums: function(albums){
@@ -642,9 +642,9 @@ let buttonEvents = (function(){
                     displayModule.displayNewTrack(postedTrack);
                     console.log(postedTrack);
                 });
-            }//else{
+            }else{
                 //displayError();
-            //}
+            }
             
         },
         addNewPlaylist: function(){
@@ -658,9 +658,9 @@ let buttonEvents = (function(){
                   .then((playlist) => {
                    buttonEvents.getIndividualPlaylist(playlist._id);
                 });
-            }//else{
+            }else{
                 //displayError();
-            //}
+            }
             
         },
         addNewArtist: function(){
@@ -684,9 +684,9 @@ let buttonEvents = (function(){
                         console.log("Artist already exists");
                     }
                 });
-            }//else{
+            }else{
                 //displayError();
-            //}
+            }
             
         },
         addNewAlbum: function(){
@@ -704,9 +704,9 @@ let buttonEvents = (function(){
                 .then((album) => {
                     buttonEvents.getIndividualAlbum(album._id);
                 });
-            }//else{
+            }else{
                 //displayError();
-            //}
+            }
         },
         getIndividualAlbum: function(albumID){
             Albums.getOne(albumID)
@@ -720,7 +720,7 @@ let buttonEvents = (function(){
               .then((artist) => {
                 displayModule.displayIndividualArtist(artist);
                 bindEvents.bindIndividualArtistPageEventListeners();
-              })
+              });
         },
         getIndividualPlaylist: function(playlistID){
             Playlists.getOne(playlistID)
@@ -728,7 +728,7 @@ let buttonEvents = (function(){
                 console.log(playlist);
                 displayModule.displayIndividualPlaylist(playlist);
                 bindEvents.bindIndividualPlaylistPageEventListeners();
-              })
+              });
         },
         deleteOneAlbum: function(albumID){
             Albums.deleteOne(albumID)
@@ -738,8 +738,10 @@ let buttonEvents = (function(){
               });
         },
         deleteOneTrack: function(trackID){
-            Tracks.deleteOne(trackID)
+            Tracks.deleteOne(trackID, listItem, list)
               .then((track) => {
+                //Remove the track from the DOM
+                list.removeChild(listItem);
               });
         },
         deleteOneArtist: function(artistID){
@@ -751,13 +753,14 @@ let buttonEvents = (function(){
         },
         addTrackToPlaylist: function(playlistID, trackID){
             Playlists.addTrack(playlistID, trackID)
-              /*.then((playlist) => {
+              .then((playlist) => {
                 console.log(playlist);
-              });*/
+              });
         }
     }
 }());
 
+//A module to bind the buttons/images to the events that are present in buttonEvents
 let bindEvents = (function(){
     const addNewButton = document.getElementById('addNew');
     const artistsLink = document.getElementById('artistsLink');
@@ -784,13 +787,13 @@ let bindEvents = (function(){
             });
         },
         bindFormPageEventListeners: function(){
-            handleForms.preventDefault();
-
             const newAlbum = document.getElementById("newAlbum");
             const newArtist = document.getElementById("newArtist");
             const newPlaylistButton = document.getElementById('newPlaylist');
             const newArtistButton = document.getElementById("newArtistSubmit");
             const newAlbumButton = document.getElementById("newAlbumSubmit");
+
+            handleForms.preventDefault();
 
             newArtistButton.addEventListener('click', buttonEvents.addNewArtist);
             newPlaylistButton.addEventListener('click', buttonEvents.addNewPlaylist);
@@ -800,7 +803,7 @@ let bindEvents = (function(){
             const searchAlbum = document.getElementById('searchAlbumButton');
             searchAlbum.addEventListener('click', searchController.searchForAlbum);
 
-            let albumImages = outputDiv.querySelectorAll('img');
+            const albumImages = document.querySelectorAll('img');
 
             for(let albumImage of albumImages){
                 let albumID = albumImage.dataset.id;
@@ -814,7 +817,7 @@ let bindEvents = (function(){
             const searchArtist = document.getElementById('searchArtistButton');
             searchArtist.addEventListener('click', searchController.searchForArtist);
 
-            let artistImages = outputDiv.querySelectorAll('img');
+            let artistImages = document.querySelectorAll('img');
 
             for(let artistImage of artistImages){
                 let artistID = artistImage.dataset.id;
@@ -825,12 +828,11 @@ let bindEvents = (function(){
             }
         },
         bindIndividualAlbumPageEventListeners: function(){
-
-            handleForms.preventDefault();
-            
             const newTrackForm = document.getElementById('addTrackForm');
             const deleteAlbumButton = document.getElementById('deleteAlbum');
             const albumID = deleteAlbumButton.dataset.id;
+
+            handleForms.preventDefault();
 
             deleteAlbumButton.addEventListener('click', function(){
                 buttonEvents.deleteOneAlbum(albumID)
@@ -849,10 +851,10 @@ let bindEvents = (function(){
             for(let deleteTrackButton of deleteTrackButtons){
                 deleteTrackButton.addEventListener('click', function(){
                     let trackID = this.dataset.id;
-                    buttonEvents.deleteOneTrack(trackID);
                     let listItem = this.parentElement;
                     let list = listItem.parentElement;
-                    list.removeChild(listItem);
+                    buttonEvents.deleteOneTrack(trackID, listItem, list);
+                   
                 })
             }
         },
@@ -868,7 +870,7 @@ let bindEvents = (function(){
             /*const searchTrack = document.getElementById('searchTrackButton');
             searchTrack.addEventListener('click', searchController.searchForTrack);*/
 
-            let playlistDropdownButtons = outputDiv.querySelectorAll('button');
+            let playlistDropdownButtons = document.querySelectorAll('button');
 
             for(let button of playlistDropdownButtons){
                 button.addEventListener('click', function(){  
@@ -884,13 +886,12 @@ let bindEvents = (function(){
                     }
                 });
             }
-           
         },
         bindPlaylistPageEventListeners: function(){
             const searchPlaylist = document.getElementById('searchPlaylistButton');
             searchPlaylist.addEventListener('click', searchController.searchForPlaylist);
 
-            let playlistImages = outputDiv.querySelectorAll('img');
+            let playlistImages = document.querySelectorAll('img');
 
             for(let playlistImage of playlistImages){
                 let playlistID = playlistImage.dataset.id;
@@ -915,6 +916,7 @@ let bindEvents = (function(){
 
 }());
 
+//Module to handle all search functions
 let searchController = (function(){
     return {
         searchForAlbum: function(){
@@ -959,6 +961,7 @@ let searchController = (function(){
 let handleForms = (function(){
     return {
         preventDefault: function(){
+            //Function to call to prevent the reload default of all forms present on the page
             let forms = document.querySelectorAll('form');
             for(let form of forms){
                 form.addEventListener("submit", function(event){
@@ -967,11 +970,14 @@ let handleForms = (function(){
             }
         },
         validate: function(inputFields){
+            //Loop through the inputFields array, may be one or multiple variables
             for(inputField of inputFields){
                 if(inputField == ""){
+                    //Input field is empty
                     return false;
                 }
                 if(!inputField.replace(/\s/g, '').length){
+                    //Input field contains only whitespace
                     return false;
                 }
                 return true;

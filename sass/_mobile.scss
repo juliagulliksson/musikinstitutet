@@ -198,8 +198,8 @@ li{
 
 .individual-albums-wrapper{
     .individual-flex-wrapper{
-        display: flex;
-        justify-content: space-around;
+        @include flex;
+        @include justify-content(space-around);
         .cover-image{
             height: 270px;
             width: 290px;

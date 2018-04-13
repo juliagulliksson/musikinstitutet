@@ -18,3 +18,9 @@ $mainFont: 'Roboto Condensed', sans-serif;
     -webkit-flex-basis: $percentage;
     -ms-flex-basis: $percentage;
 }
+
+@mixin justify-content($value){
+    justify-content: $value;
+    -ms-flex-justify-content: $value;
+	-webkit-justify-content: $value;
+}
