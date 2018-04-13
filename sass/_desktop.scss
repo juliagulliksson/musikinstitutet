@@ -6,7 +6,7 @@ main{
 
 .header-flex-wrapper{
    .header-image{
-       height: 360px;
+       height: 300px;
    } 
 }
 
@@ -34,12 +34,12 @@ main{
             }
         }
     }
-    .nav-bar{
-        @include flex-basis(60%);
+    .nav-list{
+        @include flex-basis(80%);
     }
     .add-button{
         text-align: right;
-        @include flex-basis(45%);
+        @include flex-basis(20%);
         button{
             background-color:$pink;
        }
