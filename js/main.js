@@ -264,7 +264,6 @@ let displayModule = (function(){
     return {
         displayAlbums: function(albums){
             
-            outputDiv.innerHTML = "";
             let albumInfo = ``;
             albumInfo += `
             <div class="search-albums">
@@ -293,11 +292,10 @@ let displayModule = (function(){
                     }
                 }
             albumInfo += `</div>`;
-            outputDiv.innerHTML += albumInfo;
+            outputDiv.innerHTML = albumInfo;
         },
         displayIndividualAlbum: function(album){
-          
-            outputDiv.innerHTML = "";
+    
             let albumInfo = ``;
             albumInfo += 
             `<div class="individual-albums-wrapper">
@@ -337,10 +335,9 @@ let displayModule = (function(){
                     <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
                 </div>
             </div>`;
-            outputDiv.innerHTML += albumInfo;
+            outputDiv.innerHTML = albumInfo;
         },
         displayForms: function(){
-            outputDiv.innerHTML = "";
             let formsOutput = ``;
             formsOutput += 
             `<div class="forms-wrapper" id="formWrapper">
@@ -412,10 +409,9 @@ let displayModule = (function(){
               </div>
             </div>`;
 
-            outputDiv.innerHTML += formsOutput;
+            outputDiv.innerHTML = formsOutput;
         },
         displayPlaylists: function(playlists){
-            outputDiv.innerHTML = "";
             let playlistInfo = ``;
             playlistInfo += `
             <div class="search-playlist">
@@ -441,10 +437,9 @@ let displayModule = (function(){
                 </div>`;
             }
             playlistInfo += `</div>`;
-            outputDiv.innerHTML += playlistInfo;
+            outputDiv.innerHTML = playlistInfo;
         },
         displayIndividualPlaylist: function(playlist){
-            outputDiv.innerHTML = "";
 
             let playlistInfo = ``;
             playlistInfo += 
@@ -480,7 +475,7 @@ let displayModule = (function(){
 
         },
         displayTracks: function(tracks, playlists){
-            outputDiv.innerHTML = "";
+
             let trackInfo = ``;
             trackInfo += `
             <div class="search-tracks">
@@ -528,10 +523,9 @@ let displayModule = (function(){
                 }
             }
             trackInfo += `</div>`;
-            outputDiv.innerHTML += trackInfo;
+            outputDiv.innerHTML = trackInfo;
         },
         displayArtists: function(artists){
-            outputDiv.innerHTML = "";
 
             let artistInfo = ``;
             artistInfo += `
@@ -556,8 +550,7 @@ let displayModule = (function(){
                 
             }
             artistInfo += `</div>`;
-            outputDiv.innerHTML += artistInfo;
-            
+            outputDiv.innerHTML = artistInfo;
         },
         displayIndividualArtist: function(artist){
             let artistInfo = ``;
@@ -570,8 +563,6 @@ let displayModule = (function(){
                 <button id="deleteArtist" data-id="${artist._id}">Delete Artist</button>
             </div>`;
             outputDiv.innerHTML = artistInfo;
-
-           
         },
         displayNewTrack: function(track){
             let tracklist = document.getElementById('albumTracksList');
@@ -596,6 +587,8 @@ let displayModule = (function(){
 }());
 
 let buttonEvents = (function(){
+
+    //May put the objects of classes here
 
     return {
         getAlbums: function(){
