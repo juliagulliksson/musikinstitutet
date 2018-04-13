@@ -14,8 +14,7 @@ main{
     width: 100%;
     margin: 0px auto; 
      .navigation{
-         display: block;
-         display: flex;
+         @include flex();
          width: 80%;
          margin: 0px auto;
      }
@@ -31,18 +30,18 @@ main{
                 cursor: pointer;
             }
             li:hover{
-                color: #EE708B;
+                color: $pink;
             }
         }
     }
     .nav-bar{
-        flex-basis: 60%;
+        @include flex-basis(60%);
     }
     .add-button{
         text-align: right;
-        flex-basis: 45%;
+        @include flex-basis(45%);
         button{
-            background-color:#EE708B;
+            background-color:$pink;
        }
        button:hover{
            color: #1F211F; 
@@ -51,7 +50,7 @@ main{
 }
 
 .albums-wrapper{
-    display: flex;
+    @include flex();
     flex-wrap: wrap;
     .album-wrapper{
         width: 32%;
@@ -64,8 +63,6 @@ main{
        overflow: hidden;
         img{
             width: 100%;
-            //display: block;
-            //margin: 0px auto;
             border: 1px solid #949A93;
             cursor: pointer;
         }
@@ -73,17 +70,17 @@ main{
 }
 
 .playlists-wrapper{
-    display: flex;
+    @include flex();
     flex-wrap: wrap;
     .playlist-wrapper{
         width: 25%;
-        text-align: left;
+        text-align: center;
         margin: 0px auto; 
     }
    .cover-image{
-       height: 245px;
+       height: 200px;
         img{
-            height: 70%;
+            height: 100%;
             display: block;
             margin: 0px auto;
             border: 1px solid #949A93
@@ -111,7 +108,7 @@ main{
 }
 
 .artists-wrapper{
-    display: flex;
+    @include flex();
     flex-wrap: wrap;    
     .artist-wrapper{
         width: 33%;

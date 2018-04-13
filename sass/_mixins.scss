@@ -4,3 +4,17 @@ $lightBorderColor: #e5e5e5;
 $mediumBorderColor: #C9CDCD;
 $grey: #949A93;
 $white: #ffffff; 
+$mainFont: 'Roboto Condensed', sans-serif;
+
+
+@mixin flex(){
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+@mixin flex-basis($percentage) {
+    flex-basis: $percentage;
+    -webkit-flex-basis: $percentage;
+    -ms-flex-basis: $percentage;
+}
