@@ -1,10 +1,10 @@
-const key = "?key=flat_eric";
+//const key = "?key=flat_eric";
 
 const hamburgerMenu = document.getElementById('hamburgerIcon');
 
 /*** Classes ***/
 
-//Condense all "Controller" classes into one
+//Universal class to make fetch requests
 class FetchController {
     constructor(baseUrl, additionalUrlParameters){
         this.baseUrl = baseUrl;
@@ -39,25 +39,7 @@ class FetchController {
     }
 }
 
-const ArtistsFetch = new FetchController('https://folksa.ga/api/artists', '&sort=desc&limit=9');
-
-ArtistsFetch.getAll()
-.then((artists) => {
-    console.log(artists);
-})
-
-const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=20&sort=desc');
-ArtistsFetch.getAll()
-.then((albums) => {
-    console.log(albums);
-});
-
-ArtistsFetch.search('name', 'elvis')
-.then((searchResults) => {
-    console.log(searchResults);
-});
-
-class ArtistController {
+/*class ArtistController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
     }
@@ -90,7 +72,7 @@ class ArtistController {
             console.log(artists);
         });
     }
-}
+}*/
 
 class Artist {
     constructor(artistName, birthday, genres, gender, countryBorn, spotifyURL, coverImage){
@@ -118,7 +100,7 @@ class Artist {
     }
 }
 
-class AlbumController {
+/*class AlbumController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
     }
@@ -148,7 +130,7 @@ class AlbumController {
        return fetch('https://folksa.ga/api/albums' + key + '&title=' + title)
         .then((response) => response.json())
     }
-}
+}*/
 
 class Album {
     constructor(title, artists, releaseDate, genres, spotifyURL, coverImage){
@@ -173,7 +155,7 @@ class Album {
     }
 }
 
-class TrackController {
+/*class TrackController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
     }
@@ -205,7 +187,7 @@ class TrackController {
             console.log(tracks);
         });
     }
-}
+}*/
 
 class Track {
 
@@ -228,7 +210,7 @@ class Track {
     }
 }
 
-class PlaylistController {
+/*class PlaylistController {
     constructor(baseUrl){
         this.baseUrl = baseUrl;
     }
@@ -274,7 +256,7 @@ class PlaylistController {
             console.log(playlists);
         });
     }
-}
+}*/
 
 class Playlist {
 
@@ -298,17 +280,49 @@ class Playlist {
         })
         .then((response) => response.json())
     }
+
+    addTrack(playlistID, trackID){
+        return fetch(`https://folksa.ga/api/playlists/${playlistID}/tracks${key}`,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tracks: trackID })
+        })
+        .then((response) => response.json())
+    }
 }
 
-let Albums = new AlbumController('https://folksa.ga/api/albums');
+class FormHandler {
+    
+    preventDefault(){
+        let forms = document.querySelectorAll('form');
+        for(let form of forms){
+            form.addEventListener("submit", function(event){
+                event.preventDefault();
+             });
+        }
+    }
 
-let Artists = new ArtistController('https://folksa.ga/api/artists');
+    validate(inputFields){
+        for(inputField of inputFields){
+            if(inputField == ""){
+                //Input field is empty
+                return false;
+            }
+            if(!inputField.replace(/\s/g, '').length){
+                //Input field contains only whitespace
+                return false;
+            }
+            return true;
+        }
+    }
+}
 
-let Tracks = new TrackController('https://folksa.ga/api/tracks');
+const handleForms = new FormHandler();
 
-let Playlists = new PlaylistController('https://folksa.ga/api/playlists');
-
-let displayModule = (function(){
+const displayModule = (function(){
     const outputDiv = document.getElementById('output');
     
     return {
@@ -638,18 +652,24 @@ let displayModule = (function(){
 
 let buttonEvents = (function(){
 
-    //May put the objects of classes here
+    const ArtistsFetch = new FetchController('https://folksa.ga/api/artists', '&sort=desc&limit=9');
+
+    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=9&sort=desc');
+
+    const PlaylistsFetch = new FetchController('https://folksa.ga/api/playlists', '&createdBy=Power Puff Pinglorna');
+
+    const TracksFetch = new FetchController('https://folksa.ga/api/tracks', '&sort=desc&limit=30');
 
     return {
         getAlbums: function(){
-            Albums.getAll()
+            AlbumsFetch.getAll()
               .then((albums) => {
                 displayModule.displayAlbums(albums);
                 bindEvents.bindAlbumPageEventListeners();
             });
         }, 
         getArtists: function(){
-            Artists.getAll()
+            ArtistsFetch.getAll()
               .then((artists) => {
                   console.log(artists);
                   displayModule.displayArtists(artists);
@@ -657,7 +677,7 @@ let buttonEvents = (function(){
             });
         },
         getPlaylists: function(){
-            Playlists.getAll()
+            PlaylistsFetch.getAll()
               .then((playlists) => {
                 console.log(playlists);
                 displayModule.displayPlaylists(playlists);
@@ -665,9 +685,9 @@ let buttonEvents = (function(){
             });
         },
         getTracksAndPlaylists: function(){
-            Tracks.getAll()
+            TracksFetch.getAll()
             .then((tracks) => {
-                Playlists.getAll()
+                PlaylistsFetch.getAll()
                   .then((playlists) => {
                   displayModule.displayTracks(tracks, playlists);
                   bindEvents.bindTrackPageEventListeners();
@@ -752,21 +772,21 @@ let buttonEvents = (function(){
             }
         },
         getIndividualAlbum: function(albumID){
-            Albums.getOne(albumID)
+            AlbumsFetch.getOne(albumID)
               .then((album) => {
                 displayModule.displayIndividualAlbum(album);
                 bindEvents.bindIndividualAlbumPageEventListeners();
               })
         },
         getIndividualArtist: function(artistID){
-            Artists.getOne(artistID)
+            ArtistsFetch.getOne(artistID)
               .then((artist) => {
                 displayModule.displayIndividualArtist(artist);
                 bindEvents.bindIndividualArtistPageEventListeners();
               });
         },
         getIndividualPlaylist: function(playlistID){
-            Playlists.getOne(playlistID)
+            PlaylistsFetch.getOne(playlistID)
             .then((playlist) => {
                 console.log(playlist);
                 displayModule.displayIndividualPlaylist(playlist);
@@ -774,35 +794,37 @@ let buttonEvents = (function(){
               });
         },
         deleteOneAlbum: function(albumID){
-            Albums.deleteOne(albumID)
+            AlbumsFetch.deleteOne(albumID)
               .then((album) => {
                 buttonEvents.getAlbums();
                 console.log(album);
               });
         },
         deleteOneTrack: function(trackID, listItem, list){
-            Tracks.deleteOne(trackID)
+            TracksFetch.deleteOne(trackID)
               .then((track) => {
                 //Remove the track from the DOM
                 list.removeChild(listItem);
               });
         },
         deleteOneArtist: function(artistID){
-            Artists.deleteOne(artistID)
+            ArtistsFetch.deleteOne(artistID)
             .then((artist) => {
                 buttonEvents.getArtists();
                 console.log(artist);
             });
         },
         addTrackToPlaylist: function(playlistID, trackID){
-            Playlists.addTrack(playlistID, trackID)
+            let newTrack = new Playlist();
+            newTrack.addTrack(playlistID, trackID)
               .then((playlist) => {
                 console.log(playlist);
               });
         },
         searchForAlbums: function(title){
-            Albums.searchByTitle(title)
+            AlbumsFetch.search('title', title)
               .then((albumsSearchResults) =>{
+                  console.log(albumsSearchResults);
                   //buttonEvents.
                   //displayModule.displayAlbums(albumsSearchResults);
               });
@@ -973,7 +995,7 @@ let bindEvents = (function(){
 //Module to handle all search functions
 let searchController = (function(){
     return {
-        searchForAlbum: function(){
+       /* searchForAlbum: function(){
 
             let searchAlbumForm = document.getElementById('searchAlbumForm');
             let searchAlbumButton = document.getElementById('searchAlbumButton');
@@ -1009,11 +1031,11 @@ let searchController = (function(){
                 let playlistSearchField = document.getElementById('playlistSearchField').value;
                 Playlists.searchByTitle(playlistSearchField);
             });
-        }
+        }*/
     }
 }());
 
-let handleForms = (function(){
+/*let handleForms = (function(){
     return {
         preventDefault: function(){
             //Function to prevent the reload default of all forms present on the page
@@ -1039,7 +1061,7 @@ let handleForms = (function(){
             }
         }
     }
-}());
+}());*/
 
 //Bind all the home page nav link buttons to their eventlisteners
 bindEvents.bindHomePageEventListeners();
