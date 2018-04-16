@@ -323,7 +323,7 @@ let displayModule = (function(){
                                 const ratingValue = value / ratingValueArray.length; 
                                 console.log(ratingValue);
                             albumInfo +=`
-                            <h6>Average Rating: ${ratingValue}</h6>`;
+                            <h6>Average Rating: ${Math.round(ratingValue * 10) / 10}</h6>`;
                             }
                             albumInfo +=`
                             <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
