@@ -687,6 +687,7 @@ let buttonEvents = (function(){
         }, 
         addNewTrack: function(albumID, artistID){
             let trackTitle = document.getElementById('trackTitle').value;
+            let submitButton = document.getElementById('addTrack');
 
             let newTrack = new Track(trackTitle, albumID, artistID);
 
@@ -697,7 +698,7 @@ let buttonEvents = (function(){
                     console.log(postedTrack);
                 });
             }else{
-                //displayError();
+                displayModule.formErrorMessages(submitButton);
             }
             
         },
@@ -862,6 +863,7 @@ let buttonEvents = (function(){
         addCommentToPlaylist: function(playlistID){
             const commentText = document.getElementById('commentField').value;
             const username = document.getElementById('username').value;
+            let submitButton = document.getElementById('commentButton');
             
             if(handleForms.validate([commentText, username])){
 
@@ -872,7 +874,8 @@ let buttonEvents = (function(){
                     console.log(playlist);
                   });
             } else {
-                //displayError();
+                console.log(submitButton);
+                displayModule.formErrorMessages(submitButton);
             }
         }
     }
