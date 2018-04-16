@@ -14,15 +14,15 @@ main{
     width: 100%;
     margin: 0px auto; 
      .navigation{
-        display: inline-flex;
+        display: flex;
+        width: 70%;
+        margin: 0px auto;
      }
      .hamburger-icon{
          display: none;
      }
     nav{
-        height: 50px; 
-        text-align: left; 
-        margin-left: 12%; 
+        text-align: center; 
         ul{
             display: inline-flex;
             li{
@@ -34,13 +34,11 @@ main{
         }
     }
     .nav-bar{
-        flex-basis: 60%;
+        flex-basis: 75%;
     }
     .add-button{
-        button{
-            float: right;
-            background-color:#EE708B;
-       }
+        flex-basis: 25%;
+        text-align: right;
        button:hover{
            color: #1F211F; 
        }
