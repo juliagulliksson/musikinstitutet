@@ -180,6 +180,8 @@ const displayModule = (function(){
                 <div class="search-albums">
                     <form id="searchAlbumForm">
                         <input type="text" id="albumSearchField" placeholder="Search for albums here">
+                        <input type="radio" value="title" name="searchOption">Title
+                        <input type="radio" value="genres" name="searchOption"> Genre
                         <button id="searchAlbumButton">search</button>
                     </form>
                 </div>
@@ -668,10 +670,9 @@ let buttonEvents = (function(){
                 console.log(playlist);
               });
         },
-        searchForAlbums: function(title){
-            AlbumsFetch.search('title', title)
+        searchForAlbums: function(searchOption, title){
+            AlbumsFetch.search(searchOption, title)
               .then((albumsSearchResults) =>{
-                  console.log(albumsSearchResults);
                     displayModule.displayAlbums(albumsSearchResults);
                     bindEvents.bindAlbumPageEventListeners();
               });
@@ -749,7 +750,8 @@ let bindEvents = (function(){
             
             searchAlbum.addEventListener('click', function(){
                 const title = document.getElementById('albumSearchField').value;
-                buttonEvents.searchForAlbums(title);
+                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
+                buttonEvents.searchForAlbums(searchOption, title);
             });
 
             handleForms.preventDefault();
