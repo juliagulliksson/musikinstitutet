@@ -1,10 +1,10 @@
 body{
-    background-color: rgb(236, 233, 233);
     margin: 0px;
     padding: 0px; 
     font-family: $mainFont;
     color: #1F211F; 
 }
+
 main{
     padding: 15px; 
     background-color: #FFF;
@@ -37,16 +37,15 @@ li{
 
 
 %delete-button{
-    width: 90%;
     margin: 0px auto; 
-    button{
-        padding: 10px;
-        border: none; 
-        background-color: $lightBorderColor; 
-        color: #8E2F3C; 
-        font-weight: 700; 
-        border-radius: 4px;
-    }
+    margin-top: 15px; 
+    width: 90%;
+    padding: 10px;
+    border: none; 
+    background-color: $mediumBorderColor; 
+    color: #8E2F3C; 
+    font-weight: 700; 
+    border-radius: 4px;
 }
 
 %button{
@@ -97,10 +96,10 @@ li{
          width: 50%; 
          height: 100vh;
          overflow-x: hidden;
-         //overflow-y: scroll; 
+         overflow-y: scroll; 
      }
     nav{
-        height: 100%; 
+        height: 55px; 
         text-align: right;
         button{
             @extend %button;
@@ -126,7 +125,7 @@ li{
     }
     .add-button{
         text-align: left; 
-        padding: 20px; 
+        margin-left: 20px; 
     }
 }
 
@@ -157,10 +156,11 @@ li{
     margin-bottom: 17px;
     input[type=text]{
         margin-top: 5px; 
+        margin-bottom: 10px; 
         margin-left: 15px; 
         border: 0.9px solid #cacaca; 
         border-radius: 0.25rem;
-        width: 50%;  
+        width: 90%;  
         background-color: #e9e9e9; 
         padding: 10px;
     }
@@ -375,9 +375,9 @@ li{
             background-color: #8E2F3C; 
             color: $white; 
         }
-      button{
-        @extend %delete-button;
-      }
+        button{
+            @extend %delete-button;
+        }
     }
 }
 
@@ -447,8 +447,89 @@ li{
     }
 
     .playlist-delete-button{
+        button{
         @extend %delete-button;
+        }
+        button:hover{
+            background-color: #8E2F3C; 
+            color: $white; 
+        }
     }
+
+    .playlist-comment-div{
+        margin-top: 15px; 
+        background-color: $lightBorderColor; 
+        padding: 15px; 
+        input{
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+            background-color: $white;
+            border: 0.9px solid #cacaca;
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            font-family: 'Roboto Condensed';
+            font-size: 1em;
+        }
+        label{
+            display: block;
+            margin-bottom: 10px;
+        }
+        textarea{
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+            background-color: $white;
+            border: 0.9px solid #cacaca;
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            font-family: 'Roboto Condensed';
+            font-size: 1em;
+        }
+        button{
+            @extend %button;
+            margin-bottom: 20px;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        button:active, button:hover{
+            color: rgb(32, 56, 32); 
+        }
+        .playlist-comments{
+            margin-top: 5px; 
+            padding: 10px; 
+            background-color: $white;
+            ul{
+            margin-left: -40px; 
+                li{
+                    padding-top: 10px; 
+                    margin: 10px; 
+                    border-top: 1px solid $mediumBorderColor; 
+                }
+            }
+            button{
+                margin: 0px;
+                padding: 2px;
+                font-size: 0.85rem; 
+            }
+        }
+    }
+
+    // .playlist-comment-div{
+    //     background-color: $lightBorderColor; 
+    //     padding: 15px;
+    //     margin-top: 20px; 
+    //     .comment-form{
+    //         width: 100%; 
+    //         form{
+    //             margin-bottom: 10px; 
+    //         }
+    //     }
+    // }
 }
 
 %form-wrappers{
