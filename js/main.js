@@ -392,7 +392,7 @@ const displayModule = (function(){
             <div class="search-tracks">
                 <form id="searchTrackForm">
                     <input type="text" id="trackSearchField" placeholder="Search for tracks here">
-                    <button id="searchTrackButton">search</button>
+                    <input type="submit" id="searchTrackButton" value="Search">
                 </form>
             </div>
             
@@ -676,6 +676,26 @@ let buttonEvents = (function(){
                   //displayModule.displayAlbums(albumsSearchResults);
               });
         },
+        searchForArtists: function(name){
+            ArtistsFetch.search('name', name)
+              .then((artistSearchResults) =>{
+                  console.log(artistSearchResults);
+                  //buttonEvents.
+                  //displayModule.displayAlbums(albumsSearchResults);
+              });
+        },
+        searchForTracks: function(title){
+            TracksFetch.search('title', title)
+              .then((tracksSearchResults) => {
+                  console.log(tracksSearchResults);
+              })
+        },
+        searchForPlaylists: function(title){
+            PlaylistsFetch.search('title', title)
+              .then((playlistSearchResults) => {
+                  console.log(playlistSearchResults);
+              })
+        }
     }
 }());
 
@@ -740,7 +760,10 @@ let bindEvents = (function(){
         },
         bindArtistPageEventListeners: function(){
             const searchArtist = document.getElementById('searchArtistButton');
-            searchArtist.addEventListener('click', searchController.searchForArtist);
+            searchArtist.addEventListener('click', () => {
+                const artistSearchValue = document.getElementById('artistSearchField').value;
+                buttonEvents.searchForArtists(artistSearchValue);
+            });
 
             let artistImages = document.querySelectorAll('img');
 
@@ -751,6 +774,8 @@ let bindEvents = (function(){
                   buttonEvents.getIndividualArtist(artistID);
                 });
             }
+
+            handleForms.preventDefault();
         },
         bindIndividualAlbumPageEventListeners: function(){
             const newTrackForm = document.getElementById('addTrackForm');
@@ -791,8 +816,14 @@ let bindEvents = (function(){
             });
         },
         bindTrackPageEventListeners: function(){
-            /*const searchTrack = document.getElementById('searchTrackButton');
-            searchTrack.addEventListener('click', searchController.searchForTrack);*/
+            handleForms.preventDefault();
+            const searchTrack = document.getElementById('searchTrackButton');
+            searchTrack.addEventListener('click', () => {
+                const searchTrackValue = document.getElementById('trackSearchField').value;
+                buttonEvents.searchForTracks(searchTrackValue);
+            });
+
+            
 
             let playlistDropdownButtons = document.querySelectorAll('button');
 
@@ -812,8 +843,12 @@ let bindEvents = (function(){
             }
         },
         bindPlaylistPageEventListeners: function(){
+            handleForms.preventDefault();
             const searchPlaylist = document.getElementById('searchPlaylistButton');
-            searchPlaylist.addEventListener('click', searchController.searchForPlaylist);
+            searchPlaylist.addEventListener('click', () => {
+                const playlistSearchValue = document.getElementById('playlistSearchField').value;
+                buttonEvents.searchForPlaylists(playlistSearchValue);
+            });
 
             let playlistImages = document.querySelectorAll('img');
 
