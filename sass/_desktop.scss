@@ -13,14 +13,17 @@ main{
 .nav-bar{
     width: 100%;
     margin: 0px auto;  
-    .navigation{
-        @include flex();
-        width: 70%;
-        margin: 0px auto;
-        background: none; 
-        height: 100%;
-        overflow-x: none;
-        overflow-y: none; 
+    .navigation-dropdown{
+        display: block; 
+        .navigation{
+            @include flex();
+            width: 70%;
+            margin: 0px auto;
+            background: none; 
+            height: 100%;
+            overflow-x: none;
+            overflow-y: none; 
+        }
     }
     nav{
         text-align: center;
