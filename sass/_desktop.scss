@@ -6,7 +6,7 @@ main{
 
 .header-flex-wrapper{
    .header-image{
-       height: 330px;
+       height: 300px;
    } 
 }
 
@@ -14,9 +14,9 @@ main{
     width: 100%;
     margin: 0px auto; 
      .navigation{
-        display: flex;
-        width: 70%;
-        margin: 0px auto;
+         @include flex();
+         width: 80%;
+         margin: 0px auto;
      }
      .hamburger-icon{
          display: none;
@@ -29,22 +29,22 @@ main{
                 cursor: pointer;
             }
             li:hover{
-                color: #EE708B;
+                color: $pink;
             }
         }
     }
-    .nav-bar{
-        flex-basis: 75%;
-    }
+    .nav-list{
+        @include flex-basis(80%);
     .add-button{
-        flex-basis: 25%;
         text-align: right;
+        @include flex-basis(20%);
+
        button:hover{
            color: #1F211F; 
        }
     }
 }
-
+  
 .albums-wrapper{
     .album-wrapper{
         width: 20%;
@@ -56,7 +56,7 @@ main{
         }
     }
 }
-
+  
 .artists-wrapper{  
     .artist-wrapper{
         width: 20%;
@@ -68,7 +68,7 @@ main{
         }
     }
 }
-
+  
 .tracks-wrapper{ 
     margin-left: 20px; 
     .track-wrapper{
@@ -85,7 +85,7 @@ main{
         margin-top: 30px;
     }    
 }
-
+  
 .playlists-wrapper{
     .playlist-wrapper{
         width: 20%;
@@ -97,7 +97,7 @@ main{
         }
     }
 }
-
+  
 .forms-wrapper{
     .artist-form-wrapper, .album-form-wrapper, .playlist-form-wrapper{
         input{

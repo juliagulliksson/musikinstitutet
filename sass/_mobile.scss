@@ -2,7 +2,7 @@ body{
     background-color: rgb(236, 233, 233);
     margin: 0px;
     padding: 0px; 
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: $mainFont;
     color: #1F211F; 
 }
 main{
@@ -44,7 +44,6 @@ li{
     padding: 10px;
     background-color: $pink;
     transition: all 400ms;
-    margin-top: 7px;
     font-size: 1em;
     box-shadow: 3px 3px 2px 0px $lightPink;
     -webkit-box-shadow: 3px 3px 2px 0px $lightPink;
@@ -52,7 +51,7 @@ li{
 }
 
 .header-flex-wrapper{
-    display: flex;
+    @include flex();
     flex-direction: column-reverse;
     width: 100%;
  
@@ -61,7 +60,7 @@ li{
        background-repeat: no-repeat;
        background-position: center; 
        background-size: 100%;
-   } 
+   }
 }
 
 .nav-bar{
@@ -69,7 +68,6 @@ li{
     color: #1F211F;    
     border-bottom: 1px solid $grey; 
     font-family: 'Fjalla One', sans-serif;
-    height: 55px; 
      .navigation{
          display: none;
      }
@@ -77,6 +75,7 @@ li{
         text-align: right;
         button{
             @extend %button;
+            margin-top: 7px;
         }
         button:active{
             color: #1F211F; 
@@ -98,13 +97,13 @@ li{
     }
 
     .hamburger-icon{
+        margin-right: 10px;
         img{
             width: 50px;
             height: 50px;
             margin: 10px;
         }
     }
-   
 }
 
     
@@ -173,7 +172,7 @@ li{
 }
 
 .artists-wrapper{  
-    display: flex;
+    @include flex();
     flex-wrap: wrap;    
     .artist-wrapper{
         width: 45%;
@@ -308,8 +307,8 @@ li{
 }
 
 .playlists-wrapper{
-    display: flex;
-    flex-wrap: wrap;   
+    @include flex();
+    flex-wrap: wrap;    
     .playlist-wrapper{
         width: 45%;
         text-align: center;
@@ -352,7 +351,7 @@ li{
 /*--albums--*/
 .individual-albums-wrapper{
     .individual-flex-wrapper{
-        display: flex;
+        @include flex();
         .cover-image{
             overflow: hidden; 
             margin-bottom: 10px; 
@@ -372,11 +371,13 @@ li{
         }
     }
     .add-track-form{
-        height: 40px; 
         border-top: 1px solid $mediumBorderColor; 
         border-bottom: 1px solid $mediumBorderColor;  
+        margin-top: 10px;
+        padding-bottom: 10px;
+        padding-top: 10px;
         #addTrackForm{
-            margin-top: 10px; 
+            //margin-top: 10px; 
         }
         label{
             font-size: 0.9rem; 
@@ -386,9 +387,11 @@ li{
             width: 60%; 
         }
         button{
-            background-color: $pink; 
+            @extend %button;
+            /*background-color: $pink; 
             color: #ffffff; 
-            border-radius: 0.25rem; 
+            border-radius: 0.25rem; */
+            padding: 5px;
         }
     }
 
@@ -405,6 +408,10 @@ li{
             background-color: $grey;
             color: $white; 
             border-radius: 0.25rem; 
+            border: 0;
+            outline: 0;
+            padding: 5px;
+            margin-top: -4px;
         }
     }
 
@@ -434,7 +441,7 @@ li{
 /*--playlists--*/
 .individual-playlist-wrapper{
     .individual-playlist-flex-wrapper{
-        display: flex;
+        @include flex();
         .cover-image{
             overflow: hidden; 
             margin-bottom: 10px; 
