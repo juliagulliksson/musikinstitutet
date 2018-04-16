@@ -6,7 +6,7 @@ main{
 
 .header-flex-wrapper{
    .header-image{
-       height: 330px;
+       height: 300px;
    } 
 }
 
@@ -14,7 +14,7 @@ main{
     width: 100%;
     margin: 0px auto;  
     .navigation{
-        display: flex;
+        @include flex();
         width: 70%;
         margin: 0px auto;
         background: none; 
@@ -33,7 +33,7 @@ main{
                 margin: 0px 7px 0px 7px;
             }
             li:hover{
-                color: #EE708B;
+                color: $pink;
             }
         }
     }
@@ -43,18 +43,18 @@ main{
     .hamburger-icon{
         display: none; 
     }
-
-    .add-button{
-        text-align: right; 
-        flex-basis: 25%; 
-        color: #1F211F;  
-        padding: 0px; 
-        button:hover{
-            color: #1F211F;
+    .nav-list{
+        @include flex-basis(80%);
+        .add-button{
+            text-align: right;  
+            @include flex-basis(20%);
+            button:hover{
+                color: #1F211F; 
+            }
         }
     }
 }
-
+  
 .albums-wrapper{
     .album-wrapper{
         width: 20%;
@@ -66,7 +66,7 @@ main{
         }
     }
 }
-
+  
 .artists-wrapper{  
     .artist-wrapper{
         width: 20%;
@@ -78,7 +78,7 @@ main{
         }
     }
 }
-
+  
 .tracks-wrapper{ 
     margin-left: 20px; 
     .track-wrapper{
@@ -95,7 +95,7 @@ main{
         margin-top: 30px;
     }    
 }
-
+  
 .playlists-wrapper{
     .playlist-wrapper{
         width: 20%;
@@ -107,11 +107,38 @@ main{
         }
     }
 }
-
+  
 .forms-wrapper{
     .artist-form-wrapper, .album-form-wrapper, .playlist-form-wrapper{
         input{
             width: 40%;
         }
+    }
+}
+
+.playlist-comments{
+    width: 50%;
+    h3{
+        color: $pink;
+    }
+    .comment{
+        border-bottom: 1px solid $mediumBorderColor;
+        h6{
+            margin-top: 10px;
+        }
+    }
+}
+
+.individual-albums-wrapper{
+    .album-delete-button{
+        width: 37%;
+        margin: 5px;
+    }
+}
+
+.individual-playlist-wrapper{
+    .playlist-delete-button{
+        width: 37%;
+        margin: 5px;
     }
 }
