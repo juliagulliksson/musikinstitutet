@@ -399,7 +399,7 @@ const displayModule = (function(){
             playlistInfo += `</div>`;
             outputDiv.innerHTML = playlistInfo;
         },
-        displayIndividualPlaylist: function(playlist){
+        displayIndividualPlaylist: function(playlist, comments){
 
             let playlistInfo = ``;
             playlistInfo += `
@@ -443,9 +443,27 @@ const displayModule = (function(){
                         <textarea id="commentField"></textarea>
                         <button id="commentButton" data-id="${playlist._id}">Send</button>
                     </form>
+                </div>`;
+                playlistInfo += `
+                <div class="playlist-comments">
+                    <h3>Comments:</h3>
+                    <ul>`;
+                        for(let i in comments){
+                            playlistInfo += `
+                            <div class="comment">
+                                <li><h6>${comments[i].username}</h6>
+                                <p>${comments[i].body}</p>
+                                <button data-id="${comments[i]._id}">Delete</button>
+                                </li>
+                            </div>`;
+                        }
+                    
+                    playlistInfo += `
+                    </ul>
                 </div>
             </div>`; 
             outputDiv.innerHTML = playlistInfo;
+            console.log(comments);
 
         },
         displayTracks: function(tracks, playlists){
@@ -701,10 +719,15 @@ let buttonEvents = (function(){
         getIndividualPlaylist: function(playlistID){
             PlaylistsFetch.getOne(playlistID)
             .then((playlist) => {
-                console.log(playlist);
-                displayModule.displayIndividualPlaylist(playlist);
-                bindEvents.bindIndividualPlaylistPageEventListeners();
-              });
+                fetch(`https://folksa.ga/api/playlists/${playlistID}/comments?key=flat_eric`)
+                    .then((response) => response.json())
+                    .then((comments) => {
+                        console.log(comments);
+                        console.log(playlist);
+                        displayModule.displayIndividualPlaylist(playlist, comments);
+                        bindEvents.bindIndividualPlaylistPageEventListeners();
+                    });
+            });
         },
         deleteOneAlbum: function(albumID){
             AlbumsFetch.deleteOne(albumID)
@@ -979,7 +1002,7 @@ let bindEvents = (function(){
             let playlistID = deletePlaylistButton.dataset.id;
 
             deletePlaylistButton.addEventListener('click', () => {
-                Playlists.deleteOne(playlistID)
+                PlaylistsFetch.deleteOne(playlistID)
                 .then((playlist) => {
                     buttonEvents.getPlaylists();
                 });
