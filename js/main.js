@@ -141,6 +141,26 @@ class Playlist {
     }
 }
 
+class Comment {
+    constructor(playlistID, commentText, username){
+        this.playlist = playlistID;
+        this.body = commentText;
+        this.username = username;
+    }
+
+    addToPlaylist(){
+        return fetch(`https://folksa.ga/api/playlists/${this.playlist}/comments?key=flat_eric`,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this)
+        })
+        .then((response) => response.json())
+    }
+}
+
 class FormHandler {
     
     preventDefault(){
@@ -405,9 +425,24 @@ const displayModule = (function(){
                     }
                 playlistInfo += `</ul>
                 </div>`;
+
+          
+
                 playlistInfo += `
                 <div class="playlist-delete-button">
                     <button data-id="${playlist._id}" id="deletePlaylist">Delete Playlist</button>
+                </div>`;
+
+                playlistInfo += `
+                <div class="comment-form">
+                    <h3>Leave a comment</h3>
+                    <form>
+                        <label for="username">Usename</label>
+                        <input type="text" id="username">
+                        <label for="commentField">Comment</label>
+                        <textarea id="commentField"></textarea>
+                        <button id="commentButton" data-id="${playlist._id}">Send</button>
+                    </form>
                 </div>
             </div>`; 
             outputDiv.innerHTML = playlistInfo;
@@ -638,10 +673,9 @@ let buttonEvents = (function(){
             const releaseDate = document.getElementById("releaseDate").value;
             const spotifyURL = document.getElementById("newAlbumSpotifyURL").value;
             const coverImage = document.getElementById("newAlbumCover").value; 
-    
-            let newAlbum = new Album(title, artists, releaseDate, genres, spotifyURL, coverImage);
-        
+           
             if(handleForms.validate([title, artists])){
+                let newAlbum = new Album(title, artists, releaseDate, genres, spotifyURL, coverImage);
                 newAlbum.addNew()
                 .then((album) => {
                     buttonEvents.getIndividualAlbum(album._id);
@@ -732,6 +766,22 @@ let buttonEvents = (function(){
                   displayModule.displayPlaylists(playlistSearchResults);
                   bindEvents.bindPlaylistPageEventListeners();
               })
+        },
+        addCommentToPlaylist: function(playlistID){
+            const commentText = document.getElementById('commentField').value;
+            const username = document.getElementById('username').value;
+            
+            if(handleForms.validate([commentText, username])){
+
+                let newComment = new Comment(playlistID, commentText, username);
+                console.log(newComment);
+                newComment.addToPlaylist()
+                .then((playlist) => {
+                    console.log(playlist);
+                  });
+            } else {
+                //displayError();
+            }
         }
     }
 }());
@@ -924,15 +974,22 @@ let bindEvents = (function(){
             }
         },
         bindIndividualPlaylistPageEventListeners: function(){
+            handleForms.preventDefault();
             let deletePlaylistButton = document.getElementById('deletePlaylist');
             let playlistID = deletePlaylistButton.dataset.id;
 
-            deletePlaylistButton.addEventListener('click', function(){
+            deletePlaylistButton.addEventListener('click', () => {
                 Playlists.deleteOne(playlistID)
                 .then((playlist) => {
                     buttonEvents.getPlaylists();
                 });
             });
+
+            const commentButton = document.getElementById('commentButton');
+            commentButton.addEventListener('click', () => {
+                const playlistID = commentButton.dataset.id;
+                buttonEvents.addCommentToPlaylist(playlistID);
+            })
         }
     }
 }());
