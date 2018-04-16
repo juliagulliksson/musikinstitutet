@@ -316,13 +316,16 @@ let displayModule = (function(){
                         <h5>by ${album.artists[0].name}</h5>
                         <h6>${album.genres} • ${album.releaseDate}</h6>
                         <div class="playlist-rating-form">`;
-                            let ratingValueArray = album.ratings;
-                            const reducer = (accumulator, currentValue) => accumulator + currentValue;
-                            const value = ratingValueArray.reduce(reducer);
-                            const ratingValue = value / ratingValueArray.length; 
-                            console.log(ratingValue);
+                            if(album.ratings.length > 0){
+                                let ratingValueArray = album.ratings;
+                                const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                                const value = ratingValueArray.reduce(reducer);
+                                const ratingValue = value / ratingValueArray.length; 
+                                console.log(ratingValue);
                             albumInfo +=`
-                            <h6>Average Rating: ${ratingValue}</h6>
+                            <h6>Average Rating: ${ratingValue}</h6>`;
+                            }
+                            albumInfo +=`
                             <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
                             <button id="voteAlbum" data-id="${album._id}">Vote</button>
                         </div>
