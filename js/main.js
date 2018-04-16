@@ -159,6 +159,17 @@ class Comment {
         })
         .then((response) => response.json())
     }
+
+    deleteOne(commentID){
+        return fetch(`https://folksa.ga/api/comments/${commentID}?key=flat_eric`, {
+            method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then((response) => response.json())
+    }
 }
 
 class FormHandler {
@@ -445,7 +456,7 @@ const displayModule = (function(){
                     </form>
                 </div>`;
                 playlistInfo += `
-                <div class="playlist-comments">
+                <div class="playlist-comments" id="commentDiv">
                     <h3>Comments:</h3>
                     <ul>`;
                         for(let i in comments){
@@ -750,6 +761,13 @@ let buttonEvents = (function(){
                 console.log(artist);
             });
         },
+        deleteOneComment: function(commentID){
+            let comment = new Comment();
+            comment.deleteOne(commentID)
+            .then((comment) => {
+                console.log(comment);
+            });
+        },
         addTrackToPlaylist: function(playlistID, trackID){
             let newTrack = new Playlist();
             newTrack.addTrack(playlistID, trackID)
@@ -1007,6 +1025,15 @@ let bindEvents = (function(){
                     buttonEvents.getPlaylists();
                 });
             });
+
+            const commentDiv = document.getElementById('commentDiv');
+            const deleteCommentButtons = commentDiv.querySelectorAll('button');
+            for(deleteCommentButton of deleteCommentButtons){
+                deleteCommentButton.addEventListener('click', function(){
+                    let commentID = this.dataset.id;
+                    buttonEvents.deleteOneComment(commentID);
+                });
+            }
 
             const commentButton = document.getElementById('commentButton');
             commentButton.addEventListener('click', () => {
