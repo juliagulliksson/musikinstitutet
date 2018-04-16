@@ -676,7 +676,6 @@ let buttonEvents = (function(){
                   //displayModule.displayAlbums(albumsSearchResults);
               });
         },
-        s
     }
 }());
 
