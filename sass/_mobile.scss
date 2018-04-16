@@ -70,17 +70,25 @@ li{
     border-bottom: 1px solid $grey; 
     font-family: 'Fjalla One', sans-serif;
     height: 55px; 
+    .hamburger-icon{
+        img{
+            width: 50px;
+            height: 50px;
+        }
+    }
      .navigation{
          display: inline-block;
          text-align: left; 
-         position: relative;
-         z-index: 1;
+         position: sticky;
+         z-index: 1000;
          background-color: $lightBorderColor; 
          width: 50%; 
-         height: 100%;
-         padding: none; 
+         height: 100vh;
+         overflow-x: hidden;
+         overflow-y: scroll; 
      }
     nav{
+        height: 100%; 
         text-align: right;
         button{
             @extend %button;
@@ -89,8 +97,8 @@ li{
             color: #1F211F; 
         }
         ul{
-            margin: 0px 0px 0px 20px;
-            padding: 0;
+            margin: 0px;
+            padding: 0px;
         
             li{
                 list-style-type: none;
@@ -103,17 +111,9 @@ li{
             }
         }
     }
-
-    .hamburger-icon{
-        img{
-            width: 50px;
-            height: 50px;
-            margin: 10px;
-        }
-    }
-
     .add-button{
         text-align: left; 
+        padding: 20px; 
     }
 }
 
@@ -436,7 +436,11 @@ li{
             border: none; 
             background-color: $lightBorderColor; 
             color: #8E2F3C; 
-            font-weight: 700; 
+            font-weight: 700;
+        }
+        button:hover{
+            background-color: #8E2F3C; 
+            color: $white; 
         }
     }
 }

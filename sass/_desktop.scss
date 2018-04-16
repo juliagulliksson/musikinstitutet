@@ -18,6 +18,9 @@ main{
         width: 70%;
         margin: 0px auto;
         background: none; 
+        height: 100%;
+        overflow-x: none;
+        overflow-y: none; 
     }
     nav{
         text-align: center;
@@ -45,6 +48,7 @@ main{
         text-align: right; 
         flex-basis: 25%; 
         color: #1F211F;  
+        padding: 0px; 
         button:hover{
             color: #1F211F;
         }
