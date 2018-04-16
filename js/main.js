@@ -166,17 +166,26 @@ class FormHandler {
         }
     }
 
-    validateRadioButtons(radioButton){
-        const searchByTitle = document.getElementById('searchByTitle');
-        const searchByGenre = document.getElementById('searchByGenre');
-        if (searchByTitle.checked) {
-            return searchByTitle.value;
-        } else if (searchByGenre.checked ){
-            return searchByGenre.value;
+    validateSearchForms(searchValue){
+
+        if(handleForms.validate([searchValue])){
+            //Radio buttons
+            const searchByTitle = document.getElementById('searchByTitle');
+            const searchByGenre = document.getElementById('searchByGenre');
+
+            if (searchByTitle.checked) {
+                return searchByTitle.value;
+            } else if (searchByGenre.checked) {
+                return searchByGenre.value;
+            } else {
+                //Neither of the radio buttons are checked
+                return false;
+            }
         } else {
             return false;
         }
     }
+  
 }
 
 const handleForms = new FormHandler();
@@ -233,8 +242,11 @@ const displayModule = (function(){
                     <div class="album-info">
                         <h4>${album.title}</h4>
                         <h5>by ${album.artists[0].name}</h5>
-                        <h6>${album.genres} • ${album.releaseDate}</h6>
-                    </div> 
+                        `;
+                        if(album.genres.length > 0 && album.releaseDate != null){
+                            albumInfo += `<h6>${album.genres} • ${album.releaseDate}</h6>`;
+                        }
+                    albumInfo += `</div> 
                 </div>
 
                 <div class="add-track-form">
@@ -342,8 +354,8 @@ const displayModule = (function(){
             <div class="search-playlist">
                 <form id="searchPlaylistForm">
                     <input type="text" id="playlistSearchField" placeholder="Search for playlists here">
-                    <input type="radio" value="title" name="searchOption">Title
-                    <input type="radio" value="genres" name="searchOption">Genre
+                    <input type="radio" value="title" id="searchByTitle">Title
+                    <input type="radio" value="genres" id="searchByGenre">Genre
                     <button id="searchPlaylistButton">search</button>
                 </form>
             </div>
@@ -408,8 +420,8 @@ const displayModule = (function(){
             <div class="search-tracks">
                 <form id="searchTrackForm">
                     <input type="text" id="trackSearchField" placeholder="Search for tracks here">
-                    <input type="radio" value="title" name="searchOption">Title
-                    <input type="radio" value="genres" name="searchOption">Genre
+                    <input type="radio" value="title" id="searchByTitle">Title
+                    <input type="radio" value="genres" id="searchByGenre">Genre
                     <input type="submit" id="searchTrackButton" value="Search">
                 </form>
             </div>
@@ -461,8 +473,8 @@ const displayModule = (function(){
                 <div class="search-artists">
                     <form id="searchartistForm">
                         <input type="text" id="artistSearchField" placeholder="Search for artists here">
-                        <input type="radio" value="name" name="searchOption">Name
-                        <input type="radio" value="genres" name="searchOption">Genre
+                        <input type="radio" value="name" id="searchByTitle">Name
+                        <input type="radio" value="genres" id="searchByGenre">Genre
                         <button id="searchArtistButton">search</button>
                     </form>
                 </div>
@@ -768,16 +780,15 @@ let bindEvents = (function(){
 
             
             searchAlbum.addEventListener('click', function(){
-                const title = document.getElementById('albumSearchField').value;
-                if(handleForms.validate([title])){
-                    let searchOption = handleForms.validateRadioButtons();
-                    if(searchOption == false){
-                        //displayError();
-                    } else {   
-                        buttonEvents.searchForAlbums(searchOption, title);
-                    }
+                const albumSearchValue = document.getElementById('albumSearchField').value;
+            
+                let searchOption = handleForms.validateSearchForms(albumSearchValue);
+                if(!searchOption){     //Search form is not correct
+                    //displayError();
+                } else {    //Form is correct, send the value of searchOption to the function
+                    buttonEvents.searchForAlbums(searchOption, albumSearchValue);
                 }
-              
+                
             });
 
             handleForms.preventDefault();
@@ -796,8 +807,12 @@ let bindEvents = (function(){
             const searchArtist = document.getElementById('searchArtistButton');
             searchArtist.addEventListener('click', () => {
                 const artistSearchValue = document.getElementById('artistSearchField').value;
-                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
-                buttonEvents.searchForArtists(searchOption, artistSearchValue);
+                let searchOption = handleForms.validateSearchForms(artistSearchValue);
+                if(!searchOption){     //Search form is not correct
+                    //displayError();
+                } else {    //Form is correct, send the value of searchOption to the function
+                    buttonEvents.searchForArtists(searchOption, artistSearchValue);
+                }
             });
 
             let artistImages = document.querySelectorAll('img');
@@ -854,9 +869,15 @@ let bindEvents = (function(){
             handleForms.preventDefault();
             const searchTrack = document.getElementById('searchTrackButton');
             searchTrack.addEventListener('click', () => {
-                const searchTrackValue = document.getElementById('trackSearchField').value;
-                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
-                buttonEvents.searchForTracks(searchOption, searchTrackValue);
+                const trackSearchValue = document.getElementById('trackSearchField').value;
+
+                let searchOption = handleForms.validateSearchForms(trackSearchValue);
+                if(!searchOption){     //Search form is not correct
+                    //displayError();
+                } else {    //Form is correct, send the value of searchOption to the function
+                    buttonEvents.searchForTracks(searchOption, trackSearchValue);
+                }
+            
             });
 
             
@@ -881,10 +902,15 @@ let bindEvents = (function(){
         bindPlaylistPageEventListeners: function(){
             handleForms.preventDefault();
             const searchPlaylist = document.getElementById('searchPlaylistButton');
+
             searchPlaylist.addEventListener('click', () => {
                 const playlistSearchValue = document.getElementById('playlistSearchField').value;
-                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
-                buttonEvents.searchForPlaylists(searchOption, playlistSearchValue);
+                let searchOption = handleForms.validateSearchForms(playlistSearchValue);
+                if (!searchOption) {     //Search form is not correct
+                    //displayError();
+                } else {    //Form is correct, send the value of searchOption to the function
+                    buttonEvents.searchForPlaylists(searchOption, playlistSearchValue);
+                }
             });
 
             let playlistImages = document.querySelectorAll('img');
@@ -908,49 +934,6 @@ let bindEvents = (function(){
                 });
             });
         }
-    }
-}());
-
-//Module to handle all search functions
-let searchController = (function(){
-    return {
-       /* searchForAlbum: function(){
-
-            let searchAlbumForm = document.getElementById('searchAlbumForm');
-            let searchAlbumButton = document.getElementById('searchAlbumButton');
-            handleForms.preventDefault();
-            searchAlbumButton.addEventListener('click', function(){
-                let albumSearchField = document.getElementById('albumSearchField').value;
-                Albums.searchByTitle(albumSearchField)
-            });
-        },
-        searchForArtist: function(){
-            let searchArtistForm = document.getElementById('searchArtistForm');
-            let searchArtistButton = document.getElementById('searchArtistButton');
-            handleForms.preventDefault();
-            searchArtistButton.addEventListener('click', function(){
-                let artistSearchField = document.getElementById('artistSearchField').value;
-                Artists.searchByName(artistSearchField);
-            });
-        },
-        searchForTrack: function(){
-            let searchTrackForm = document.getElementById('searchTrackForm');
-            let searchTrackButton = document.getElementById('searchTrackButton');
-            handleForms.preventDefault();
-            searchTrackButton.addEventListener('click', function(){
-                let trackSearchField = document.getElementById('trackSearchField').value;
-                Tracks.searchByTitle(trackSearchField);
-            });
-        },
-        searchForPlaylist: function(){
-            let searchPlaylistForm = document.getElementById('searchPlaylistForm');
-            let searchPlaylistButton = document.getElementById('searchPlaylistButton');
-            handleForms.preventDefault();
-            searchPlaylistButton.addEventListener('click', function(){
-                let playlistSearchField = document.getElementById('playlistSearchField').value;
-                Playlists.searchByTitle(playlistSearchField);
-            });
-        }*/
     }
 }());
 
