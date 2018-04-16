@@ -105,3 +105,30 @@ main{
         }
     }
 }
+
+.playlist-comments{
+    width: 50%;
+    h3{
+        color: $pink;
+    }
+    .comment{
+        border-bottom: 1px solid $mediumBorderColor;
+        h6{
+            margin-top: 10px;
+        }
+    }
+}
+
+.individual-albums-wrapper{
+    .album-delete-button{
+        width: 37%;
+        margin: 5px;
+    }
+}
+
+.individual-playlist-wrapper{
+    .playlist-delete-button{
+        width: 37%;
+        margin: 5px;
+    }
+}

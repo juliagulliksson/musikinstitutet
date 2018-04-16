@@ -141,6 +141,37 @@ class Playlist {
     }
 }
 
+class Comment {
+    constructor(playlistID, commentText, username){
+        this.playlist = playlistID;
+        this.body = commentText;
+        this.username = username;
+    }
+
+    addToPlaylist(){
+        return fetch(`https://folksa.ga/api/playlists/${this.playlist}/comments?key=flat_eric`,{
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this)
+        })
+        .then((response) => response.json())
+    }
+
+    deleteOne(commentID){
+        return fetch(`https://folksa.ga/api/comments/${commentID}?key=flat_eric`, {
+            method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then((response) => response.json())
+    }
+}
+
 class FormHandler {
     
     preventDefault(){
@@ -201,9 +232,11 @@ const displayModule = (function(){
                 <div class="search-albums">
                     <form id="searchAlbumForm">
                         <input type="text" id="albumSearchField" placeholder="Search for albums here">
-                        <input type="radio" value="title" id="searchByTitle">Title
-                        <input type="radio" value="genres" id="searchByGenre">Genre
-                        <button id="searchAlbumButton">search</button>
+                        <input type="radio" value="title" id="searchByTitle">
+                        <label for="searchByTitle">Title</label>
+                        <input type="radio" value="genres" id="searchByGenre">
+                        <label for="searchByGenre">Genre</label>
+                        <button id="searchAlbumButton">Search</button>
                     </form>
                 </div>
             <div class="albums-wrapper">
@@ -354,9 +387,11 @@ const displayModule = (function(){
             <div class="search-playlist">
                 <form id="searchPlaylistForm">
                     <input type="text" id="playlistSearchField" placeholder="Search for playlists here">
-                    <input type="radio" value="title" id="searchByTitle">Title
-                    <input type="radio" value="genres" id="searchByGenre">Genre
-                    <button id="searchPlaylistButton">search</button>
+                    <input type="radio" value="title" id="searchByTitle">
+                    <label for="searchByTitle">Title</label>
+                    <input type="radio" value="genres" id="searchByGenre">
+                    <label for="searchByGenre">Genre</label>
+                    <button id="searchPlaylistButton">Search</button>
                 </form>
             </div>
 
@@ -379,7 +414,7 @@ const displayModule = (function(){
             playlistInfo += `</div>`;
             outputDiv.innerHTML = playlistInfo;
         },
-        displayIndividualPlaylist: function(playlist){
+        displayIndividualPlaylist: function(playlist, comments){
 
             let playlistInfo = ``;
             playlistInfo += `
@@ -405,12 +440,45 @@ const displayModule = (function(){
                     }
                 playlistInfo += `</ul>
                 </div>`;
+
+          
+
                 playlistInfo += `
                 <div class="playlist-delete-button">
                     <button data-id="${playlist._id}" id="deletePlaylist">Delete Playlist</button>
+                </div>`;
+
+                playlistInfo += `
+                <div class="comment-form">
+                    <h3>Leave a comment</h3>
+                    <form>
+                        <label for="username">Usename</label>
+                        <input type="text" id="username">
+                        <label for="commentField">Comment</label>
+                        <textarea id="commentField"></textarea>
+                        <button id="commentButton" data-id="${playlist._id}">Send</button>
+                    </form>
+                </div>`;
+                playlistInfo += `
+                <div class="playlist-comments" id="commentDiv">
+                    <h3>Comments:</h3>
+                    <ul>`;
+                        for(let i in comments){
+                            playlistInfo += `
+                            <div class="comment">
+                                <li><h6>${comments[i].username}</h6>
+                                <p>${comments[i].body}</p>
+                                <button data-id="${comments[i]._id}">Delete</button>
+                                </li>
+                            </div>`;
+                        }
+                    
+                    playlistInfo += `
+                    </ul>
                 </div>
             </div>`; 
             outputDiv.innerHTML = playlistInfo;
+            console.log(comments);
 
         },
         displayTracks: function(tracks, playlists){
@@ -420,8 +488,10 @@ const displayModule = (function(){
             <div class="search-tracks">
                 <form id="searchTrackForm">
                     <input type="text" id="trackSearchField" placeholder="Search for tracks here">
-                    <input type="radio" value="title" id="searchByTitle">Title
-                    <input type="radio" value="genres" id="searchByGenre">Genre
+                    <input type="radio" value="title" id="searchByTitle">
+                    <label for="searchByTitle">Title</label>
+                    <input type="radio" value="genres" id="searchByGenre">
+                    <label for="searchByGenre">Genre</label>
                     <input type="submit" id="searchTrackButton" value="Search">
                 </form>
             </div>
@@ -473,9 +543,11 @@ const displayModule = (function(){
                 <div class="search-artists">
                     <form id="searchartistForm">
                         <input type="text" id="artistSearchField" placeholder="Search for artists here">
-                        <input type="radio" value="name" id="searchByTitle">Name
-                        <input type="radio" value="genres" id="searchByGenre">Genre
-                        <button id="searchArtistButton">search</button>
+                        <input type="radio" value="name" id="searchByTitle">
+                        <label for="searchByTitle">Name</label>
+                        <input type="radio" value="genres" id="searchByGenre">
+                        <label for="searchByGenre">Genre</label>
+                        <button id="searchArtistButton">Search</button>
                     </form>
                 </div>
             <div class="artists-wrapper">
@@ -638,10 +710,9 @@ let buttonEvents = (function(){
             const releaseDate = document.getElementById("releaseDate").value;
             const spotifyURL = document.getElementById("newAlbumSpotifyURL").value;
             const coverImage = document.getElementById("newAlbumCover").value; 
-    
-            let newAlbum = new Album(title, artists, releaseDate, genres, spotifyURL, coverImage);
-        
+           
             if(handleForms.validate([title, artists])){
+                let newAlbum = new Album(title, artists, releaseDate, genres, spotifyURL, coverImage);
                 newAlbum.addNew()
                 .then((album) => {
                     buttonEvents.getIndividualAlbum(album._id);
@@ -667,10 +738,15 @@ let buttonEvents = (function(){
         getIndividualPlaylist: function(playlistID){
             PlaylistsFetch.getOne(playlistID)
             .then((playlist) => {
-                console.log(playlist);
-                displayModule.displayIndividualPlaylist(playlist);
-                bindEvents.bindIndividualPlaylistPageEventListeners();
-              });
+                fetch(`https://folksa.ga/api/playlists/${playlistID}/comments?key=flat_eric`)
+                    .then((response) => response.json())
+                    .then((comments) => {
+                        console.log(comments);
+                        console.log(playlist);
+                        displayModule.displayIndividualPlaylist(playlist, comments);
+                        bindEvents.bindIndividualPlaylistPageEventListeners();
+                    });
+            });
         },
         deleteOneAlbum: function(albumID){
             AlbumsFetch.deleteOne(albumID)
@@ -691,6 +767,13 @@ let buttonEvents = (function(){
             .then((artist) => {
                 buttonEvents.getArtists();
                 console.log(artist);
+            });
+        },
+        deleteOneComment: function(commentID){
+            let comment = new Comment();
+            comment.deleteOne(commentID)
+            .then((comment) => {
+                console.log(comment);
             });
         },
         addTrackToPlaylist: function(playlistID, trackID){
@@ -732,6 +815,22 @@ let buttonEvents = (function(){
                   displayModule.displayPlaylists(playlistSearchResults);
                   bindEvents.bindPlaylistPageEventListeners();
               })
+        },
+        addCommentToPlaylist: function(playlistID){
+            const commentText = document.getElementById('commentField').value;
+            const username = document.getElementById('username').value;
+            
+            if(handleForms.validate([commentText, username])){
+
+                let newComment = new Comment(playlistID, commentText, username);
+                console.log(newComment);
+                newComment.addToPlaylist()
+                .then((playlist) => {
+                    console.log(playlist);
+                  });
+            } else {
+                //displayError();
+            }
         }
     }
 }());
@@ -924,15 +1023,31 @@ let bindEvents = (function(){
             }
         },
         bindIndividualPlaylistPageEventListeners: function(){
+            handleForms.preventDefault();
             let deletePlaylistButton = document.getElementById('deletePlaylist');
             let playlistID = deletePlaylistButton.dataset.id;
 
-            deletePlaylistButton.addEventListener('click', function(){
-                Playlists.deleteOne(playlistID)
+            deletePlaylistButton.addEventListener('click', () => {
+                PlaylistsFetch.deleteOne(playlistID)
                 .then((playlist) => {
                     buttonEvents.getPlaylists();
                 });
             });
+
+            const commentDiv = document.getElementById('commentDiv');
+            const deleteCommentButtons = commentDiv.querySelectorAll('button');
+            for(deleteCommentButton of deleteCommentButtons){
+                deleteCommentButton.addEventListener('click', function(){
+                    let commentID = this.dataset.id;
+                    buttonEvents.deleteOneComment(commentID);
+                });
+            }
+
+            const commentButton = document.getElementById('commentButton');
+            commentButton.addEventListener('click', () => {
+                const playlistID = commentButton.dataset.id;
+                buttonEvents.addCommentToPlaylist(playlistID);
+            })
         }
     }
 }());
