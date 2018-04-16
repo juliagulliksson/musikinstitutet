@@ -1,12 +1,12 @@
 main{
-    width: 80%;
+    width: 70%;
     margin: 0px auto;
     background-color: #FFF;
 }
 
 .header-flex-wrapper{
    .header-image{
-       height: 360px;
+       height: 330px;
    } 
 }
 
@@ -14,20 +14,18 @@ main{
     width: 100%;
     margin: 0px auto; 
      .navigation{
-         display: block;
-         display: flex;
-         width: 80%;
-         margin: 0px auto;
+        display: inline-flex;
      }
      .hamburger-icon{
          display: none;
      }
     nav{
-        text-align: left;
+        height: 50px; 
+        text-align: left; 
+        margin-left: 12%; 
         ul{
-            display: block;
+            display: inline-flex;
             li{
-                display: inline-block;
                 cursor: pointer;
             }
             li:hover{
@@ -39,9 +37,8 @@ main{
         flex-basis: 60%;
     }
     .add-button{
-        text-align: right;
-        flex-basis: 45%;
         button{
+            float: right;
             background-color:#EE708B;
        }
        button:hover{
@@ -51,72 +48,55 @@ main{
 }
 
 .albums-wrapper{
-    display: flex;
-    flex-wrap: wrap;
     .album-wrapper{
-        width: 32%;
-        text-align: center;
-        margin: 0px auto; 
+        width: 20%;
     }
    .cover-image{
-       height: 260px;
-       width: 270px;
-       overflow: hidden;
         img{
-            width: 100%;
-            //display: block;
-            //margin: 0px auto;
-            border: 1px solid #949A93;
-            cursor: pointer;
+            height: 200px;
+            width: 200px;
         }
     }
+}
+
+.artists-wrapper{  
+    .artist-wrapper{
+        width: 20%;
+    }
+   .cover-image{
+        img{
+            height: 200px;
+            width: 200px;
+        }
+    }
+}
+
+.tracks-wrapper{ 
+    margin-left: 20px; 
+    .track-wrapper{
+        margin-bottom: 10px; 
+    }
+   .cover-image{
+        img{
+            width: 75px;
+            height: 75px;
+        }
+       
+    }
+    .track-info-wrapper{
+        margin-top: 30px;
+    }    
 }
 
 .playlists-wrapper{
-    display: flex;
-    flex-wrap: wrap;
     .playlist-wrapper{
-        width: 25%;
-        text-align: left;
-        margin: 0px auto; 
+        width: 20%;
     }
    .cover-image{
-       height: 245px;
         img{
-            height: 70%;
-            display: block;
-            margin: 0px auto;
-            border: 1px solid #949A93
+            height: 200px;
+            width: 200px;
         }
-
-        .playlist-name{
-            h4{
-                margin-top: 5px; 
-                margin-bottom: 0px; 
-                padding: 0px; 
-                margin-left: 8px; 
-            }
-        }
-
-        .playlist-creator{
-            h5{
-                margin-top: 0px; 
-                padding: 0px; 
-                color: #A5A3A7; 
-                margin-left: 8px; 
-
-            }
-        }
-    }
-}
-
-.artists-wrapper{
-    display: flex;
-    flex-wrap: wrap;    
-    .artist-wrapper{
-        width: 33%;
-        text-align: center;
-        margin: 0px auto; 
     }
 }
 
