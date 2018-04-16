@@ -33,7 +33,7 @@ class FetchController {
     }
 
      search(searchBy, searchWord){
-        return fetch(`${this.baseUrl}${this.key}&${searchBy}=${searchWord}`)
+        return fetch(`${this.baseUrl}${this.key}&${searchBy}=${searchWord}&populateArtists=true`)
             .then((response) => response.json()) 
     }
 }
@@ -180,6 +180,8 @@ const displayModule = (function(){
                 <div class="search-albums">
                     <form id="searchAlbumForm">
                         <input type="text" id="albumSearchField" placeholder="Search for albums here">
+                        <input type="radio" value="title" name="searchOption">Title
+                        <input type="radio" value="genres" name="searchOption">Genre
                         <button id="searchAlbumButton">search</button>
                     </form>
                 </div>
@@ -328,6 +330,8 @@ const displayModule = (function(){
             <div class="search-playlist">
                 <form id="searchPlaylistForm">
                     <input type="text" id="playlistSearchField" placeholder="Search for playlists here">
+                    <input type="radio" value="title" name="searchOption">Title
+                    <input type="radio" value="genres" name="searchOption">Genre
                     <button id="searchPlaylistButton">search</button>
                 </form>
             </div>
@@ -392,7 +396,9 @@ const displayModule = (function(){
             <div class="search-tracks">
                 <form id="searchTrackForm">
                     <input type="text" id="trackSearchField" placeholder="Search for tracks here">
-                    <button id="searchTrackButton">search</button>
+                    <input type="radio" value="title" name="searchOption">Title
+                    <input type="radio" value="genres" name="searchOption">Genre
+                    <input type="submit" id="searchTrackButton" value="Search">
                 </form>
             </div>
             
@@ -443,6 +449,8 @@ const displayModule = (function(){
                 <div class="search-artists">
                     <form id="searchartistForm">
                         <input type="text" id="artistSearchField" placeholder="Search for artists here">
+                        <input type="radio" value="name" name="searchOption">Name
+                        <input type="radio" value="genres" name="searchOption">Genre
                         <button id="searchArtistButton">search</button>
                     </form>
                 </div>
@@ -499,9 +507,9 @@ const displayModule = (function(){
 
 let buttonEvents = (function(){
 
-    const ArtistsFetch = new FetchController('https://folksa.ga/api/artists', '&sort=desc&limit=9');
+    const ArtistsFetch = new FetchController('https://folksa.ga/api/artists', '&sort=desc&limit=20');
 
-    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=9&sort=desc');
+    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=20&sort=desc');
 
     const PlaylistsFetch = new FetchController('https://folksa.ga/api/playlists', '&createdBy=Power Puff Pinglorna');
 
@@ -668,14 +676,39 @@ let buttonEvents = (function(){
                 console.log(playlist);
               });
         },
-        searchForAlbums: function(title){
-            AlbumsFetch.search('title', title)
+        searchForAlbums: function(searchOption, title){
+            AlbumsFetch.search(searchOption, title)
               .then((albumsSearchResults) =>{
-                  console.log(albumsSearchResults);
-                  //buttonEvents.
-                  //displayModule.displayAlbums(albumsSearchResults);
+                    displayModule.displayAlbums(albumsSearchResults);
+                    bindEvents.bindAlbumPageEventListeners();
               });
         },
+        searchForArtists: function(searchOption, name){
+            ArtistsFetch.search(searchOption, name)
+              .then((artistSearchResults) =>{
+                  console.log(artistSearchResults);
+                    displayModule.displayArtists(artistSearchResults);
+                    bindEvents.bindArtistPageEventListeners();
+              });
+        },
+        searchForTracks: function(searchOption, title){
+            TracksFetch.search(searchOption, title)
+              .then((tracksSearchResults) => {
+                PlaylistsFetch.getAll()
+                  .then((playlists) => {
+                    displayModule.displayTracks(tracksSearchResults, playlists);
+                    bindEvents.bindTrackPageEventListeners();
+                })   
+              })
+        },
+        searchForPlaylists: function(searchOption, title){
+            PlaylistsFetch.search(searchOption, title)
+              .then((playlistSearchResults) => {
+                  console.log(playlistSearchResults);
+                  displayModule.displayPlaylists(playlistSearchResults);
+                  bindEvents.bindPlaylistPageEventListeners();
+              })
+        }
     }
 }());
 
@@ -723,7 +756,8 @@ let bindEvents = (function(){
             
             searchAlbum.addEventListener('click', function(){
                 const title = document.getElementById('albumSearchField').value;
-                buttonEvents.searchForAlbums(title);
+                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
+                buttonEvents.searchForAlbums(searchOption, title);
             });
 
             handleForms.preventDefault();
@@ -740,7 +774,11 @@ let bindEvents = (function(){
         },
         bindArtistPageEventListeners: function(){
             const searchArtist = document.getElementById('searchArtistButton');
-            searchArtist.addEventListener('click', searchController.searchForArtist);
+            searchArtist.addEventListener('click', () => {
+                const artistSearchValue = document.getElementById('artistSearchField').value;
+                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
+                buttonEvents.searchForArtists(searchOption, artistSearchValue);
+            });
 
             let artistImages = document.querySelectorAll('img');
 
@@ -751,6 +789,8 @@ let bindEvents = (function(){
                   buttonEvents.getIndividualArtist(artistID);
                 });
             }
+
+            handleForms.preventDefault();
         },
         bindIndividualAlbumPageEventListeners: function(){
             const newTrackForm = document.getElementById('addTrackForm');
@@ -791,8 +831,15 @@ let bindEvents = (function(){
             });
         },
         bindTrackPageEventListeners: function(){
-            /*const searchTrack = document.getElementById('searchTrackButton');
-            searchTrack.addEventListener('click', searchController.searchForTrack);*/
+            handleForms.preventDefault();
+            const searchTrack = document.getElementById('searchTrackButton');
+            searchTrack.addEventListener('click', () => {
+                const searchTrackValue = document.getElementById('trackSearchField').value;
+                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
+                buttonEvents.searchForTracks(searchOption, searchTrackValue);
+            });
+
+            
 
             let playlistDropdownButtons = document.querySelectorAll('button');
 
@@ -812,8 +859,13 @@ let bindEvents = (function(){
             }
         },
         bindPlaylistPageEventListeners: function(){
+            handleForms.preventDefault();
             const searchPlaylist = document.getElementById('searchPlaylistButton');
-            searchPlaylist.addEventListener('click', searchController.searchForPlaylist);
+            searchPlaylist.addEventListener('click', () => {
+                const playlistSearchValue = document.getElementById('playlistSearchField').value;
+                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
+                buttonEvents.searchForPlaylists(searchOption, playlistSearchValue);
+            });
 
             let playlistImages = document.querySelectorAll('img');
 

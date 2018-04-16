@@ -35,13 +35,13 @@ main{
     }
     .nav-list{
         @include flex-basis(80%);
-    .add-button{
-        text-align: right;
-        @include flex-basis(20%);
-
-       button:hover{
-           color: #1F211F; 
-       }
+        .add-button{
+            text-align: right;
+            @include flex-basis(20%);
+            button:hover{
+                color: #1F211F; 
+            }
+        }
     }
 }
 }
