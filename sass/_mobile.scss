@@ -71,7 +71,14 @@ li{
     font-family: 'Fjalla One', sans-serif;
     height: 55px; 
      .navigation{
-         display: none;
+         display: inline-block;
+         text-align: left; 
+         position: relative;
+         z-index: 1;
+         background-color: $lightBorderColor; 
+         width: 50%; 
+         height: 100%;
+         padding: none; 
      }
     nav{
         text-align: right;
@@ -104,7 +111,10 @@ li{
             margin: 10px;
         }
     }
-   
+
+    .add-button{
+        text-align: left; 
+    }
 }
 
     

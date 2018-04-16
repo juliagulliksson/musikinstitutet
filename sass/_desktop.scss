@@ -12,21 +12,22 @@ main{
 
 .nav-bar{
     width: 100%;
-    margin: 0px auto; 
-     .navigation{
+    margin: 0px auto;  
+    .navigation{
         display: flex;
         width: 70%;
         margin: 0px auto;
-     }
-     .hamburger-icon{
-         display: none;
-     }
+        background: none; 
+    }
     nav{
-        text-align: center; 
+        text-align: center;
         ul{
-            display: inline-flex;
+            margin: 0px 0px 0px 20px;
+            display: inline-flex; 
             li{
-                cursor: pointer;
+                cursor: pointer;;
+                padding: 15px;
+                margin: 0px 7px 0px 7px;
             }
             li:hover{
                 color: #EE708B;
@@ -36,12 +37,17 @@ main{
     .nav-bar{
         flex-basis: 75%;
     }
+    .hamburger-icon{
+        display: none; 
+    }
+
     .add-button{
-        flex-basis: 25%;
-        text-align: right;
-       button:hover{
-           color: #1F211F; 
-       }
+        text-align: right; 
+        flex-basis: 25%; 
+        color: #1F211F;  
+        button:hover{
+            color: #1F211F;
+        }
     }
 }
 
