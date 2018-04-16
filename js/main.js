@@ -447,13 +447,16 @@ const displayModule = (function(){
                         <h5>Created By ${playlist.createdBy}</h5>
                         <h6>${playlist.genres}</h6>
                         <div class="playlist-rating-form">`;
+                        if(playlist.ratings.length > 0){
                             let ratingValueArray = playlist.ratings;
                             const reducer = (accumulator, currentValue) => accumulator + currentValue;
                             const value = ratingValueArray.reduce(reducer);
                             const ratingValue = value / ratingValueArray.length; 
                             console.log(ratingValue);
                             playlistInfo +=`
-                            <h6>Average Rating: ${ratingValue}</h6>
+                            <h6>Average Rating: ${Math.round(ratingValue * 100) / 100}</h6>`;
+                        }
+                           playlistInfo += `
                             <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
                             <button id="voteAlbum" data-id="${playlist._id}">Vote</button>
                         </div>
