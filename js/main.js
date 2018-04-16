@@ -232,9 +232,11 @@ const displayModule = (function(){
                 <div class="search-albums">
                     <form id="searchAlbumForm">
                         <input type="text" id="albumSearchField" placeholder="Search for albums here">
-                        <input type="radio" value="title" id="searchByTitle">Title
-                        <input type="radio" value="genres" id="searchByGenre">Genre
-                        <button id="searchAlbumButton">search</button>
+                        <input type="radio" value="title" id="searchByTitle">
+                        <label for="searchByTitle">Title</label>
+                        <input type="radio" value="genres" id="searchByGenre">
+                        <label for="searchByGenre">Genre</label>
+                        <button id="searchAlbumButton">Search</button>
                     </form>
                 </div>
             <div class="albums-wrapper">
@@ -385,9 +387,11 @@ const displayModule = (function(){
             <div class="search-playlist">
                 <form id="searchPlaylistForm">
                     <input type="text" id="playlistSearchField" placeholder="Search for playlists here">
-                    <input type="radio" value="title" id="searchByTitle">Title
-                    <input type="radio" value="genres" id="searchByGenre">Genre
-                    <button id="searchPlaylistButton">search</button>
+                    <input type="radio" value="title" id="searchByTitle">
+                    <label for="searchByTitle">Title</label>
+                    <input type="radio" value="genres" id="searchByGenre">
+                    <label for="searchByGenre">Genre</label>
+                    <button id="searchPlaylistButton">Search</button>
                 </form>
             </div>
 
@@ -484,8 +488,10 @@ const displayModule = (function(){
             <div class="search-tracks">
                 <form id="searchTrackForm">
                     <input type="text" id="trackSearchField" placeholder="Search for tracks here">
-                    <input type="radio" value="title" id="searchByTitle">Title
-                    <input type="radio" value="genres" id="searchByGenre">Genre
+                    <input type="radio" value="title" id="searchByTitle">
+                    <label for="searchByTitle">Title</label>
+                    <input type="radio" value="genres" id="searchByGenre">
+                    <label for="searchByGenre">Genre</label>
                     <input type="submit" id="searchTrackButton" value="Search">
                 </form>
             </div>
@@ -537,9 +543,11 @@ const displayModule = (function(){
                 <div class="search-artists">
                     <form id="searchartistForm">
                         <input type="text" id="artistSearchField" placeholder="Search for artists here">
-                        <input type="radio" value="name" id="searchByTitle">Name
-                        <input type="radio" value="genres" id="searchByGenre">Genre
-                        <button id="searchArtistButton">search</button>
+                        <input type="radio" value="name" id="searchByTitle">
+                        <label for="searchByTitle">Name</label>
+                        <input type="radio" value="genres" id="searchByGenre">
+                        <label for="searchByGenre">Genre</label>
+                        <button id="searchArtistButton">Search</button>
                     </form>
                 </div>
             <div class="artists-wrapper">

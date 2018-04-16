@@ -35,6 +35,20 @@ li{
     list-style-type: none;
 }
 
+
+%delete-button{
+    width: 90%;
+    margin: 0px auto; 
+    button{
+        padding: 10px;
+        border: none; 
+        background-color: $lightBorderColor; 
+        color: #8E2F3C; 
+        font-weight: 700; 
+        border-radius: 4px;
+    }
+}
+
 %button{
     color: #FFF; 
     outline: 0;
@@ -106,28 +120,6 @@ li{
     }
 }
 
-    
-.search-albums{
-    text-align: center; 
-    height: 45px; 
-    #searchAlbumForm{
-        input#albumSearchField{
-            margin-top: 5px; 
-            margin-left: 15px; 
-            border: 0.9px solid #cacaca; 
-            border-radius: 0.25rem;
-            width: 70%;  
-            background-color: #e9e9e9; 
-            height: 20px; 
-        }
-        button#searchAlbumButton{
-            background-color: $pink; 
-            color: $white; 
-            border-radius: 0.25rem; 
-        }
-    }
-}
-
 .albums-wrapper{
     display: flex;
     flex-wrap: wrap;    
@@ -150,25 +142,26 @@ li{
     }
 }
 
-.search-artists{
+%search-wrapper{
     text-align: center; 
-    height: 45px; 
-    #searchartistForm{
-        input#artistSearchField{
-            margin-top: 5px; 
-            margin-left: 15px; 
-            border: 0.9px solid #cacaca; 
-            border-radius: 0.25rem;
-            width: 70%;  
-            background-color: #e9e9e9; 
-            height: 20px; 
-        }
-        button#searchArtistButton{
-            background-color: $pink; 
-            color: $white; 
-            border-radius: 0.25rem; 
-        }
+    margin-bottom: 17px;
+    input[type=text]{
+        margin-top: 5px; 
+        margin-left: 15px; 
+        border: 0.9px solid #cacaca; 
+        border-radius: 0.25rem;
+        width: 50%;  
+        background-color: #e9e9e9; 
+        padding: 10px;
     }
+    button, input[type=submit]{
+        @extend %button;
+        margin-left: 7px;
+    }
+}
+
+.search-albums, .search-artists, .search-tracks, .search-playlist{
+    @extend %search-wrapper;
 }
 
 .artists-wrapper{  
@@ -189,27 +182,6 @@ li{
             border: 0.9px solid $lightBorderColor;
             border-radius: 0.2rem;
             object-fit: cover;
-        }
-    }
-}
-
-.search-tracks{
-    text-align: center; 
-    height: 45px; 
-    #searchTrackForm{
-        input#trackSearchField{
-            margin-top: 5px; 
-            margin-left: 15px; 
-            border: 0.9px solid #cacaca; 
-            border-radius: 0.25rem;
-            width: 70%;  
-            background-color: #e9e9e9; 
-            height: 20px; 
-        }
-        button#searchTrackButton{
-            background-color: $pink; 
-            color: $white; 
-            border-radius: 0.25rem; 
         }
     }
 }
@@ -285,27 +257,6 @@ li{
     }
 }
 
-.search-playlist{
-    text-align: center; 
-    height: 45px; 
-    #searchPlaylistForm{
-        input#playlistSearchField{
-            margin-top: 5px; 
-            margin-left: 15px; 
-            border: 0.9px solid #cacaca; 
-            border-radius: 0.25rem;
-            width: 70%;  
-            background-color: #e9e9e9; 
-            height: 20px; 
-        }
-        button#searchPlaylistButton{
-            background-color: $pink; 
-            color: $white; 
-            border-radius: 0.25rem; 
-        }
-    }
-}
-
 .playlists-wrapper{
     @include flex();
     flex-wrap: wrap;    
@@ -376,9 +327,6 @@ li{
         margin-top: 10px;
         padding-bottom: 10px;
         padding-top: 10px;
-        #addTrackForm{
-            //margin-top: 10px; 
-        }
         label{
             font-size: 0.9rem; 
             color: $pink; 
@@ -388,9 +336,6 @@ li{
         }
         button{
             @extend %button;
-            /*background-color: $pink; 
-            color: #ffffff; 
-            border-radius: 0.25rem; */
             padding: 5px;
         }
     }
@@ -416,16 +361,10 @@ li{
     }
 
     .album-delete-button{
-        button{
-            width: 100%; 
-            height: 30px;
-            border: none; 
-            background-color: $lightBorderColor; 
-            color: #8E2F3C; 
-            font-weight: 700; 
-        }
+        @extend %delete-button;
     }
 }
+
 
 /*--artists--*/
 .individual-artists-wrapper{
@@ -479,14 +418,7 @@ li{
     }
 
     .playlist-delete-button{
-        button{
-            width: 100%; 
-            height: 30px;
-            border: none; 
-            background-color: $lightBorderColor; 
-            color: #8E2F3C; 
-            font-weight: 700; 
-        }
+        @extend %delete-button;
     }
 }
 
