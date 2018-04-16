@@ -647,7 +647,7 @@ let buttonEvents = (function(){
 
     const ArtistsFetch = new FetchController('https://folksa.ga/api/artists', '&sort=desc&limit=20');
 
-    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=21&sort=desc');
+    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=20&sort=desc');
 
     const PlaylistsFetch = new FetchController('https://folksa.ga/api/playlists', '&createdBy=Power Puff Pinglorna');
 

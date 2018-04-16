@@ -1,5 +1,13 @@
+body{
+    background-color: rgb(236, 233, 233);
+    margin: 0px;
+    padding: 0px; 
+    font-family: $mainFont;
+    color: #1F211F; 
+}
+
 main{
-    max-width: 60%;
+    width: 70%;
     margin: 0px auto;
     background-color: #FFF;
 }
@@ -68,8 +76,8 @@ main{
     }
    .cover-image{
         img{
-            height: 170px;
-            width: 170px;
+            max-width: auto;
+            max-height: auto;
         }
     }
 }

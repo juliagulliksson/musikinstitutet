@@ -1,3 +1,64 @@
+.albums-wrapper{
+    .album-wrapper{
+        width: 40%;
+    }
+   .cover-image{
+        img{
+            height: 170px;
+            width: 170px;
+        }
+    }
+}
+  
+.artists-wrapper{  
+    .artist-wrapper{
+        width: 20%;
+    }
+   .cover-image{
+        img{
+            height: 170px;
+            width: 170px;
+        }
+    }
+}
+  
+.tracks-wrapper{ 
+    margin-left: 20px; 
+    .track-wrapper{
+        margin-bottom: 10px; 
+    }
+   .cover-image{
+        img{
+            width: 75px;
+            height: 75px;
+        }
+       
+    }
+    .track-info-wrapper{
+        margin-top: 30px;
+    }    
+}
+  
+.playlists-wrapper{
+    .playlist-wrapper{
+        width: 20%;
+    }
+   .cover-image{
+        img{
+            height: 170px;
+            width: 170px;
+        }
+    }
+}
+
+body{
+    background-color: $pink; 
+}
+main{
+    width: 100%; 
+    padding: 15px; 
+}
+
 .forms-wrapper{
     width: 70%;
     margin: 0px auto;
