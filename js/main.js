@@ -181,7 +181,7 @@ const displayModule = (function(){
                     <form id="searchAlbumForm">
                         <input type="text" id="albumSearchField" placeholder="Search for albums here">
                         <input type="radio" value="title" name="searchOption">Title
-                        <input type="radio" value="genres" name="searchOption"> Genre
+                        <input type="radio" value="genres" name="searchOption">Genre
                         <button id="searchAlbumButton">search</button>
                     </form>
                 </div>
@@ -330,6 +330,8 @@ const displayModule = (function(){
             <div class="search-playlist">
                 <form id="searchPlaylistForm">
                     <input type="text" id="playlistSearchField" placeholder="Search for playlists here">
+                    <input type="radio" value="title" name="searchOption">Title
+                    <input type="radio" value="genres" name="searchOption">Genre
                     <button id="searchPlaylistButton">search</button>
                 </form>
             </div>
@@ -394,6 +396,8 @@ const displayModule = (function(){
             <div class="search-tracks">
                 <form id="searchTrackForm">
                     <input type="text" id="trackSearchField" placeholder="Search for tracks here">
+                    <input type="radio" value="title" name="searchOption">Title
+                    <input type="radio" value="genres" name="searchOption">Genre
                     <input type="submit" id="searchTrackButton" value="Search">
                 </form>
             </div>
@@ -445,6 +449,8 @@ const displayModule = (function(){
                 <div class="search-artists">
                     <form id="searchartistForm">
                         <input type="text" id="artistSearchField" placeholder="Search for artists here">
+                        <input type="radio" value="name" name="searchOption">Name
+                        <input type="radio" value="genres" name="searchOption">Genre
                         <button id="searchArtistButton">search</button>
                     </form>
                 </div>
@@ -677,16 +683,16 @@ let buttonEvents = (function(){
                     bindEvents.bindAlbumPageEventListeners();
               });
         },
-        searchForArtists: function(name){
-            ArtistsFetch.search('name', name)
+        searchForArtists: function(searchOption, name){
+            ArtistsFetch.search(searchOption, name)
               .then((artistSearchResults) =>{
                   console.log(artistSearchResults);
                     displayModule.displayArtists(artistSearchResults);
                     bindEvents.bindArtistPageEventListeners();
               });
         },
-        searchForTracks: function(title){
-            TracksFetch.search('title', title)
+        searchForTracks: function(searchOption, title){
+            TracksFetch.search(searchOption, title)
               .then((tracksSearchResults) => {
                 PlaylistsFetch.getAll()
                   .then((playlists) => {
@@ -695,8 +701,8 @@ let buttonEvents = (function(){
                 })   
               })
         },
-        searchForPlaylists: function(title){
-            PlaylistsFetch.search('title', title)
+        searchForPlaylists: function(searchOption, title){
+            PlaylistsFetch.search(searchOption, title)
               .then((playlistSearchResults) => {
                   console.log(playlistSearchResults);
                   displayModule.displayPlaylists(playlistSearchResults);
@@ -770,7 +776,8 @@ let bindEvents = (function(){
             const searchArtist = document.getElementById('searchArtistButton');
             searchArtist.addEventListener('click', () => {
                 const artistSearchValue = document.getElementById('artistSearchField').value;
-                buttonEvents.searchForArtists(artistSearchValue);
+                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
+                buttonEvents.searchForArtists(searchOption, artistSearchValue);
             });
 
             let artistImages = document.querySelectorAll('img');
@@ -828,7 +835,8 @@ let bindEvents = (function(){
             const searchTrack = document.getElementById('searchTrackButton');
             searchTrack.addEventListener('click', () => {
                 const searchTrackValue = document.getElementById('trackSearchField').value;
-                buttonEvents.searchForTracks(searchTrackValue);
+                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
+                buttonEvents.searchForTracks(searchOption, searchTrackValue);
             });
 
             
@@ -855,7 +863,8 @@ let bindEvents = (function(){
             const searchPlaylist = document.getElementById('searchPlaylistButton');
             searchPlaylist.addEventListener('click', () => {
                 const playlistSearchValue = document.getElementById('playlistSearchField').value;
-                buttonEvents.searchForPlaylists(playlistSearchValue);
+                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
+                buttonEvents.searchForPlaylists(searchOption, playlistSearchValue);
             });
 
             let playlistImages = document.querySelectorAll('img');
