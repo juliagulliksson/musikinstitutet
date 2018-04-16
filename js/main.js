@@ -225,6 +225,7 @@ const handleForms = new FormHandler();
 
 const displayModule = (function(){
     const outputDiv = document.getElementById('output');
+    const loadingSpinner = document.getElementById('loadingSpinner');
     
     return {
         displayAlbums: function(albums){
@@ -636,6 +637,12 @@ const displayModule = (function(){
             let parent = submitButton.parentElement;
             console.log(parent);
             parent.insertBefore(errorMessage, parent.lastChild);
+        },
+        displayLoader: function(){
+            loadingSpinner.classList.remove('hidden');
+        },
+        removeLoader: function(){
+            loadingSpinner.classList.add('hidden');
         }
 
     }
@@ -655,6 +662,7 @@ let buttonEvents = (function(){
         getAlbums: function(){
             AlbumsFetch.getAll()
               .then((albums) => {
+                displayModule.removeLoader();
                 displayModule.displayAlbums(albums);
                 bindEvents.bindAlbumPageEventListeners();
             });
@@ -662,15 +670,15 @@ let buttonEvents = (function(){
         getArtists: function(){
             ArtistsFetch.getAll()
               .then((artists) => {
-                  console.log(artists);
-                  displayModule.displayArtists(artists);
-                  bindEvents.bindArtistPageEventListeners();
+                displayModule.removeLoader();
+                displayModule.displayArtists(artists);
+                bindEvents.bindArtistPageEventListeners();
             });
         },
         getPlaylists: function(){
             PlaylistsFetch.getAll()
               .then((playlists) => {
-                console.log(playlists);
+                displayModule.removeLoader();
                 displayModule.displayPlaylists(playlists);
                 bindEvents.bindPlaylistPageEventListeners();
             });
@@ -680,8 +688,9 @@ let buttonEvents = (function(){
             .then((tracks) => {
                 PlaylistsFetch.getAll()
                   .then((playlists) => {
-                  displayModule.displayTracks(tracks, playlists);
-                  bindEvents.bindTrackPageEventListeners();
+                    displayModule.removeLoader();
+                    displayModule.displayTracks(tracks, playlists);
+                    bindEvents.bindTrackPageEventListeners();
                 })
             });
         }, 
@@ -830,6 +839,7 @@ let buttonEvents = (function(){
         searchForAlbums: function(searchOption, title){
             AlbumsFetch.search(searchOption, title)
               .then((albumsSearchResults) =>{
+                    displayModule.removeLoader();
                     displayModule.displayAlbums(albumsSearchResults);
                     bindEvents.bindAlbumPageEventListeners();
               });
@@ -837,7 +847,7 @@ let buttonEvents = (function(){
         searchForArtists: function(searchOption, name){
             ArtistsFetch.search(searchOption, name)
               .then((artistSearchResults) =>{
-                  console.log(artistSearchResults);
+                    displayModule.removeLoader();
                     displayModule.displayArtists(artistSearchResults);
                     bindEvents.bindArtistPageEventListeners();
               });
@@ -847,6 +857,7 @@ let buttonEvents = (function(){
               .then((tracksSearchResults) => {
                 PlaylistsFetch.getAll()
                   .then((playlists) => {
+                    displayModule.removeLoader();
                     displayModule.displayTracks(tracksSearchResults, playlists);
                     bindEvents.bindTrackPageEventListeners();
                 })   
@@ -855,9 +866,9 @@ let buttonEvents = (function(){
         searchForPlaylists: function(searchOption, title){
             PlaylistsFetch.search(searchOption, title)
               .then((playlistSearchResults) => {
-                  console.log(playlistSearchResults);
-                  displayModule.displayPlaylists(playlistSearchResults);
-                  bindEvents.bindPlaylistPageEventListeners();
+                    displayModule.removeLoader();
+                    displayModule.displayPlaylists(playlistSearchResults);
+                    bindEvents.bindPlaylistPageEventListeners();
               })
         },
         addCommentToPlaylist: function(playlistID){
@@ -874,7 +885,6 @@ let buttonEvents = (function(){
                     console.log(playlist);
                   });
             } else {
-                console.log(submitButton);
                 displayModule.formErrorMessages(submitButton);
             }
         }
@@ -892,15 +902,30 @@ let bindEvents = (function(){
 
     return {
         bindHomePageEventListeners: function(){
-            homeLink.addEventListener('click', buttonEvents.getAlbums);
+            homeLink.addEventListener('click', function(){
+                buttonEvents.getAlbums();
+                displayModule.displayLoader();
+            });
             
-            artistsLink.addEventListener('click', buttonEvents.getArtists);
+            artistsLink.addEventListener('click', function(){
+                buttonEvents.getArtists()
+                displayModule.displayLoader();
+            });
 
-            tracksLink.addEventListener('click', buttonEvents.getTracksAndPlaylists);
+            tracksLink.addEventListener('click', function(){
+                buttonEvents.getTracksAndPlaylists();
+                displayModule.displayLoader();
+            });
 
-            albumsLink.addEventListener('click', buttonEvents.getAlbums);
+            albumsLink.addEventListener('click', function(){
+                buttonEvents.getAlbums();
+                displayModule.displayLoader();
+            });
             
-            playlistsLink.addEventListener('click', buttonEvents.getPlaylists);
+            playlistsLink.addEventListener('click', function(){
+                buttonEvents.getPlaylists();
+                displayModule.displayLoader();
+            });
 
             addNewButton.addEventListener('click', function(){
                 displayModule.displayForms();
@@ -932,6 +957,7 @@ let bindEvents = (function(){
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForAlbums(searchOption, albumSearchValue);
+                    displayModule.displayLoader();
                 }
                 
             });
@@ -957,6 +983,7 @@ let bindEvents = (function(){
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForArtists(searchOption, artistSearchValue);
+                    displayModule.displayLoader();
                 }
             });
 
@@ -1021,6 +1048,7 @@ let bindEvents = (function(){
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForTracks(searchOption, trackSearchValue);
+                    displayModule.displayLoader();
                 }
             
             });
@@ -1055,6 +1083,7 @@ let bindEvents = (function(){
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForPlaylists(searchOption, playlistSearchValue);
+                    displayModule.displayLoader();
                 }
             });
 
