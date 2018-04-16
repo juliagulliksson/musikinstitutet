@@ -1,5 +1,5 @@
 main{
-    width: 80%;
+    width: 70%;
     margin: 0px auto;
     background-color: #FFF;
 }
@@ -22,11 +22,10 @@ main{
          display: none;
      }
     nav{
-        text-align: left;
+        text-align: center; 
         ul{
-            display: block;
+            display: inline-flex;
             li{
-                display: inline-block;
                 cursor: pointer;
             }
             li:hover{
@@ -36,87 +35,69 @@ main{
     }
     .nav-list{
         @include flex-basis(80%);
-    }
     .add-button{
         text-align: right;
         @include flex-basis(20%);
-        button{
-            background-color:$pink;
-       }
+
        button:hover{
            color: #1F211F; 
        }
     }
 }
-
+  
 .albums-wrapper{
-    @include flex();
-    flex-wrap: wrap;
     .album-wrapper{
-        width: 32%;
-        text-align: center;
-        margin: 0px auto; 
+        width: 20%;
     }
    .cover-image{
-       height: 260px;
-       width: 270px;
-       overflow: hidden;
         img{
-            width: 100%;
-            border: 1px solid #949A93;
-            cursor: pointer;
+            height: 200px;
+            width: 200px;
         }
     }
 }
-
-.playlists-wrapper{
-    @include flex();
-    flex-wrap: wrap;
-    .playlist-wrapper{
-        width: 25%;
-        text-align: center;
-        margin: 0px auto; 
-    }
-   .cover-image{
-       height: 200px;
-        img{
-            height: 100%;
-            display: block;
-            margin: 0px auto;
-            border: 1px solid #949A93
-        }
-
-        .playlist-name{
-            h4{
-                margin-top: 5px; 
-                margin-bottom: 0px; 
-                padding: 0px; 
-                margin-left: 8px; 
-            }
-        }
-
-        .playlist-creator{
-            h5{
-                margin-top: 0px; 
-                padding: 0px; 
-                color: #A5A3A7; 
-                margin-left: 8px; 
-
-            }
-        }
-    }
-}
-
-.artists-wrapper{
-    @include flex();
-    flex-wrap: wrap;    
+  
+.artists-wrapper{  
     .artist-wrapper{
-        width: 33%;
-        text-align: center;
-        margin: 0px auto; 
+        width: 20%;
+    }
+   .cover-image{
+        img{
+            height: 200px;
+            width: 200px;
+        }
     }
 }
-
+  
+.tracks-wrapper{ 
+    margin-left: 20px; 
+    .track-wrapper{
+        margin-bottom: 10px; 
+    }
+   .cover-image{
+        img{
+            width: 75px;
+            height: 75px;
+        }
+       
+    }
+    .track-info-wrapper{
+        margin-top: 30px;
+    }    
+}
+  
+.playlists-wrapper{
+    .playlist-wrapper{
+        width: 20%;
+    }
+   .cover-image{
+        img{
+            height: 200px;
+            width: 200px;
+        }
+    }
+}
+  
 .forms-wrapper{
     .artist-form-wrapper, .album-form-wrapper, .playlist-form-wrapper{
         input{

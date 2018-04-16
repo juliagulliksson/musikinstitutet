@@ -60,7 +60,6 @@ li{
        background-repeat: no-repeat;
        background-position: center; 
        background-size: 100%;
-       height: 200px;
    }
 }
 
@@ -102,6 +101,72 @@ li{
         img{
             width: 50px;
             height: 50px;
+            margin: 10px;
+        }
+    }
+}
+
+    
+.search-albums{
+    text-align: center; 
+    height: 45px; 
+    #searchAlbumForm{
+        input#albumSearchField{
+            margin-top: 5px; 
+            margin-left: 15px; 
+            border: 0.9px solid #cacaca; 
+            border-radius: 0.25rem;
+            width: 70%;  
+            background-color: #e9e9e9; 
+            height: 20px; 
+        }
+        button#searchAlbumButton{
+            background-color: $pink; 
+            color: $white; 
+            border-radius: 0.25rem; 
+        }
+    }
+}
+
+.albums-wrapper{
+    display: flex;
+    flex-wrap: wrap;    
+    .album-wrapper{
+        width: 45%;
+        text-align: center;
+        margin: 0px auto; 
+        margin-bottom: 20px; 
+
+    }
+   .cover-image{
+        overflow: hidden; 
+        img{
+            height: 170px;
+            width: 170px;
+            border: 0.9px solid $lightBorderColor;
+            border-radius: 0.2rem; 
+            object-fit: cover;
+        }
+    }
+}
+
+.search-artists{
+    text-align: center; 
+    height: 45px; 
+    #searchartistForm{
+        input#artistSearchField{
+            margin-top: 5px; 
+            margin-left: 15px; 
+            border: 0.9px solid #cacaca; 
+            border-radius: 0.25rem;
+            width: 70%;  
+            background-color: #e9e9e9; 
+            height: 20px; 
+        }
+        button#searchArtistButton{
+            background-color: $pink; 
+            color: $white; 
+            border-radius: 0.25rem; 
         }
     }
 }
@@ -121,28 +186,55 @@ li{
         img{
             height: 170px;
             width: 170px;
-            border: 1px solid $grey;
+            border: 0.9px solid $lightBorderColor;
+            border-radius: 0.2rem;
             object-fit: cover;
+        }
+    }
+}
+
+.search-tracks{
+    text-align: center; 
+    height: 45px; 
+    #searchTrackForm{
+        input#trackSearchField{
+            margin-top: 5px; 
+            margin-left: 15px; 
+            border: 0.9px solid #cacaca; 
+            border-radius: 0.25rem;
+            width: 70%;  
+            background-color: #e9e9e9; 
+            height: 20px; 
+        }
+        button#searchTrackButton{
+            background-color: $pink; 
+            color: $white; 
+            border-radius: 0.25rem; 
         }
     }
 }
 
 .tracks-wrapper{ 
     .track-wrapper{
+        display: inline-flex; 
         text-align: left;
-        margin-bottom: 25px; 
+        width: 100%; 
+        margin-bottom: 5px; 
     }
    .cover-image{
-        height: 10px; 
+       overflow: hidden;
         img{
-            height: 450%;
-            border: 1px solid $grey;
+            width: 65px;
+            height: 65px;
+            border: 0.9px solid $lightBorderColor;
+            border-radius: 0.2rem;
+            object-fit: cover;
         }
        
     }
     .track-info-wrapper{
         display: inline-flex; 
-        margin-left: 45px; 
+        margin-top: 25px; 
         .track-title{
             h4{
                 font-size: 0.8rem; 
@@ -193,35 +285,24 @@ li{
     }
 }
 
-.albums-wrapper{
-    @include flex();
-    flex-wrap: wrap;    
-    .album-wrapper{
-        width: 45%;
-        text-align: center;
-        margin: 0px auto; 
-        margin-bottom: 20px; 
-
-    }
-   .cover-image{
-        overflow: hidden; 
-            img{
-                height: 170px;
-                width: 170px;
-                border: 1px solid $grey;
-                object-fit: cover;
-            }
-    }
-
-    h4{
-        margin: 5px;
-        font-size: 0.95rem; 
-    }
-
-    h5{
-        margin: 0px; 
-        font-size: 0.8rem; 
-        color: $grey; 
+.search-playlist{
+    text-align: center; 
+    height: 45px; 
+    #searchPlaylistForm{
+        input#playlistSearchField{
+            margin-top: 5px; 
+            margin-left: 15px; 
+            border: 0.9px solid #cacaca; 
+            border-radius: 0.25rem;
+            width: 70%;  
+            background-color: #e9e9e9; 
+            height: 20px; 
+        }
+        button#searchPlaylistButton{
+            background-color: $pink; 
+            color: $white; 
+            border-radius: 0.25rem; 
+        }
     }
 }
 
@@ -230,17 +311,36 @@ li{
     flex-wrap: wrap;    
     .playlist-wrapper{
         width: 45%;
-        text-align: left;
+        text-align: center;
         margin: 0px auto; 
         margin-bottom: 20px; 
 
         .cover-image{
             overflow: hidden; 
+            margin-bottom: -20px; 
             img{
                 height: 170px;
                 width: 170px;
-                border: 1px solid $grey;
+                border: 0.9px solid $lightBorderColor;
+                border-radius: 0.2rem;
                 object-fit: cover;
+            }
+        }
+        .playlist-wrap-info{
+            margin: 0px auto; 
+            width: 170px; 
+            h4{
+                background-color: $pink; 
+                height: 20px; 
+                color: $white;
+                border-radius: 0.2rem; 
+                position: sticky;
+                z-index: 1; 
+            }
+            .playlist-creator{
+                h5{
+                    color: black; 
+                }
             }
         }
     }
@@ -258,7 +358,8 @@ li{
             img{
                 height: 170px;
                 width: 170px;
-                border: 1px solid $grey;
+                border: 0.9px solid $lightBorderColor;
+                border-radius: 0.2rem;
                 object-fit: cover;
             }
         }
@@ -347,7 +448,8 @@ li{
             img{
                 height: 170px;
                 width: 170px;
-                border: 1px solid $grey;
+                border: 0.9px solid $lightBorderColor;
+                border-radius: 0.2rem;
                 object-fit: cover;
             }
         }
