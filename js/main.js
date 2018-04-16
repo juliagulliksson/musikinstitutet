@@ -225,6 +225,7 @@ const handleForms = new FormHandler();
 
 const displayModule = (function(){
     const outputDiv = document.getElementById('output');
+    const loadingSpinner = document.getElementById('loadingSpinner');
     
     return {
         displayAlbums: function(albums){
@@ -619,7 +620,9 @@ const displayModule = (function(){
             deleteButton.dataset.id = track._id;
             newTrack.appendChild(deleteButton);
             tracklist.appendChild(newTrack);
-            bindEvents.bindIndividualAlbumPageEventListeners();
+                deleteButton.addEventListener('click', function(){
+                    tracklist.removeChild(newTrack);
+                })
         },
         returnCorrectImage: function(obj){
            
@@ -629,13 +632,27 @@ const displayModule = (function(){
                 return `<img src="${obj.coverImage}" data-id="${obj._id}">`;
             }
         },
-        formErrorMessages: function(submitButton){
+        formErrorMessages: function(submitButton, typeOfSubmit){
             let errorMessage = document.createElement('p');
             errorMessage.classList.add('error-message');
-            errorMessage.textContent = 'Please fill in all the required fields!';
+            if(typeOfSubmit === "Search"){
+                errorMessage.textContent = 'No matches found';
+            }
+            if(typeOfSubmit === "Save"){
+                errorMessage.textContent = 'Please fill in all the required fields!';
+            }
             let parent = submitButton.parentElement;
             console.log(parent);
             parent.insertBefore(errorMessage, parent.lastChild);
+        },
+        searchErrorMessage: function(){
+
+        },
+        displayLoader: function(){
+            loadingSpinner.classList.remove('hidden');
+        },
+        removeLoader: function(){
+            loadingSpinner.classList.add('hidden');
         }
 
     }
@@ -655,6 +672,7 @@ let buttonEvents = (function(){
         getAlbums: function(){
             AlbumsFetch.getAll()
               .then((albums) => {
+                displayModule.removeLoader();
                 displayModule.displayAlbums(albums);
                 bindEvents.bindAlbumPageEventListeners();
             });
@@ -662,15 +680,15 @@ let buttonEvents = (function(){
         getArtists: function(){
             ArtistsFetch.getAll()
               .then((artists) => {
-                  console.log(artists);
-                  displayModule.displayArtists(artists);
-                  bindEvents.bindArtistPageEventListeners();
+                displayModule.removeLoader();
+                displayModule.displayArtists(artists);
+                bindEvents.bindArtistPageEventListeners();
             });
         },
         getPlaylists: function(){
             PlaylistsFetch.getAll()
               .then((playlists) => {
-                console.log(playlists);
+                displayModule.removeLoader();
                 displayModule.displayPlaylists(playlists);
                 bindEvents.bindPlaylistPageEventListeners();
             });
@@ -680,8 +698,9 @@ let buttonEvents = (function(){
             .then((tracks) => {
                 PlaylistsFetch.getAll()
                   .then((playlists) => {
-                  displayModule.displayTracks(tracks, playlists);
-                  bindEvents.bindTrackPageEventListeners();
+                    displayModule.removeLoader();
+                    displayModule.displayTracks(tracks, playlists);
+                    bindEvents.bindTrackPageEventListeners();
                 })
             });
         }, 
@@ -698,7 +717,7 @@ let buttonEvents = (function(){
                     console.log(postedTrack);
                 });
             }else{
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
             
         },
@@ -715,7 +734,7 @@ let buttonEvents = (function(){
                    buttonEvents.getIndividualPlaylist(playlist._id);
                 });
             }else{
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
             
         },
@@ -742,7 +761,7 @@ let buttonEvents = (function(){
                     }
                 });
             }else{
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
             
         },
@@ -762,12 +781,13 @@ let buttonEvents = (function(){
                     buttonEvents.getIndividualAlbum(album._id);
                 });
             }else{
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
         },
         getIndividualAlbum: function(albumID){
             AlbumsFetch.getOne(albumID)
               .then((album) => {
+                displayModule.removeLoader();
                 displayModule.displayIndividualAlbum(album);
                 bindEvents.bindIndividualAlbumPageEventListeners();
               })
@@ -775,6 +795,7 @@ let buttonEvents = (function(){
         getIndividualArtist: function(artistID){
             ArtistsFetch.getOne(artistID)
               .then((artist) => {
+                displayModule.removeLoader();
                 displayModule.displayIndividualArtist(artist);
                 bindEvents.bindIndividualArtistPageEventListeners();
               });
@@ -785,8 +806,7 @@ let buttonEvents = (function(){
                 fetch(`https://folksa.ga/api/playlists/${playlistID}/comments?key=flat_eric`)
                     .then((response) => response.json())
                     .then((comments) => {
-                        console.log(comments);
-                        console.log(playlist);
+                        displayModule.removeLoader();
                         displayModule.displayIndividualPlaylist(playlist, comments);
                         bindEvents.bindIndividualPlaylistPageEventListeners();
                     });
@@ -830,16 +850,29 @@ let buttonEvents = (function(){
         searchForAlbums: function(searchOption, title){
             AlbumsFetch.search(searchOption, title)
               .then((albumsSearchResults) =>{
-                    displayModule.displayAlbums(albumsSearchResults);
-                    bindEvents.bindAlbumPageEventListeners();
+                    displayModule.removeLoader();
+                    if(albumsSearchResults.length === 0){
+                        const searchAlbum = document.getElementById('searchAlbumButton');
+                        displayModule.formErrorMessages(searchAlbum, "Search");
+                    } else{
+                        console.log(albumsSearchResults)
+                        displayModule.displayAlbums(albumsSearchResults);
+                        bindEvents.bindAlbumPageEventListeners();    
+                    }
+                
               });
         },
         searchForArtists: function(searchOption, name){
             ArtistsFetch.search(searchOption, name)
-              .then((artistSearchResults) =>{
-                  console.log(artistSearchResults);
+              .then((artistSearchResults) => {
+                displayModule.removeLoader();
+                if(artistSearchResults.length === 0){
+                    const searchArtist = document.getElementById('searchArtistButton');
+                    displayModule.formErrorMessages(searchArtist, "Search");
+                } else{
                     displayModule.displayArtists(artistSearchResults);
                     bindEvents.bindArtistPageEventListeners();
+                }
               });
         },
         searchForTracks: function(searchOption, title){
@@ -847,17 +880,28 @@ let buttonEvents = (function(){
               .then((tracksSearchResults) => {
                 PlaylistsFetch.getAll()
                   .then((playlists) => {
-                    displayModule.displayTracks(tracksSearchResults, playlists);
-                    bindEvents.bindTrackPageEventListeners();
-                })   
+                    displayModule.removeLoader();
+                    if (tracksSearchResults.length === 0) {
+                        const searchTrack = document.getElementById('searchTrackButton');
+                        displayModule.formErrorMessages(searchTrack, "Search");
+                    } else {
+                        displayModule.displayTracks(tracksSearchResults, playlists);
+                        bindEvents.bindTrackPageEventListeners();;
+                    }
+                })
               })
         },
         searchForPlaylists: function(searchOption, title){
             PlaylistsFetch.search(searchOption, title)
               .then((playlistSearchResults) => {
-                  console.log(playlistSearchResults);
-                  displayModule.displayPlaylists(playlistSearchResults);
-                  bindEvents.bindPlaylistPageEventListeners();
+                    displayModule.removeLoader();
+                    if (playlistSearchResults.length === 0) {
+                        const searchPlaylist = document.getElementById('searchPlaylistButton');
+                        displayModule.formErrorMessages(searchPlaylist, "Search");
+                    } else {
+                        displayModule.displayPlaylists(playlistSearchResults);
+                        bindEvents.bindPlaylistPageEventListeners();
+                    }
               })
         },
         addCommentToPlaylist: function(playlistID){
@@ -874,8 +918,7 @@ let buttonEvents = (function(){
                     console.log(playlist);
                   });
             } else {
-                console.log(submitButton);
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
         }
     }
@@ -892,15 +935,30 @@ let bindEvents = (function(){
 
     return {
         bindHomePageEventListeners: function(){
-            homeLink.addEventListener('click', buttonEvents.getAlbums);
+            homeLink.addEventListener('click', function(){
+                buttonEvents.getAlbums();
+                displayModule.displayLoader();
+            });
             
-            artistsLink.addEventListener('click', buttonEvents.getArtists);
+            artistsLink.addEventListener('click', function(){
+                buttonEvents.getArtists()
+                displayModule.displayLoader();
+            });
 
-            tracksLink.addEventListener('click', buttonEvents.getTracksAndPlaylists);
+            tracksLink.addEventListener('click', function(){
+                buttonEvents.getTracksAndPlaylists();
+                displayModule.displayLoader();
+            });
 
-            albumsLink.addEventListener('click', buttonEvents.getAlbums);
+            albumsLink.addEventListener('click', function(){
+                buttonEvents.getAlbums();
+                displayModule.displayLoader();
+            });
             
-            playlistsLink.addEventListener('click', buttonEvents.getPlaylists);
+            playlistsLink.addEventListener('click', function(){
+                buttonEvents.getPlaylists();
+                displayModule.displayLoader();
+            });
 
             addNewButton.addEventListener('click', function(){
                 displayModule.displayForms();
@@ -928,10 +986,11 @@ let bindEvents = (function(){
                 const albumSearchValue = document.getElementById('albumSearchField').value;
             
                 let searchOption = handleForms.validateSearchForms(albumSearchValue);
-                if(!searchOption){     //Search form is not correct
+                if(!searchOption){     //Search form is not 
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForAlbums(searchOption, albumSearchValue);
+                    displayModule.displayLoader();
                 }
                 
             });
@@ -944,6 +1003,7 @@ let bindEvents = (function(){
                 let albumID = albumImage.dataset.id;
                 
                 albumImage.addEventListener('click', function(){
+                    displayModule.displayLoader();
                     buttonEvents.getIndividualAlbum(albumID);
                 });
             }
@@ -951,12 +1011,14 @@ let bindEvents = (function(){
         bindArtistPageEventListeners: function(){
             const searchArtist = document.getElementById('searchArtistButton');
             searchArtist.addEventListener('click', () => {
+                displayModule.displayLoader();
                 const artistSearchValue = document.getElementById('artistSearchField').value;
                 let searchOption = handleForms.validateSearchForms(artistSearchValue);
                 if(!searchOption){     //Search form is not correct
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForArtists(searchOption, artistSearchValue);
+                    displayModule.displayLoader();
                 }
             });
 
@@ -1021,6 +1083,7 @@ let bindEvents = (function(){
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForTracks(searchOption, trackSearchValue);
+                    displayModule.displayLoader();
                 }
             
             });
@@ -1055,6 +1118,7 @@ let bindEvents = (function(){
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForPlaylists(searchOption, playlistSearchValue);
+                    displayModule.displayLoader();
                 }
             });
 
@@ -1064,6 +1128,7 @@ let bindEvents = (function(){
                 let playlistID = playlistImage.dataset.id;
                 
                 playlistImage.addEventListener('click', function(){
+                    displayModule.displayLoader();
                     buttonEvents.getIndividualPlaylist(playlistID);
                 });
             }
