@@ -12,31 +12,41 @@ main{
 
 .nav-bar{
     width: 100%;
-    margin: 0px auto; 
-     .navigation{
-         @include flex();
-         width: 80%;
-         margin: 0px auto;
-     }
-     .hamburger-icon{
-         display: none;
-     }
+    margin: 0px auto;  
+    .navigation{
+        @include flex();
+        width: 70%;
+        margin: 0px auto;
+        background: none; 
+        height: 100%;
+        overflow-x: none;
+        overflow-y: none; 
+    }
     nav{
-        text-align: center; 
+        text-align: center;
         ul{
-            display: inline-flex;
+            margin: 0px 0px 0px 20px;
+            display: inline-flex; 
             li{
-                cursor: pointer;
+                cursor: pointer;;
+                padding: 15px;
+                margin: 0px 7px 0px 7px;
             }
             li:hover{
                 color: $pink;
             }
         }
     }
+    .nav-bar{
+        flex-basis: 75%;
+    }
+    .hamburger-icon{
+        display: none; 
+    }
     .nav-list{
         @include flex-basis(80%);
         .add-button{
-            text-align: right;
+            text-align: right;  
             @include flex-basis(20%);
             button:hover{
                 color: #1F211F; 

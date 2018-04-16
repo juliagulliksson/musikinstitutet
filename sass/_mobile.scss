@@ -82,10 +82,25 @@ li{
     color: #1F211F;    
     border-bottom: 1px solid $grey; 
     font-family: 'Fjalla One', sans-serif;
+    .hamburger-icon{
+        img{
+            width: 50px;
+            height: 50px;
+        }
+  }
      .navigation{
-         display: none;
+         display: inline-block;
+         text-align: left; 
+         position: sticky;
+         z-index: 1000;
+         background-color: $lightBorderColor; 
+         width: 50%; 
+         height: 100vh;
+         overflow-x: hidden;
+         overflow-y: scroll; 
      }
     nav{
+        height: 100%; 
         text-align: right;
         button{
             @extend %button;
@@ -95,8 +110,8 @@ li{
             color: #1F211F; 
         }
         ul{
-            margin: 0px 0px 0px 20px;
-            padding: 0;
+            margin: 0px;
+            padding: 0px;
         
             li{
                 list-style-type: none;
@@ -109,15 +124,11 @@ li{
             }
         }
     }
-
-    .hamburger-icon{
-        margin-right: 10px;
-        img{
-            width: 50px;
-            height: 50px;
-            margin: 10px;
-        }
+    .add-button{
+        text-align: left; 
+        padding: 20px; 
     }
+}
 }
 
 .albums-wrapper{
@@ -319,6 +330,17 @@ li{
             h5{
                 color: #EE708B; 
             } 
+            .playlist-rating-form{
+                h6{
+                    font-family: 'Fjalla One', sans-serif;
+                    margin-top: 10px; 
+                    color: black; 
+                    font-weight: 400; 
+                }
+                input#playlistRatingControl{
+                    width: 110%; 
+                }
+            }
         }
     }
     .add-track-form{
@@ -361,7 +383,13 @@ li{
     }
 
     .album-delete-button{
+        button:hover{
+            background-color: #8E2F3C; 
+            color: $white; 
+        }
+      button{
         @extend %delete-button;
+      }
     }
 }
 

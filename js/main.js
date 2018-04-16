@@ -64,13 +64,14 @@ class Artist {
 }
 
 class Album {
-    constructor(title, artists, releaseDate, genres, spotifyURL, coverImage){
+    constructor(title, artists, releaseDate, genres, spotifyURL, coverImage, ratings){
         this.title = title;
         this.artists = artists;
         this.releaseDate = releaseDate;
         this.genres = genres;
         this.spotifyURL = spotifyURL;
         this.coverImage = coverImage;
+        this.ratings = ratings; 
     }
 
     addNew(){
@@ -88,10 +89,11 @@ class Album {
 
 class Track {
 
-    constructor(title, albumID, artistID){
+    constructor(title, albumID, artistID, ratings){
         this.title = title;
         this.album = albumID;
         this.artists = artistID;
+        this.ratings = ratings; 
     }
 
     addNew(){
@@ -274,14 +276,29 @@ const displayModule = (function(){
                     `</div>
                     <div class="album-info">
                         <h4>${album.title}</h4>
-                        <h5>by ${album.artists[0].name}</h5>
-                        `;
+                        <h5>by ${album.artists[0].name}</h5>`;
                         if(album.genres.length > 0 && album.releaseDate != null){
                             albumInfo += `<h6>${album.genres} • ${album.releaseDate}</h6>`;
                         }
-                    albumInfo += `</div> 
+                        albumInfo += `
+                        <div class="playlist-rating-form">`;
+                            if(album.ratings.length > 0){
+                                let ratingValueArray = album.ratings;
+                                const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                                const value = ratingValueArray.reduce(reducer);
+                                const ratingValue = value / ratingValueArray.length; 
+                                console.log(ratingValue);
+                            albumInfo +=`
+                            <h6>Average Rating: ${Math.round(ratingValue * 10) / 10}</h6>`;
+                            }
+                            albumInfo +=`
+                            <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
+                            <button id="voteAlbum" data-id="${album._id}">Vote</button>
+                        </div>
+                    </div>`;
+                       
+                albumInfo += `</div> 
                 </div>
-
                 <div class="add-track-form">
                     <form id="addTrackForm">
                     <label for="trackTitle">Add Track</label>
@@ -305,6 +322,7 @@ const displayModule = (function(){
                     <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
                 </div>
             </div>`;
+          
             outputDiv.innerHTML = albumInfo;
         },
         displayForms: function(){
@@ -428,6 +446,17 @@ const displayModule = (function(){
                         <h4>${playlist.title}</h4>
                         <h5>Created By ${playlist.createdBy}</h5>
                         <h6>${playlist.genres}</h6>
+                        <div class="playlist-rating-form">`;
+                            let ratingValueArray = playlist.ratings;
+                            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                            const value = ratingValueArray.reduce(reducer);
+                            const ratingValue = value / ratingValueArray.length; 
+                            console.log(ratingValue);
+                            playlistInfo +=`
+                            <h6>Average Rating: ${ratingValue}</h6>
+                            <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
+                            <button id="voteAlbum" data-id="${playlist._id}">Vote</button>
+                        </div>
                     </div>
                 </div>`; 
              
@@ -512,7 +541,7 @@ const displayModule = (function(){
                         <div class="track-info-wrapper">
                             <div class="track-title"><h4>${track.title}</h4></div>
                             <div class="track-artist"><h4> - ${track.artists[0].name}</h4></div>
-
+                    
                             <div class="add-to-playlist">
                                 <button>. . .</button>
 
