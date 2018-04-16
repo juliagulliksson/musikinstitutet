@@ -295,32 +295,32 @@ const displayModule = (function(){
                             <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
                             <button id="voteAlbum" data-id="${album._id}">Vote</button>
                         </div>
+                    </div>
                     </div>`;
                        
-                albumInfo += `</div> 
-                </div>
-                <div class="add-track-form">
-                    <form id="addTrackForm">
-                    <label for="trackTitle">Add Track</label>
-                    <input type="text" id="trackTitle" placeholder="Title">
-                    <button id="addTrack" data-id="${album._id}" data-artistid="${album.artists[0]._id}">Save</button>
-                    </form>
-                </div>`;
+                    albumInfo += `
+                    <div class="add-track-form">
+                        <form id="addTrackForm">
+                        <label for="trackTitle">Add Track</label>
+                        <input type="text" id="trackTitle" placeholder="Title">
+                        <button id="addTrack" data-id="${album._id}" data-artistid="${album.artists[0]._id}">Save</button>
+                        </form>
+                    </div>`;
 
-                albumInfo +=`
-                <div class="album-tracks" id="albumTracks">
-                    <ul id="albumTracksList">`;
-                        for (let i=0; i < album.tracks.length; i++) {
-                            albumInfo += `<li>${album.tracks[i].title}
-                            <button data-id="${album.tracks[i]._id}">Delete Track</button>
-                            </li>`;
-                        }
-                    albumInfo += `</ul>
-                </div>`;
-                albumInfo += `
-                <div class="album-delete-button">
-                    <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
-                </div>
+                    albumInfo +=`
+                    <div class="album-tracks" id="albumTracks">
+                        <ul id="albumTracksList">`;
+                            for (let i=0; i < album.tracks.length; i++) {
+                                albumInfo += `<li>${album.tracks[i].title}
+                                <button data-id="${album.tracks[i]._id}">Delete Track</button>
+                                </li>`;
+                            }
+                        albumInfo += `</ul>
+                    </div>`;
+                    albumInfo += `
+                    <div class="album-delete-button">
+                        <button data-id="${album._id}" id="deleteAlbum">Delete Album</button>
+                    </div>
             </div>`;
           
             outputDiv.innerHTML = albumInfo;
