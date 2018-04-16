@@ -165,6 +165,18 @@ class FormHandler {
             return true;
         }
     }
+
+    validateRadioButtons(radioButton){
+        const searchByTitle = document.getElementById('searchByTitle');
+        const searchByGenre = document.getElementById('searchByGenre');
+        if (searchByTitle.checked) {
+            return searchByTitle.value;
+        } else if (searchByGenre.checked ){
+            return searchByGenre.value;
+        } else {
+            return false;
+        }
+    }
 }
 
 const handleForms = new FormHandler();
@@ -180,8 +192,8 @@ const displayModule = (function(){
                 <div class="search-albums">
                     <form id="searchAlbumForm">
                         <input type="text" id="albumSearchField" placeholder="Search for albums here">
-                        <input type="radio" value="title" name="searchOption">Title
-                        <input type="radio" value="genres" name="searchOption">Genre
+                        <input type="radio" value="title" id="searchByTitle">Title
+                        <input type="radio" value="genres" id="searchByGenre">Genre
                         <button id="searchAlbumButton">search</button>
                     </form>
                 </div>
@@ -753,11 +765,19 @@ let bindEvents = (function(){
         }, 
         bindAlbumPageEventListeners: function(){
             const searchAlbum = document.getElementById('searchAlbumButton');
+
             
             searchAlbum.addEventListener('click', function(){
                 const title = document.getElementById('albumSearchField').value;
-                const searchOption = document.querySelector('input[name="searchOption"]:checked').value;
-                buttonEvents.searchForAlbums(searchOption, title);
+                if(handleForms.validate([title])){
+                    let searchOption = handleForms.validateRadioButtons();
+                    if(searchOption == false){
+                        //displayError();
+                    } else {   
+                        buttonEvents.searchForAlbums(searchOption, title);
+                    }
+                }
+              
             });
 
             handleForms.preventDefault();
