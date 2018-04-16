@@ -33,7 +33,7 @@ class FetchController {
     }
 
      search(searchBy, searchWord){
-        return fetch(`${this.baseUrl}${this.key}&${searchBy}=${searchWord}`)
+        return fetch(`${this.baseUrl}${this.key}&${searchBy}=${searchWord}&populateArtists=true`)
             .then((response) => response.json()) 
     }
 }
@@ -499,9 +499,9 @@ const displayModule = (function(){
 
 let buttonEvents = (function(){
 
-    const ArtistsFetch = new FetchController('https://folksa.ga/api/artists', '&sort=desc&limit=9');
+    const ArtistsFetch = new FetchController('https://folksa.ga/api/artists', '&sort=desc&limit=20');
 
-    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=9&sort=desc');
+    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=20&sort=desc');
 
     const PlaylistsFetch = new FetchController('https://folksa.ga/api/playlists', '&createdBy=Power Puff Pinglorna');
 
@@ -672,28 +672,34 @@ let buttonEvents = (function(){
             AlbumsFetch.search('title', title)
               .then((albumsSearchResults) =>{
                   console.log(albumsSearchResults);
-                  //buttonEvents.
-                  //displayModule.displayAlbums(albumsSearchResults);
+                    displayModule.displayAlbums(albumsSearchResults);
+                    bindEvents.bindAlbumPageEventListeners();
               });
         },
         searchForArtists: function(name){
             ArtistsFetch.search('name', name)
               .then((artistSearchResults) =>{
                   console.log(artistSearchResults);
-                  //buttonEvents.
-                  //displayModule.displayAlbums(albumsSearchResults);
+                    displayModule.displayArtists(artistSearchResults);
+                    bindEvents.bindArtistPageEventListeners();
               });
         },
         searchForTracks: function(title){
             TracksFetch.search('title', title)
               .then((tracksSearchResults) => {
-                  console.log(tracksSearchResults);
+                PlaylistsFetch.getAll()
+                  .then((playlists) => {
+                    displayModule.displayTracks(tracksSearchResults, playlists);
+                    bindEvents.bindTrackPageEventListeners();
+                })   
               })
         },
         searchForPlaylists: function(title){
             PlaylistsFetch.search('title', title)
               .then((playlistSearchResults) => {
                   console.log(playlistSearchResults);
+                  displayModule.displayPlaylists(playlistSearchResults);
+                  bindEvents.bindPlaylistPageEventListeners();
               })
         }
     }
