@@ -333,7 +333,7 @@ const displayModule = (function(){
               <div class="artist-form-wrapper" id="artistFormWrapper">
                 <h2>Add New Artist</h2>
                 <form id="newArtist">
-                    <label for="newArtistName">Name</label>
+                    <label for="newArtistName">Name <span class="required">*</span> </label>
                     <input type="text" id="newArtistName">
 
                     <label for="newArtistBirthday">Born</label>
@@ -360,10 +360,10 @@ const displayModule = (function(){
               <div class="album-form-wrapper" id="albumFormWrapper">
                 <h2>Add New Album</h2>
                 <form id="newAlbum">
-                    <label for="newAlbumTitle">Title</label>
+                    <label for="newAlbumTitle">Title <span class="required">*</span> </label>
                     <input type="text" id="newAlbumTitle">
 
-                    <label for="newAlbumArtists">Artists</label>
+                    <label for="newAlbumArtists">Artists <span class="required">*</span> </label>
                     <input type="text" id="newAlbumArtists">
 
                     <label for="newAlbumGenres">Genres</label>
@@ -384,7 +384,7 @@ const displayModule = (function(){
               <div class="playlist-form-wrapper" id="playlistFormWrapper">
                 <h2>Add New Playlist</h2>
                 <form id="newPlaylistForm">
-                    <label for="newPlaylistName">Playlist Name</label>
+                    <label for="newPlaylistName">Playlist Name <span class="required">*</span> </label>
                     <input type="text" id="newPlaylistName">
 
                     <label for="newPlaylistImage">Image Link</label>
@@ -629,6 +629,14 @@ const displayModule = (function(){
                 return `<img src="${obj.coverImage}" data-id="${obj._id}">`;
             }
         },
+        formErrorMessages: function(submitButton){
+            let errorMessage = document.createElement('p');
+            errorMessage.classList.add('error-message');
+            errorMessage.textContent = 'Please fill in all the required fields!';
+            let parent = submitButton.parentElement;
+            console.log(parent);
+            parent.insertBefore(errorMessage, parent.lastChild);
+        }
 
     }
 }());
@@ -697,6 +705,7 @@ let buttonEvents = (function(){
             let playlistTitle = document.getElementById('newPlaylistName').value;
             let playlistGenres = document.getElementById('newPlaylistGenres').value;
             let playlistImage = document.getElementById('newPlaylistImage').value;
+            let submitButton = document.getElementById('newPlaylist');
 
             let newPlaylist = new Playlist(playlistTitle, playlistGenres, playlistImage);
             if(handleForms.validate([playlistTitle])){
@@ -705,7 +714,7 @@ let buttonEvents = (function(){
                    buttonEvents.getIndividualPlaylist(playlist._id);
                 });
             }else{
-                //displayError();
+                displayModule.formErrorMessages(submitButton);
             }
             
         },
@@ -718,6 +727,7 @@ let buttonEvents = (function(){
             const coverImage = document.getElementById("newArtistCoverImage").value;
             const countryBorn = document.getElementById("newArtistCountryBorn").value;
             const spotifyURL = document.getElementById("newArtistSpotifyURL").value;
+            let submitButton = document.getElementById('newArtistSubmit')
     
             let newArtist = new Artist(artistName, birthday, genres, gender, countryBorn, spotifyURL, coverImage);
             
@@ -731,7 +741,7 @@ let buttonEvents = (function(){
                     }
                 });
             }else{
-                //displayError();
+                displayModule.formErrorMessages(submitButton);
             }
             
         },
@@ -742,6 +752,7 @@ let buttonEvents = (function(){
             const releaseDate = document.getElementById("releaseDate").value;
             const spotifyURL = document.getElementById("newAlbumSpotifyURL").value;
             const coverImage = document.getElementById("newAlbumCover").value; 
+            let submitButton = document.getElementById("newAlbumSubmit");
            
             if(handleForms.validate([title, artists])){
                 let newAlbum = new Album(title, artists, releaseDate, genres, spotifyURL, coverImage);
@@ -750,7 +761,7 @@ let buttonEvents = (function(){
                     buttonEvents.getIndividualAlbum(album._id);
                 });
             }else{
-                //displayError();
+                displayModule.formErrorMessages(submitButton);
             }
         },
         getIndividualAlbum: function(albumID){
