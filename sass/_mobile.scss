@@ -498,3 +498,9 @@ li{
         @extend %form-wrappers;
     }
 }
+
+.error-message{
+    color: rgb(173, 4, 4);
+    font-weight: 700;
+    font-size: 1.1em;
+}
