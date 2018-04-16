@@ -3,7 +3,6 @@ const hamburgerMenu = document.getElementById('hamburgerIcon');
 /*** Classes ***/
 
 //Universal class to make fetch requests
-
 class FetchController {
     constructor(baseUrl, additionalUrlParameters){
         this.baseUrl = baseUrl;
@@ -179,7 +178,7 @@ class FormHandler {
     preventDefault(){
         let forms = document.querySelectorAll('form');
         for(let form of forms){
-            form.addEventListener("submit", function(event){
+            form.addEventListener('submit', function(event){
                 event.preventDefault();
              });
         }
@@ -468,8 +467,6 @@ const displayModule = (function(){
                 playlistInfo += `</ul>
                 </div>`;
 
-          
-
                 playlistInfo += `
                 <div class="playlist-delete-button">
                     <button data-id="${playlist._id}" id="deletePlaylist">Delete Playlist</button>
@@ -636,10 +633,10 @@ const displayModule = (function(){
         formErrorMessages: function(submitButton, typeOfSubmit){
             let errorMessage = document.createElement('p');
             errorMessage.classList.add('error-message');
-            if(typeOfSubmit === "Search"){
+            if(typeOfSubmit === 'Search'){
                 errorMessage.textContent = 'No matches found';
             }
-            if(typeOfSubmit === "Save"){
+            if(typeOfSubmit === 'Save'){
                 errorMessage.textContent = 'Please fill in all the required fields!';
             }
             let parent = submitButton.parentElement;
@@ -748,7 +745,6 @@ let buttonEvents = (function(){
             }else{
                 displayModule.formErrorMessages(submitButton, "Save");
             }
-            
         },
         addNewArtist: function(){
          
@@ -773,8 +769,7 @@ let buttonEvents = (function(){
                 });
             }else{
                 displayModule.formErrorMessages(submitButton, "Save");
-            }
-            
+            }   
         },
         addNewAlbum: function(){
             const title = document.getElementById("newAlbumTitle").value;
@@ -876,7 +871,6 @@ let buttonEvents = (function(){
                         displayModule.displayAlbums(albumsSearchResults);
                         bindEvents.bindAlbumPageEventListeners();    
                     }
-                
               });
         },
         searchForArtists: function(searchOption, name){
@@ -1004,7 +998,6 @@ let bindEvents = (function(){
         bindAlbumPageEventListeners: function(){
             const searchAlbum = document.getElementById('searchAlbumButton');
 
-            
             searchAlbum.addEventListener('click', function(){
                 const albumSearchValue = document.getElementById('albumSearchField').value;
                 const submitButton = document.getElementById('searchAlbumButton');
@@ -1016,7 +1009,6 @@ let bindEvents = (function(){
                     buttonEvents.searchForAlbums(searchOption, albumSearchValue);
                     displayModule.displayLoader();
                 }
-                
             });
 
             handleForms.preventDefault();
@@ -1108,7 +1100,6 @@ let bindEvents = (function(){
                     buttonEvents.searchForTracks(searchOption, trackSearchValue);
                     displayModule.displayLoader();
                 }
-            
             });
 
             let playlistDropdownButtons = document.querySelectorAll('button');
