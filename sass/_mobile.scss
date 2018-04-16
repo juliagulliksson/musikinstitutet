@@ -329,17 +329,7 @@ li{
             h5{
                 color: #EE708B; 
             } 
-            .playlist-rating-form{
-                h6{
-                    font-family: 'Fjalla One', sans-serif;
-                    margin-top: 10px; 
-                    color: black; 
-                    font-weight: 400; 
-                }
-                input#playlistRatingControl{
-                    width: 110%; 
-                }
-            }
+           
         }
     }
     .add-track-form{
@@ -360,7 +350,6 @@ li{
             padding: 5px;
         }
     }
-
     .album-tracks{
         li{
         margin-left: -40px; 
@@ -391,6 +380,19 @@ li{
         }
     }
 }
+
+.playlist-rating-form{
+    h6{
+        font-family: 'Fjalla One', sans-serif;
+        margin-top: 10px; 
+        color: black; 
+        font-weight: 400; 
+    }
+    input#playlistRatingControl{
+        width: 110%; 
+    }
+}
+
 
 
 /*--artists--*/
@@ -576,4 +578,10 @@ li{
     .playlist-form-wrapper{
         @extend %form-wrappers;
     }
+}
+
+.error-message{
+    color: rgb(173, 4, 4);
+    font-weight: 700;
+    font-size: 1.1em;
 }
