@@ -620,7 +620,9 @@ const displayModule = (function(){
             deleteButton.dataset.id = track._id;
             newTrack.appendChild(deleteButton);
             tracklist.appendChild(newTrack);
-            bindEvents.bindIndividualAlbumPageEventListeners();
+                deleteButton.addEventListener('click', function(){
+                    tracklist.removeChild(newTrack);
+                })
         },
         returnCorrectImage: function(obj){
            
@@ -785,6 +787,7 @@ let buttonEvents = (function(){
         getIndividualAlbum: function(albumID){
             AlbumsFetch.getOne(albumID)
               .then((album) => {
+                displayModule.removeLoader();
                 displayModule.displayIndividualAlbum(album);
                 bindEvents.bindIndividualAlbumPageEventListeners();
               })
@@ -792,6 +795,7 @@ let buttonEvents = (function(){
         getIndividualArtist: function(artistID){
             ArtistsFetch.getOne(artistID)
               .then((artist) => {
+                displayModule.removeLoader();
                 displayModule.displayIndividualArtist(artist);
                 bindEvents.bindIndividualArtistPageEventListeners();
               });
@@ -802,8 +806,7 @@ let buttonEvents = (function(){
                 fetch(`https://folksa.ga/api/playlists/${playlistID}/comments?key=flat_eric`)
                     .then((response) => response.json())
                     .then((comments) => {
-                        console.log(comments);
-                        console.log(playlist);
+                        displayModule.removeLoader();
                         displayModule.displayIndividualPlaylist(playlist, comments);
                         bindEvents.bindIndividualPlaylistPageEventListeners();
                     });
@@ -878,24 +881,24 @@ let buttonEvents = (function(){
                 PlaylistsFetch.getAll()
                   .then((playlists) => {
                     displayModule.removeLoader();
-                    if(tracksSearchResults.length === 0){
+                    if (tracksSearchResults.length === 0) {
                         const searchTrack = document.getElementById('searchTrackButton');
                         displayModule.formErrorMessages(searchTrack, "Search");
-                    } else{
+                    } else {
                         displayModule.displayTracks(tracksSearchResults, playlists);
                         bindEvents.bindTrackPageEventListeners();;
                     }
-                })   
+                })
               })
         },
         searchForPlaylists: function(searchOption, title){
             PlaylistsFetch.search(searchOption, title)
               .then((playlistSearchResults) => {
                     displayModule.removeLoader();
-                    if(playlistSearchResults.length === 0){
+                    if (playlistSearchResults.length === 0) {
                         const searchPlaylist = document.getElementById('searchPlaylistButton');
                         displayModule.formErrorMessages(searchPlaylist, "Search");
-                    } else{
+                    } else {
                         displayModule.displayPlaylists(playlistSearchResults);
                         bindEvents.bindPlaylistPageEventListeners();
                     }
@@ -1000,6 +1003,7 @@ let bindEvents = (function(){
                 let albumID = albumImage.dataset.id;
                 
                 albumImage.addEventListener('click', function(){
+                    displayModule.displayLoader();
                     buttonEvents.getIndividualAlbum(albumID);
                 });
             }
@@ -1007,6 +1011,7 @@ let bindEvents = (function(){
         bindArtistPageEventListeners: function(){
             const searchArtist = document.getElementById('searchArtistButton');
             searchArtist.addEventListener('click', () => {
+                displayModule.displayLoader();
                 const artistSearchValue = document.getElementById('artistSearchField').value;
                 let searchOption = handleForms.validateSearchForms(artistSearchValue);
                 if(!searchOption){     //Search form is not correct
@@ -1123,6 +1128,7 @@ let bindEvents = (function(){
                 let playlistID = playlistImage.dataset.id;
                 
                 playlistImage.addEventListener('click', function(){
+                    displayModule.displayLoader();
                     buttonEvents.getIndividualPlaylist(playlistID);
                 });
             }
