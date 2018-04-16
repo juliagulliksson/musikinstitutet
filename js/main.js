@@ -1,10 +1,9 @@
-//const key = "?key=flat_eric";
-
 const hamburgerMenu = document.getElementById('hamburgerIcon');
 
 /*** Classes ***/
 
 //Universal class to make fetch requests
+
 class FetchController {
     constructor(baseUrl, additionalUrlParameters){
         this.baseUrl = baseUrl;
@@ -39,41 +38,6 @@ class FetchController {
     }
 }
 
-/*class ArtistController {
-    constructor(baseUrl){
-        this.baseUrl = baseUrl;
-    }
-
-    getAll(){
-        return fetch(this.baseUrl + key + '&sort=desc&limit=9')
-        .then((response) => response.json())
-    }
-
-    getOne(id){
-        return fetch(`${this.baseUrl}/${id}${key}`)
-        .then((response) => response.json())
-    }
-
-    deleteOne(id){
-        return fetch(`${this.baseUrl}/${id}${key}`, {
-            method: 'DELETE',
-            headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-          .then((response) => response.json())
-    }
-
-    searchByName(name){
-        return fetch('https://folksa.ga/api/artists' + key + '&name=' + name)
-        .then((response) => response.json())
-        .then((artists) => {
-            console.log(artists);
-        });
-    }
-}*/
-
 class Artist {
     constructor(artistName, birthday, genres, gender, countryBorn, spotifyURL, coverImage){
         this.name = artistName;
@@ -87,7 +51,7 @@ class Artist {
 
     addNew(){
 
-        return fetch('https://folksa.ga/api/artists' + key,{
+        return fetch('https://folksa.ga/api/artists?key=flat_eric',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -96,41 +60,8 @@ class Artist {
             body: JSON.stringify(this)
         })
             .then((response) => response.json())
-            
     }
 }
-
-/*class AlbumController {
-    constructor(baseUrl){
-        this.baseUrl = baseUrl;
-    }
-
-    getAll(){
-        return fetch(this.baseUrl + key + '&populateArtists=true&limit=20&sort=desc')
-        .then((response) => response.json())
-    }
-
-    getOne(id){
-        return fetch(`${this.baseUrl}/${id}${key}`)
-        .then((response) => response.json())
-    }
-
-    deleteOne(id){
-        return fetch(`${this.baseUrl}/${id}${key}`,{
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-        .then((response) => response.json())
-    }
-
-    searchByTitle(title){
-       return fetch('https://folksa.ga/api/albums' + key + '&title=' + title)
-        .then((response) => response.json())
-    }
-}*/
 
 class Album {
     constructor(title, artists, releaseDate, genres, spotifyURL, coverImage){
@@ -143,7 +74,7 @@ class Album {
     }
 
     addNew(){
-        return fetch('https://folksa.ga/api/albums' + key,{
+        return fetch('https://folksa.ga/api/albums?key=flat_eric',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -155,40 +86,6 @@ class Album {
     }
 }
 
-/*class TrackController {
-    constructor(baseUrl){
-        this.baseUrl = baseUrl;
-    }
-
-    getAll(){
-        return fetch(this.baseUrl + key + '&sort=desc')
-        .then((response) => response.json())
-    }
-
-    getOne(id){
-        return fetch(`${this.baseUrl}/${id}${key}`)
-        .then((response) => response.json())
-    }
-    deleteOne(id){
-        return fetch(`https://folksa.ga/api/tracks/${id}${key}`,
-        {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-        .then((response) => response.json())
-    }
-    searchByTitle(title){
-        fetch('https://folksa.ga/api/albums' + key + '&title=' + title)
-        .then((response) => response.json())
-        .then((tracks) => {
-            console.log(tracks);
-        });
-    }
-}*/
-
 class Track {
 
     constructor(title, albumID, artistID){
@@ -198,7 +95,7 @@ class Track {
     }
 
     addNew(){
-        return fetch('https://folksa.ga/api/tracks'+ key,{
+        return fetch('https://folksa.ga/api/tracks?key=flat_eric',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -210,54 +107,6 @@ class Track {
     }
 }
 
-/*class PlaylistController {
-    constructor(baseUrl){
-        this.baseUrl = baseUrl;
-    }
-
-    getAll(){
-        return fetch(`${this.baseUrl}${key}&createdBy=Power Puff Pinglorna`)
-        .then((response) => response.json())
-    }
-
-    getOne(id){
-        console.log(`${this.baseUrl}/${id}${key}`);
-        return fetch(`${this.baseUrl}/${id}${key}`)
-        .then((response) => response.json())
-    }
-    deleteOne(id){
-        return fetch(`https://folksa.ga/api/playlists/${id}${key}`,
-        {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-        .then((response) => response.json())
-    }
-
-    addTrack(playlistID, trackID){
-        return fetch(`https://folksa.ga/api/playlists/${playlistID}/tracks${key}`,{
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ tracks: trackID })
-        })
-        .then((response) => response.json())
-    }
-
-    searchByTitle(title){
-        fetch('https://folksa.ga/api/playlists' + key + '&createdBy=Power Puff Pinglorna&title=' + title)
-        .then((response) => response.json())
-        .then((playlists) => {
-            console.log(playlists);
-        });
-    }
-}*/
-
 class Playlist {
 
     constructor(title, genres, coverImage){
@@ -268,9 +117,7 @@ class Playlist {
     }
 
     addNew(){
-        console.log(this);
-        
-        return fetch('https://folksa.ga/api/playlists' + key,{
+        return fetch('https://folksa.ga/api/playlists?key=flat_eric',{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -282,7 +129,7 @@ class Playlist {
     }
 
     addTrack(playlistID, trackID){
-        return fetch(`https://folksa.ga/api/playlists/${playlistID}/tracks${key}`,{
+        return fetch(`https://folksa.ga/api/playlists/${playlistID}/tracks?key=flat_eric`,{
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -306,7 +153,7 @@ class FormHandler {
     }
 
     validate(inputFields){
-        for(inputField of inputFields){
+        for(let inputField of inputFields){
             if(inputField == ""){
                 //Input field is empty
                 return false;
@@ -1034,34 +881,6 @@ let searchController = (function(){
         }*/
     }
 }());
-
-/*let handleForms = (function(){
-    return {
-        preventDefault: function(){
-            //Function to prevent the reload default of all forms present on the page
-            let forms = document.querySelectorAll('form');
-            for(let form of forms){
-                form.addEventListener("submit", function(event){
-                    event.preventDefault();
-                 });
-            }
-        },
-        validate: function(inputFields){
-            //Loop through the inputFields array, may be one or multiple variables/inputfields
-            for(inputField of inputFields){
-                if(inputField == ""){
-                    //Input field is empty
-                    return false;
-                }
-                if(!inputField.replace(/\s/g, '').length){
-                    //Input field contains only whitespace
-                    return false;
-                }
-                return true;
-            }
-        }
-    }
-}());*/
 
 //Bind all the home page nav link buttons to their eventlisteners
 bindEvents.bindHomePageEventListeners();

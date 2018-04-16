@@ -44,7 +44,6 @@ li{
     padding: 10px;
     background-color: $pink;
     transition: all 400ms;
-    margin-top: 7px;
     font-size: 1em;
     box-shadow: 3px 3px 2px 0px $lightPink;
     -webkit-box-shadow: 3px 3px 2px 0px $lightPink;
@@ -77,6 +76,7 @@ li{
         text-align: right;
         button{
             @extend %button;
+            margin-top: 7px;
         }
         button:active{
             color: #1F211F; 
@@ -270,11 +270,13 @@ li{
         }
     }
     .add-track-form{
-        height: 40px; 
         border-top: 1px solid $mediumBorderColor; 
         border-bottom: 1px solid $mediumBorderColor;  
+        margin-top: 10px;
+        padding-bottom: 10px;
+        padding-top: 10px;
         #addTrackForm{
-            margin-top: 10px; 
+            //margin-top: 10px; 
         }
         label{
             font-size: 0.9rem; 
@@ -284,9 +286,11 @@ li{
             width: 60%; 
         }
         button{
-            background-color: $pink; 
+            @extend %button;
+            /*background-color: $pink; 
             color: #ffffff; 
-            border-radius: 0.25rem; 
+            border-radius: 0.25rem; */
+            padding: 5px;
         }
     }
 
@@ -303,6 +307,10 @@ li{
             background-color: $grey;
             color: $white; 
             border-radius: 0.25rem; 
+            border: 0;
+            outline: 0;
+            padding: 5px;
+            margin-top: -4px;
         }
     }
 
