@@ -369,6 +369,17 @@ li{
             h5{
                 color: #EE708B; 
             } 
+            .playlist-rating-form{
+                h6{
+                    font-family: 'Fjalla One', sans-serif;
+                    margin-top: 10px; 
+                    color: black; 
+                    font-weight: 400; 
+                }
+                input#playlistRatingControl{
+                    width: 110%; 
+                }
+            }
         }
     }
     .add-track-form{

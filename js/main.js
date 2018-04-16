@@ -102,13 +102,14 @@ class AlbumController {
 }
 
 class Album {
-    constructor(title, artists, releaseDate, genres, spotifyURL, coverImage){
+    constructor(title, artists, releaseDate, genres, spotifyURL, coverImage, ratings){
         this.title = title;
         this.artists = artists;
         this.releaseDate = releaseDate;
         this.genres = genres;
         this.spotifyURL = spotifyURL;
         this.coverImage = coverImage;
+        this.ratings = ratings; 
     }
 
     addNew(){
@@ -160,10 +161,11 @@ class TrackController {
 
 class Track {
 
-    constructor(title, albumID, artistID){
+    constructor(title, albumID, artistID, ratings){
         this.title = title;
         this.album = albumID;
         this.artists = artistID;
+        this.ratings = ratings; 
     }
 
     addNew(){
@@ -229,11 +231,12 @@ class PlaylistController {
 
 class Playlist {
 
-    constructor(title, genres, coverImage){
+    constructor(title, genres, coverImage, ratings){
         this.title = title;
         this.genres = genres;
         this.coverImage = coverImage;
         this.createdBy = "Power Puff Pinglorna";
+        this.ratings = ratings; 
     }
 
     addNew(){
@@ -312,6 +315,17 @@ let displayModule = (function(){
                         <h4>${album.title}</h4>
                         <h5>by ${album.artists[0].name}</h5>
                         <h6>${album.genres} • ${album.releaseDate}</h6>
+                        <div class="playlist-rating-form">`;
+                        let ratingValueArray = album.ratings;
+                        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                        const value = ratingValueArray.reduce(reducer);
+                        const ratingValue = value / ratingValueArray.length; 
+                        console.log(ratingValue);
+                        albumInfo +=`
+                            <h6>Average Rating: ${ratingValue}</h6>
+                            <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
+                            <button id="voteAlbum" data-id="${album._id}">Vote</button>
+                        </div>
                     </div> 
                 </div>
 
@@ -339,6 +353,7 @@ let displayModule = (function(){
                 </div>
             </div>`;
             outputDiv.innerHTML += albumInfo;
+            console.log(album.ratings); 
 
             bindEvents.bindIndividualAlbumPageEventListeners();
         },
@@ -467,6 +482,7 @@ let displayModule = (function(){
                         <h4>${playlist.title}</h4>
                         <h5>Created By ${playlist.createdBy}</h5>
                         <h6>${playlist.genres}</h6>
+                        <h6>${playlist.ratings}</h6>
                     </div>
                 </div>`; 
              
