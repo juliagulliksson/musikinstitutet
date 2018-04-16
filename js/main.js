@@ -630,13 +630,21 @@ const displayModule = (function(){
                 return `<img src="${obj.coverImage}" data-id="${obj._id}">`;
             }
         },
-        formErrorMessages: function(submitButton){
+        formErrorMessages: function(submitButton, typeOfSubmit){
             let errorMessage = document.createElement('p');
             errorMessage.classList.add('error-message');
-            errorMessage.textContent = 'Please fill in all the required fields!';
+            if(typeOfSubmit === "Search"){
+                errorMessage.textContent = 'No matches found';
+            }
+            if(typeOfSubmit === "Save"){
+                errorMessage.textContent = 'Please fill in all the required fields!';
+            }
             let parent = submitButton.parentElement;
             console.log(parent);
             parent.insertBefore(errorMessage, parent.lastChild);
+        },
+        searchErrorMessage: function(){
+
         },
         displayLoader: function(){
             loadingSpinner.classList.remove('hidden');
@@ -707,7 +715,7 @@ let buttonEvents = (function(){
                     console.log(postedTrack);
                 });
             }else{
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
             
         },
@@ -724,7 +732,7 @@ let buttonEvents = (function(){
                    buttonEvents.getIndividualPlaylist(playlist._id);
                 });
             }else{
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
             
         },
@@ -751,7 +759,7 @@ let buttonEvents = (function(){
                     }
                 });
             }else{
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
             
         },
@@ -771,7 +779,7 @@ let buttonEvents = (function(){
                     buttonEvents.getIndividualAlbum(album._id);
                 });
             }else{
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
         },
         getIndividualAlbum: function(albumID){
@@ -840,16 +848,28 @@ let buttonEvents = (function(){
             AlbumsFetch.search(searchOption, title)
               .then((albumsSearchResults) =>{
                     displayModule.removeLoader();
-                    displayModule.displayAlbums(albumsSearchResults);
-                    bindEvents.bindAlbumPageEventListeners();
+                    if(albumsSearchResults.length === 0){
+                        const searchAlbum = document.getElementById('searchAlbumButton');
+                        displayModule.formErrorMessages(searchAlbum, "Search");
+                    } else{
+                        console.log(albumsSearchResults)
+                        displayModule.displayAlbums(albumsSearchResults);
+                        bindEvents.bindAlbumPageEventListeners();    
+                    }
+                
               });
         },
         searchForArtists: function(searchOption, name){
             ArtistsFetch.search(searchOption, name)
-              .then((artistSearchResults) =>{
-                    displayModule.removeLoader();
+              .then((artistSearchResults) => {
+                displayModule.removeLoader();
+                if(artistSearchResults.length === 0){
+                    const searchArtist = document.getElementById('searchArtistButton');
+                    displayModule.formErrorMessages(searchArtist, "Search");
+                } else{
                     displayModule.displayArtists(artistSearchResults);
                     bindEvents.bindArtistPageEventListeners();
+                }
               });
         },
         searchForTracks: function(searchOption, title){
@@ -858,8 +878,13 @@ let buttonEvents = (function(){
                 PlaylistsFetch.getAll()
                   .then((playlists) => {
                     displayModule.removeLoader();
-                    displayModule.displayTracks(tracksSearchResults, playlists);
-                    bindEvents.bindTrackPageEventListeners();
+                    if(tracksSearchResults.length === 0){
+                        const searchTrack = document.getElementById('searchTrackButton');
+                        displayModule.formErrorMessages(searchTrack, "Search");
+                    } else{
+                        displayModule.displayTracks(tracksSearchResults, playlists);
+                        bindEvents.bindTrackPageEventListeners();;
+                    }
                 })   
               })
         },
@@ -867,8 +892,13 @@ let buttonEvents = (function(){
             PlaylistsFetch.search(searchOption, title)
               .then((playlistSearchResults) => {
                     displayModule.removeLoader();
-                    displayModule.displayPlaylists(playlistSearchResults);
-                    bindEvents.bindPlaylistPageEventListeners();
+                    if(playlistSearchResults.length === 0){
+                        const searchPlaylist = document.getElementById('searchPlaylistButton');
+                        displayModule.formErrorMessages(searchPlaylist, "Search");
+                    } else{
+                        displayModule.displayPlaylists(playlistSearchResults);
+                        bindEvents.bindPlaylistPageEventListeners();
+                    }
               })
         },
         addCommentToPlaylist: function(playlistID){
@@ -885,7 +915,7 @@ let buttonEvents = (function(){
                     console.log(playlist);
                   });
             } else {
-                displayModule.formErrorMessages(submitButton);
+                displayModule.formErrorMessages(submitButton, "Save");
             }
         }
     }
@@ -953,7 +983,7 @@ let bindEvents = (function(){
                 const albumSearchValue = document.getElementById('albumSearchField').value;
             
                 let searchOption = handleForms.validateSearchForms(albumSearchValue);
-                if(!searchOption){     //Search form is not correct
+                if(!searchOption){     //Search form is not 
                     //displayError();
                 } else {    //Form is correct, send the value of searchOption to the function
                     buttonEvents.searchForAlbums(searchOption, albumSearchValue);
