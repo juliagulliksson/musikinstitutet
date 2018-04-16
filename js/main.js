@@ -316,12 +316,12 @@ let displayModule = (function(){
                         <h5>by ${album.artists[0].name}</h5>
                         <h6>${album.genres} • ${album.releaseDate}</h6>
                         <div class="playlist-rating-form">`;
-                        let ratingValueArray = album.ratings;
-                        const reducer = (accumulator, currentValue) => accumulator + currentValue;
-                        const value = ratingValueArray.reduce(reducer);
-                        const ratingValue = value / ratingValueArray.length; 
-                        console.log(ratingValue);
-                        albumInfo +=`
+                            let ratingValueArray = album.ratings;
+                            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                            const value = ratingValueArray.reduce(reducer);
+                            const ratingValue = value / ratingValueArray.length; 
+                            console.log(ratingValue);
+                            albumInfo +=`
                             <h6>Average Rating: ${ratingValue}</h6>
                             <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
                             <button id="voteAlbum" data-id="${album._id}">Vote</button>
@@ -482,7 +482,17 @@ let displayModule = (function(){
                         <h4>${playlist.title}</h4>
                         <h5>Created By ${playlist.createdBy}</h5>
                         <h6>${playlist.genres}</h6>
-                        <h6>${playlist.ratings}</h6>
+                        <div class="playlist-rating-form">`;
+                            let ratingValueArray = playlist.ratings;
+                            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                            const value = ratingValueArray.reduce(reducer);
+                            const ratingValue = value / ratingValueArray.length; 
+                            console.log(ratingValue);
+                            playlistInfo +=`
+                            <h6>Average Rating: ${ratingValue}</h6>
+                            <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
+                            <button id="voteAlbum" data-id="${playlist._id}">Vote</button>
+                        </div>
                     </div>
                 </div>`; 
              
@@ -532,7 +542,7 @@ let displayModule = (function(){
                         <div class="track-info-wrapper">
                             <div class="track-title"><h4>${track.title}</h4></div>
                             <div class="track-artist"><h4> - ${track.artists[0].name}</h4></div>
-
+                    
                             <div class="add-to-playlist">
                                 <button>. . .</button>
 
