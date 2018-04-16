@@ -481,32 +481,34 @@ const displayModule = (function(){
                 </div>`;
 
                 playlistInfo += `
-                <div class="comment-form">
-                    <h3>Leave a comment</h3>
-                    <form>
-                        <label for="username">Usename</label>
-                        <input type="text" id="username">
-                        <label for="commentField">Comment</label>
-                        <textarea id="commentField"></textarea>
-                        <button id="commentButton" data-id="${playlist._id}">Send</button>
-                    </form>
-                </div>`;
-                playlistInfo += `
-                <div class="playlist-comments" id="commentDiv">
-                    <h3>Comments:</h3>
-                    <ul>`;
-                        for(let i in comments){
-                            playlistInfo += `
-                            <div class="comment">
-                                <li><h6>${comments[i].username}</h6>
-                                <p>${comments[i].body}</p>
-                                <button data-id="${comments[i]._id}">Delete</button>
-                                </li>
-                            </div>`;
-                        }
-                    
+                <div class="playlist-comment-div">
+                    <div class="comment-form">
+                        <h3>Leave a comment</h3>
+                        <form>
+                            <label for="username">Usename</label>
+                            <input type="text" id="username">
+                            <label for="commentField">Comment</label>
+                            <textarea id="commentField"></textarea>
+                            <button id="commentButton" data-id="${playlist._id}">Send</button>
+                        </form>
+                    </div>`;
                     playlistInfo += `
-                    </ul>
+                    <div class="playlist-comments" id="commentDiv">
+                        <h3>Comments:</h3>
+                        <ul>`;
+                            for(let i in comments){
+                                playlistInfo += `
+                                <div class="comment">
+                                    <li><h6>${comments[i].username}</h6>
+                                    <p>${comments[i].body}</p>
+                                    <button data-id="${comments[i]._id}" class="delete-button">Delete</button>
+                                    </li>
+                                </div>`;
+                            }
+                        
+                        playlistInfo += `
+                        </ul>
+                    </div>
                 </div>
             </div>`; 
             outputDiv.innerHTML = playlistInfo;
@@ -645,7 +647,7 @@ let buttonEvents = (function(){
 
     const ArtistsFetch = new FetchController('https://folksa.ga/api/artists', '&sort=desc&limit=20');
 
-    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=20&sort=desc');
+    const AlbumsFetch = new FetchController('https://folksa.ga/api/albums', '&populateArtists=true&limit=21&sort=desc');
 
     const PlaylistsFetch = new FetchController('https://folksa.ga/api/playlists', '&createdBy=Power Puff Pinglorna');
 

@@ -1,5 +1,5 @@
 main{
-    width: 70%;
+    max-width: 60%;
     margin: 0px auto;
     background-color: #FFF;
 }
@@ -13,6 +13,9 @@ main{
 .nav-bar{
     width: 100%;
     margin: 0px auto;  
+    .hamburger-icon{
+        display: none; 
+    }
     .navigation{
         @include flex();
         width: 70%;
@@ -40,13 +43,11 @@ main{
     .nav-bar{
         flex-basis: 75%;
     }
-    .hamburger-icon{
-        display: none; 
-    }
     .nav-list{
         @include flex-basis(80%);
         .add-button{
             text-align: right;  
+            padding: 0px;
             @include flex-basis(20%);
             button:hover{
                 color: #1F211F; 
@@ -54,15 +55,21 @@ main{
         }
     }
 }
+
+%search-wrapper{
+    input[type=text]{
+        width: 50%;  
+    }
+}
   
 .albums-wrapper{
     .album-wrapper{
-        width: 20%;
+        max-width: 20%;
     }
    .cover-image{
         img{
-            height: 200px;
-            width: 200px;
+            height: 170px;
+            width: 170px;
         }
     }
 }
@@ -73,8 +80,8 @@ main{
     }
    .cover-image{
         img{
-            height: 200px;
-            width: 200px;
+            height: 170px;
+            width: 170px;
         }
     }
 }
@@ -102,8 +109,8 @@ main{
     }
    .cover-image{
         img{
-            height: 200px;
-            width: 200px;
+            height: 170px;
+            width: 170px;
         }
     }
 }
