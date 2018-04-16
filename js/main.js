@@ -493,7 +493,8 @@ const displayModule = (function(){
             } else {
                 return `<img src="${obj.coverImage}" data-id="${obj._id}">`;
             }
-        }
+        },
+
     }
 }());
 
@@ -675,7 +676,8 @@ let buttonEvents = (function(){
                   //buttonEvents.
                   //displayModule.displayAlbums(albumsSearchResults);
               });
-        }
+        },
+        s
     }
 }());
 
