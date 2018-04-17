@@ -7,10 +7,12 @@ body{
 }
 
 main{
-    width: 70%;
+    width: 60%;
     margin: 0px auto;
     background-color: #FFF;
+    padding: 25px; 
 }
+
 
 .header-flex-wrapper{
    .header-image{
@@ -145,7 +147,43 @@ main{
 }
 
 .individual-albums-wrapper{
+    .individual-flex-wrapper{
+        .cover-image{
+            img{
+            height: 300px;
+            width: 300px;
+            }
+        }
+    }
+    .album-tracks{
+        li{
+        font-size: 0.95rem; 
+        }
+    }
     .album-delete-button{
+        width: 35%;
+    }
+}
+
+.individual-artists-wrapper{
+    .individual-artist-flex-wrapper{
+        .cover-image{
+            img{
+            height: 300px;
+            width: 300px;
+            }
+        }
+        .artist-info{
+            margin-left: 20px; 
+            h4{
+                font-size: 1.5rem; 
+            }
+            h5{
+                font-size: 1rem; 
+            }
+        }
+    }
+    .delete-button{
         width: 37%;
         margin: 5px;
     }

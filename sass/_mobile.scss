@@ -379,15 +379,24 @@ li{
     }
 }
 
-.playlist-rating-form{
+.rating-form{
+    background-color: $lightBorderColor; 
+    display: inline-flex; 
+    margin-top: 20px; 
+    width: 100%; 
+    border-radius: 0.25rem; 
+    padding: 5px; 
     h6{
         font-family: 'Fjalla One', sans-serif;
         margin-top: 10px; 
         color: black; 
         font-weight: 400; 
     }
-    input#playlistRatingControl{
-        width: 110%; 
+    img{
+        width: 15px; 
+        height: 20px; 
+        margin-right: 5px; 
+        color: $pink; 
     }
 }
 
@@ -395,13 +404,55 @@ li{
 
 /*--artists--*/
 .individual-artists-wrapper{
-    .cover-image{
-        height: 300px;
-        width: 300px;
-         img{
-             height: 100%;
-         }
-     }
+    .individual-artist-flex-wrapper{
+        @include flex();
+        .cover-image{
+            overflow: hidden; 
+            margin-bottom: 10px;
+            img{
+                height: 170px;
+                width: 170px;
+                border: 0.9px solid $lightBorderColor;
+                border-radius: 0.2rem;
+                object-fit: cover;
+            }
+        }
+    }
+    .artist-info{
+        h5.born{
+            margin-top: 10px;
+            p{
+                color: $pink; 
+                margin: 0px; 
+                padding: 0px; 
+            }
+        }
+        h5.country{
+            p{
+                margin: 0px; 
+                padding: 0px; 
+            }
+        }
+        h5.genres{ 
+            margin-top: 10px;
+            p{
+                color: $pink; 
+                margin: 0px; 
+                padding: 0px;
+            }
+        }
+    }
+    .spotify-url{
+        h5 p{
+            color: #58BA55; 
+            margin: 0px;
+            padding: 0px; 
+        }
+    }
+
+    button{
+        @extend %delete-button; 
+    }
 }
 
 /*--playlists--*/
