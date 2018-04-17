@@ -35,7 +35,6 @@ li{
     list-style-type: none;
 }
 
-
 %delete-button{
     margin: 0px auto; 
     margin-top: 15px; 
@@ -63,16 +62,22 @@ li{
     -moz-box-shadow: 3px 3px 2px 0px $lightPink;
 }
 
+%image-wrappers{
+    width: 45%;
+    text-align: center;
+    margin: 0px auto; 
+    margin-bottom: 20px; 
+}
+
 .header-flex-wrapper{
     @include flex();
     flex-direction: column-reverse;
     width: 100%;
- 
    .header-image{
-       background-image: url("../images/awesome-jazz.jpg");
+       background-image: url("../images/header-image.jpg");
        background-repeat: no-repeat;
-       background-position: center; 
-       background-size: 100%;
+       background-size: cover;
+       height: 250px;
    }
 }
 
@@ -81,49 +86,50 @@ li{
     color: #1F211F;    
     border-bottom: 1px solid $grey; 
     font-family: 'Fjalla One', sans-serif;
-    .hamburger-icon{
-        img{
-            width: 50px;
-            height: 50px;
-        }
-    }
-     .navigation{
-         display: inline-block;
-         text-align: left; 
-         position: sticky;
-         z-index: 1000;
-         background-color: $lightBorderColor; 
-         width: 50%; 
-         height: 100vh;
-     }
     nav{
-        height: 55px; 
+        height: 55px;
         text-align: right;
+        .hamburger-icon{
+            img{
+                width: 50px;
+                height: 50px;
+            }
+        }
+        .navigation.show{
+            display: inline-block;
+        }
+        .navigation{
+            display: none;
+            position: sticky;
+            z-index: 1000;
+            background-color: $lightBorderColor; 
+            width: 50%;
+            text-align: left;
+        }
+            ul{
+                margin: 0px;
+                padding: 0px;
+            
+                li{
+                    list-style-type: none;
+                    padding: 15px;
+                    margin: 0px 7px 0px 7px;
+                    font-size: 1.2em;
+                }
+                li:active{
+                    color: #EE708B;
+                }
+            }
+    }
+    .add-button{
+        text-align: center; 
         button{
             @extend %button;
-            margin-top: 7px;
+            margin: 20px; 
         }
         button:active{
             color: #1F211F; 
         }
-        ul{
-            margin: 0px;
-            padding: 0px;
-        
-            li{
-                list-style-type: none;
-                padding: 15px;
-                margin: 0px 7px 0px 7px;
-                font-size: 1.2em;
-            }
-            li:active{
-                color: #EE708B;
-            }
-        }
-    }
-    .add-button{
-        text-align: left; 
-        margin-left: 20px; 
     }
 }
 
@@ -131,11 +137,7 @@ li{
     display: flex;
     flex-wrap: wrap;    
     .album-wrapper{
-        width: 45%;
-        text-align: center;
-        margin: 0px auto; 
-        margin-bottom: 20px; 
-
+        @extend %image-wrappers;
     }
    .cover-image{
         overflow: hidden; 
@@ -176,10 +178,7 @@ li{
     @include flex();
     flex-wrap: wrap;    
     .artist-wrapper{
-        width: 45%;
-        text-align: center;
-        margin: 0px auto; 
-        margin-bottom: 20px; 
+       @extend %image-wrappers;
 
     }
    .cover-image{
@@ -428,8 +427,6 @@ li{
             }
         }
     }
-   
-
     button{
         @extend %delete-button; 
     }
@@ -493,7 +490,6 @@ li{
             color: $white; 
         }
     }
-
     .playlist-comment-div{
         margin-top: 15px; 
         background-color: $lightBorderColor; 

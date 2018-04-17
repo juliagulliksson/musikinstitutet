@@ -7,7 +7,7 @@ body{
 }
 
 main{
-    width: 60%;
+    width: 75%;
     margin: 0px auto;
     background-color: #FFF;
     padding: 25px; 
@@ -23,6 +23,8 @@ main{
 .nav-bar{
     width: 100%;
     margin: 0px auto;  
+    nav{
+        text-align: center;
     .hamburger-icon{
         display: none; 
     }
@@ -35,8 +37,9 @@ main{
         overflow-x: none;
         overflow-y: none; 
     }
-    nav{
-        text-align: center;
+    .navigation.show{
+        @include flex();
+    }
         ul{
             margin: 0px 0px 0px 20px;
             display: inline-flex; 
@@ -50,20 +53,21 @@ main{
             }
         }
     }
-    .nav-bar{
-        flex-basis: 75%;
-    }
-    .nav-list{
-        @include flex-basis(80%);
+        .nav-list{
+            @include flex-basis(80%);
+        }
         .add-button{
             text-align: right;  
             padding: 0px;
             @include flex-basis(20%);
+            button{
+                margin: 0px;
+                margin-top: 7px;
+            }
             button:hover{
                 color: #1F211F; 
             }
         }
-    }
 }
 
 %search-wrapper{

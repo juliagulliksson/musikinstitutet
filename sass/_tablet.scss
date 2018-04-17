@@ -12,7 +12,7 @@
   
 .artists-wrapper{  
     .artist-wrapper{
-        width: 20%;
+        width: 40%;
     }
    .cover-image{
         img{
@@ -50,10 +50,6 @@
         }
     }
 }
-
-body{
-    background-color: $pink; 
-}
 main{
     width: 100%; 
     padding: 15px; 
@@ -66,5 +62,11 @@ main{
         input{
             width: 60%;
         }
+    }
+}
+
+.header-flex-wrapper{
+    .header-image{
+        background-position: center; 
     }
 }

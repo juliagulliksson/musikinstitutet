@@ -1,5 +1,3 @@
-const hamburgerMenu = document.getElementById('hamburgerIcon');
-
 /*** Classes ***/
 
 //Universal class to make fetch requests
@@ -169,7 +167,7 @@ class Comment {
                     'Content-Type': 'application/json'
                 },
             })
-            .then((response) => response.json())
+        .then((response) => response.json())
     }
 }
 
@@ -221,9 +219,9 @@ class FormHandler {
 }
 
 const handleForms = new FormHandler();
+const outputDiv = document.getElementById('output');
 
 const displayModule = (function(){
-    const outputDiv = document.getElementById('output');
     const loadingSpinner = document.getElementById('loadingSpinner');
     
     return {
@@ -461,9 +459,12 @@ const displayModule = (function(){
                 playlistInfo += `
                 <div class="playlist-tracks" id="playlistTracks>
                     <ul id="playlistTracksList">`;
+                 
                     for(let i in playlist.tracks){
-                        playlistInfo += `<li>${playlist.tracks[i].title} - ${playlist.tracks[i].artists[0].name}
-                        </li>`;
+                        if(playlist.tracks[i].artists.length > 0){
+                            playlistInfo += `<li>${playlist.tracks[i].title} - ${playlist.tracks[i].artists[0].name}
+                            </li>`;
+                        }
                     }
                 playlistInfo += `</ul>
                 </div>`;
@@ -596,7 +597,6 @@ const displayModule = (function(){
             outputDiv.innerHTML = artistInfo;
         },
         displayIndividualArtist: function(artist){
-            console.log(artist)
             
             let artistInfo = ``;
             artistInfo += `
@@ -773,9 +773,6 @@ let buttonEvents = (function(){
                 newArtist.addNew()
                 .then((artist) => {
                     buttonEvents.getIndividualArtist(artist._id);
-                    if(artist.new == false){
-                        console.log("Artist already exists");
-                    }
                 });
             }else{
                 displayModule.formErrorMessages(submitButton, "Save");
@@ -953,44 +950,56 @@ let buttonEvents = (function(){
 
 //A module to bind the buttons/images to the events that are present in buttonEvents
 let bindEvents = (function(){
+    const hamburgerMenu = document.getElementById('hamburgerIcon');
     const addNewButton = document.getElementById('addNew');
     const artistsLink = document.getElementById('artistsLink');
     const homeLink = document.getElementById('homeLink');
     const tracksLink = document.getElementById('tracksLink');
     const playlistsLink = document.getElementById('playlistsLink');
     const albumsLink = document.getElementById('albumsLink');
+    const navbar = document.getElementById('navigation');
 
     return {
         bindHomePageEventListeners: function(){
             homeLink.addEventListener('click', function(){
                 buttonEvents.getAlbums();
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
             
             artistsLink.addEventListener('click', function(){
                 buttonEvents.getArtists()
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
 
             tracksLink.addEventListener('click', function(){
                 buttonEvents.getTracksAndPlaylists();
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
 
             albumsLink.addEventListener('click', function(){
                 buttonEvents.getAlbums();
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
             
             playlistsLink.addEventListener('click', function(){
                 buttonEvents.getPlaylists();
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
 
             addNewButton.addEventListener('click', function(){
                 displayModule.displayForms();
                 bindEvents.bindFormPageEventListeners();
+                navbar.classList.toggle('show');
             });
+
+            hamburgerMenu.addEventListener('click', function(){
+                navbar.classList.toggle('show');
+            })
         },
         bindFormPageEventListeners: function(){
             const newAlbum = document.getElementById("newAlbum");
@@ -1023,7 +1032,7 @@ let bindEvents = (function(){
 
             handleForms.preventDefault();
 
-            const albumImages = document.querySelectorAll('img');
+            const albumImages = outputDiv.querySelectorAll('img');
 
             for(let albumImage of albumImages){
                 let albumID = albumImage.dataset.id;
@@ -1047,7 +1056,7 @@ let bindEvents = (function(){
                 }
             });
 
-            let artistImages = document.querySelectorAll('img');
+            let artistImages = outputDiv.querySelectorAll('img');
 
             for(let artistImage of artistImages){
                 let artistID = artistImage.dataset.id;
@@ -1145,7 +1154,7 @@ let bindEvents = (function(){
                 }
             });
 
-            let playlistImages = document.querySelectorAll('img');
+            let playlistImages = outputDiv.querySelectorAll('img');
 
             for(let playlistImage of playlistImages){
                 let playlistID = playlistImage.dataset.id;
