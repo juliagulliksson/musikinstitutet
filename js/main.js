@@ -632,28 +632,6 @@ const displayModule = (function(){
             `;
             outputDiv.innerHTML = artistInfo;
         },
-        displayNewTrack: function(track){
-            let tracklist = document.getElementById('albumTracksList');
-            let newTrack = document.createElement('li');
-            newTrack.textContent = track.title;
-            let deleteButton = document.createElement('button');
-            deleteButton.textContent = "Delete Track";
-            deleteButton.dataset.id = track._id;
-            newTrack.appendChild(deleteButton);
-            tracklist.appendChild(newTrack);
-                deleteButton.addEventListener('click', function(){
-                    tracklist.removeChild(newTrack);
-                })
-        },
-        displayNewComment: function(commentBody, username){
-            let commentDiv = document.createElement('div');
-            commentDiv.classList.add('comment');
-            let comment = ``;
-            comment += `<li><h6>${username}</h6><p>${commentBody}</p><button>Delete</button></li>`;
-            commentDiv.innerHTML = comment;
-            const commentList = document.getElementById('commentList');
-            commentList.appendChild(commentDiv);
-        },
         returnCorrectImage: function(obj){
            
             if (obj.coverImage === "" || obj.coverImage === undefined) {
@@ -755,7 +733,7 @@ let buttonEvents = (function(){
             if(handleForms.validate([trackTitle])){
                 newTrack.addNew()
                 .then((postedTrack) => {
-                    displayModule.displayNewTrack(postedTrack);
+                    buttonEvents.getIndividualAlbum(albumID);
                 });
             }else{
                 displayModule.formErrorMessages(submitButton, "Save");
@@ -957,7 +935,7 @@ let buttonEvents = (function(){
                 let newComment = new Comment(playlistID, commentText, username);
                 newComment.addToPlaylist()
                 .then((playlist) => {
-                    displayModule.displayNewComment(commentText, username);
+                    buttonEvents.getIndividualPlaylist(playlistID);
                   });
             } else {
                 displayModule.formErrorMessages(submitButton, "Save");
