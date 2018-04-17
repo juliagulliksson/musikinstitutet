@@ -499,7 +499,7 @@ li{
         background-color: $lightBorderColor; 
         padding: 15px; 
         input{
-            width: 80%;
+            width: 50%;
             padding: 10px;
             margin-bottom: 10px;
             text-align: left;
@@ -516,7 +516,7 @@ li{
             margin-bottom: 10px;
         }
         textarea{
-            width: 80%;
+            width: 50%;
             padding: 10px;
             margin-bottom: 10px;
             text-align: left;
@@ -528,14 +528,17 @@ li{
             font-family: 'Roboto Condensed';
             font-size: 1em;
         }
-        button{
-            @extend %button;
-            margin-bottom: 20px;
-            padding-right: 15px;
-            padding-left: 15px;
-        }
-        button:active, button:hover{
-            color: rgb(32, 56, 32); 
+        .comment-button{
+            width: 100%;
+            button{
+                @extend %button;
+                margin-bottom: 20px;
+                padding-right: 15px;
+                padding-left: 15px;
+            }
+            button:active, button:hover{
+                color: rgb(32, 56, 32); 
+            }
         }
         .playlist-comments{
             margin-top: 5px; 
@@ -546,28 +549,19 @@ li{
                 li{
                     padding-top: 10px; 
                     margin: 10px; 
-                    border-top: 1px solid $mediumBorderColor; 
                 }
             }
-            button{
-                margin: 0px;
-                padding: 2px;
-                font-size: 0.85rem; 
+            .delete-button{
+                button{
+                    @extend %delete-button; 
+                    width: 15%; 
+                    margin: 0px;
+                    padding: 2px;
+                    font-size: 0.85rem; 
+                }
             }
         }
     }
-
-    // .playlist-comment-div{
-    //     background-color: $lightBorderColor; 
-    //     padding: 15px;
-    //     margin-top: 20px; 
-    //     .comment-form{
-    //         width: 100%; 
-    //         form{
-    //             margin-bottom: 10px; 
-    //         }
-    //     }
-    // }
 }
 
 %form-wrappers{

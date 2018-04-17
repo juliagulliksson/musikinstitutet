@@ -482,7 +482,9 @@ const displayModule = (function(){
                             <input type="text" id="username">
                             <label for="commentField">Comment</label>
                             <textarea id="commentField"></textarea>
-                            <button id="commentButton" data-id="${playlist._id}">Send</button>
+                            <div class="comment-button">
+                                <button id="commentButton" data-id="${playlist._id}">Send</button>
+                            </div>
                         </form>
                     </div>`;
                     playlistInfo += `
@@ -494,7 +496,9 @@ const displayModule = (function(){
                                 <div class="comment">
                                     <li><h6>${comments[i].username}</h6>
                                     <p>${comments[i].body}</p>
-                                    <button data-id="${comments[i]._id}" class="delete-button">Delete</button>
+                                    <div class="delete-button">
+                                        <button data-id="${comments[i]._id}" class="delete-button">Delete</button>
+                                    </div>
                                     </li>
                                 </div>`;
                             }
