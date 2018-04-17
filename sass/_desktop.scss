@@ -37,7 +37,6 @@ main{
         overflow-x: none;
         overflow-y: none; 
     }
-    
         ul{
             margin: 0px 0px 0px 20px;
             display: inline-flex; 
@@ -51,20 +50,22 @@ main{
             }
         }
     }
-    .nav-bar{
-        flex-basis: 75%;
-    }
-    .nav-list{
-        @include flex-basis(80%);
+
+        .nav-list{
+            @include flex-basis(80%);
+        }
         .add-button{
             text-align: right;  
             padding: 0px;
             @include flex-basis(20%);
+            button{
+                margin: 0px;
+                margin-top: 7px;
+            }
             button:hover{
                 color: #1F211F; 
             }
         }
-    }
 }
 
 %search-wrapper{

@@ -960,42 +960,48 @@ let bindEvents = (function(){
     const tracksLink = document.getElementById('tracksLink');
     const playlistsLink = document.getElementById('playlistsLink');
     const albumsLink = document.getElementById('albumsLink');
+    const navbar = document.getElementById('navigation');
 
     return {
         bindHomePageEventListeners: function(){
             homeLink.addEventListener('click', function(){
                 buttonEvents.getAlbums();
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
             
             artistsLink.addEventListener('click', function(){
                 buttonEvents.getArtists()
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
 
             tracksLink.addEventListener('click', function(){
                 buttonEvents.getTracksAndPlaylists();
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
 
             albumsLink.addEventListener('click', function(){
                 buttonEvents.getAlbums();
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
             
             playlistsLink.addEventListener('click', function(){
                 buttonEvents.getPlaylists();
                 displayModule.displayLoader();
+                navbar.classList.toggle('show');
             });
 
             addNewButton.addEventListener('click', function(){
                 displayModule.displayForms();
                 bindEvents.bindFormPageEventListeners();
+                navbar.classList.toggle('show');
             });
 
             hamburgerMenu.addEventListener('click', function(){
-                const navbar = document.getElementById('navigation');
-                navbar.classList.toggle('hidden');
+                navbar.classList.toggle('show');
             })
         },
         bindFormPageEventListeners: function(){
@@ -1053,7 +1059,7 @@ let bindEvents = (function(){
                 }
             });
 
-            let artistImages = document.querySelectorAll('img');
+            let artistImages = outputDiv.querySelectorAll('img');
 
             for(let artistImage of artistImages){
                 let artistID = artistImage.dataset.id;
@@ -1151,7 +1157,7 @@ let bindEvents = (function(){
                 }
             });
 
-            let playlistImages = document.querySelectorAll('img');
+            let playlistImages = outputDiv.querySelectorAll('img');
 
             for(let playlistImage of playlistImages){
                 let playlistID = playlistImage.dataset.id;
