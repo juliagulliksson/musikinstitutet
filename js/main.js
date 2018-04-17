@@ -349,7 +349,7 @@ const displayModule = (function(){
                     <input type="text" id="newArtistSpotifyURL" name="spotifyURL">
                 
                     <label for="newArtistCoverImage">Image</label>
-                    <input type="text" id="newArtistCoverImage" name="coverImage"><br/>
+                    <input type="text" id="newArtistCoverImage" placeholder="Link to image host" name="coverImage" ><br/>
                     <button id="newArtistSubmit">Save</button>
                 </form>
               </div>
@@ -385,7 +385,7 @@ const displayModule = (function(){
                     <input type="text" id="newPlaylistName">
 
                     <label for="newPlaylistImage">Image Link</label>
-                    <input type="text" id="newPlaylistImage">
+                    <input type="text" id="newPlaylistImage" placeholder="Link to image host">
 
                     <label for="newPlaylistGenres">Playlist Genres</label>
                     <input type="text" id="newPlaylistGenres" placeholder="Separate genre with comma"><br/>
