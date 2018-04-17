@@ -592,6 +592,8 @@ const displayModule = (function(){
             outputDiv.innerHTML = artistInfo;
         },
         displayIndividualArtist: function(artist){
+            console.log(artist)
+            
             let artistInfo = ``;
             artistInfo += `
             <div class="individual-artists-wrapper">
@@ -601,19 +603,24 @@ const displayModule = (function(){
                         artistInfo += `
                     </div>
                     <div class="artist-info">
-                        <h4>${artist.name}</h4>
-                        <h5>${artist.gender}</h5>
-                        <h5 class="born"><p>Born</p> ${artist.born}</h5>
-                        <h5 class="country"><p>in ${artist.countryBorn}</p></h5>
-
-                        <h5 class="genres"><p>Genres</p> ${artist.genres}</h5>
+                        <h4>${artist.name}</h4>`;
+                        if(artist.gender != null){
+                            artistInfo += `<h5>Gender: ${artist.gender}</h5>`;   
+                        }
+                        if(artist.genres.length > 0){
+                            artistInfo += `<h5 class="genres"><p>Genres</p> ${artist.genres}</h5>`;
+                        }
+                        artistInfo += `
                     </div>
-                    
-                </div>
-                <div class="delete-button">
-                    <div class="spotify-url">
-                        <h5><p>Link to Spotify</p> ${artist.spotifyURL}</h5>
-                    </div>
+                </div>`;
+                if(artist.spotifyURL != undefined){
+                    artistInfo += 
+                    `<div class="spotify-url">
+                        <a href="${artist.spotifyURL}">Link to Spotify</a>
+                    </div>`;
+                }
+                    artistInfo += `
+                    <div class="delete-button">
                     <button id="deleteArtist" data-id="${artist._id}">Delete Artist</button>
                 </div>
             </div>

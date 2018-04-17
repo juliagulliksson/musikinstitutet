@@ -419,20 +419,6 @@ li{
         }
     }
     .artist-info{
-        h5.born{
-            margin-top: 10px;
-            p{
-                color: $pink; 
-                margin: 0px; 
-                padding: 0px; 
-            }
-        }
-        h5.country{
-            p{
-                margin: 0px; 
-                padding: 0px; 
-            }
-        }
         h5.genres{ 
             margin-top: 10px;
             p{
@@ -442,16 +428,19 @@ li{
             }
         }
     }
-    .spotify-url{
-        h5 p{
-            color: #58BA55; 
-            margin: 0px;
-            padding: 0px; 
-        }
-    }
+   
 
     button{
         @extend %delete-button; 
+    }
+}
+
+.spotify-url{
+    a{
+        text-decoration: none;
+        color: #58BA55; 
+        margin: 0px;
+        padding: 0px; 
     }
 }
 
