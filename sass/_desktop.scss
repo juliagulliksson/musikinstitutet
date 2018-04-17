@@ -190,8 +190,17 @@ main{
 }
 
 .individual-playlist-wrapper{
-    .playlist-delete-button{
-        width: 37%;
-        margin: 5px;
+    .individual-playlist-flex-wrapper{
+        .cover-image{
+            img{
+                height: 300px;
+                width: 300px;
+            }
+        }
+        .playlist-delete-button{
+            width: 37%;
+            margin: 5px;
+        }
     }
 }
+
