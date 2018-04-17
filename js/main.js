@@ -1,5 +1,3 @@
-const hamburgerMenu = document.getElementById('hamburgerIcon');
-
 /*** Classes ***/
 
 //Universal class to make fetch requests
@@ -221,9 +219,9 @@ class FormHandler {
 }
 
 const handleForms = new FormHandler();
+const outputDiv = document.getElementById('output');
 
 const displayModule = (function(){
-    const outputDiv = document.getElementById('output');
     const loadingSpinner = document.getElementById('loadingSpinner');
     
     return {
@@ -596,7 +594,6 @@ const displayModule = (function(){
             outputDiv.innerHTML = artistInfo;
         },
         displayIndividualArtist: function(artist){
-            console.log(artist)
             
             let artistInfo = ``;
             artistInfo += `
@@ -953,6 +950,7 @@ let buttonEvents = (function(){
 
 //A module to bind the buttons/images to the events that are present in buttonEvents
 let bindEvents = (function(){
+    const hamburgerMenu = document.getElementById('hamburgerIcon');
     const addNewButton = document.getElementById('addNew');
     const artistsLink = document.getElementById('artistsLink');
     const homeLink = document.getElementById('homeLink');
@@ -991,6 +989,11 @@ let bindEvents = (function(){
                 displayModule.displayForms();
                 bindEvents.bindFormPageEventListeners();
             });
+
+            hamburgerMenu.addEventListener('click', function(){
+                const navbar = document.getElementById('navigation');
+                navbar.classList.toggle('hidden');
+            })
         },
         bindFormPageEventListeners: function(){
             const newAlbum = document.getElementById("newAlbum");
@@ -1023,7 +1026,7 @@ let bindEvents = (function(){
 
             handleForms.preventDefault();
 
-            const albumImages = document.querySelectorAll('img');
+            const albumImages = outputDiv.querySelectorAll('img');
 
             for(let albumImage of albumImages){
                 let albumID = albumImage.dataset.id;
