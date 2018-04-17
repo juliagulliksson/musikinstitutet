@@ -23,6 +23,8 @@ main{
 .nav-bar{
     width: 100%;
     margin: 0px auto;  
+    nav{
+        text-align: center;
     .hamburger-icon{
         display: none; 
     }
@@ -35,8 +37,7 @@ main{
         overflow-x: none;
         overflow-y: none; 
     }
-    nav{
-        text-align: center;
+    
         ul{
             margin: 0px 0px 0px 20px;
             display: inline-flex; 

@@ -459,9 +459,12 @@ const displayModule = (function(){
                 playlistInfo += `
                 <div class="playlist-tracks" id="playlistTracks>
                     <ul id="playlistTracksList">`;
+                 
                     for(let i in playlist.tracks){
-                        playlistInfo += `<li>${playlist.tracks[i].title} - ${playlist.tracks[i].artists[0].name}
-                        </li>`;
+                        if(playlist.tracks[i].artists.length > 0){
+                            playlistInfo += `<li>${playlist.tracks[i].title} - ${playlist.tracks[i].artists[0].name}
+                            </li>`;
+                        }
                     }
                 playlistInfo += `</ul>
                 </div>`;

@@ -69,7 +69,7 @@ li{
     width: 100%;
  
    .header-image{
-       background-image: url("../images/awesome-jazz.jpg");
+       background-image: url("../images/header-image.jpg");
        background-repeat: no-repeat;
        background-position: center; 
        background-size: 100%;
@@ -81,6 +81,9 @@ li{
     color: #1F211F;    
     border-bottom: 1px solid $grey; 
     font-family: 'Fjalla One', sans-serif;
+    nav{
+   height: 50px;
+        text-align: right;
     .hamburger-icon{
         img{
             width: 50px;
@@ -93,11 +96,9 @@ li{
          z-index: 1000;
          background-color: $lightBorderColor; 
          width: 50%; 
-         height: 100vh;
+         //height: 100vh;
      }
-    nav{
-        height: 55px; 
-        text-align: right;
+  
         button{
             @extend %button;
             margin-top: 7px;
