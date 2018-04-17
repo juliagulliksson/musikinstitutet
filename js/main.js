@@ -280,8 +280,6 @@ const displayModule = (function(){
                         if(album.genres.length > 0 && album.releaseDate != null){
                             albumInfo += `<h6>${album.genres} • ${album.releaseDate}</h6>`;
                         }
-                        albumInfo += `
-                        <div class="playlist-rating-form">`;
                             if(album.ratings.length > 0){
                                 let albumRatings = album.ratings;
                                 const ratingsMeanValue = buttonEvents.calculateMeanValue(albumRatings);
@@ -289,7 +287,9 @@ const displayModule = (function(){
                                 <h6>Average Rating: ${ratingsMeanValue}</h6>`;
                             }
                             albumInfo +=`
-                            <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
+                            <div class="rating-form">
+                            <img src="images/heart-icon.png">
+                            <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate 1 - 10">
                             <button id="voteAlbum" data-id="${album._id}">Vote</button>
                         </div>
                     </div>
@@ -442,8 +442,7 @@ const displayModule = (function(){
                     <div class="playlist-info">
                         <h4>${playlist.title}</h4>
                         <h5>Created By ${playlist.createdBy}</h5>
-                        <h6>${playlist.genres}</h6>
-                        <div class="playlist-rating-form">`;
+                        <h6>${playlist.genres}</h6>`;
                         if(playlist.ratings.length > 0){
                             let ratingValueArray = playlist.ratings;
                             let ratingMeanValue = buttonEvents.calculateMeanValue(ratingValueArray);
@@ -451,7 +450,9 @@ const displayModule = (function(){
                             <h6>Average Rating: ${ratingMeanValue}</h6>`;
                         }
                            playlistInfo += `
-                            <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate this album 1 - 10">
+                           <div class="rating-form">
+                           <img src="images/heart-icon.png">
+                            <input type="number" id="playlistRatingControl" step="1" max="10" placeholder="Rate 1 - 10">
                             <button id="voteAlbum" data-id="${playlist._id}">Vote</button>
                         </div>
                     </div>
@@ -592,14 +593,32 @@ const displayModule = (function(){
         },
         displayIndividualArtist: function(artist){
             let artistInfo = ``;
-            artistInfo += 
-            `<div class="individual-artists-wrapper">
-                <div class="cover-image">`;
-                    artistInfo += displayModule.returnCorrectImage(artist);
-                    artistInfo += `</div>
-                <h4>${artist.name}</h4>
-                <button id="deleteArtist" data-id="${artist._id}">Delete Artist</button>
-            </div>`;
+            artistInfo += `
+            <div class="individual-artists-wrapper">
+                <div class="individual-artist-flex-wrapper">
+                    <div class="cover-image">`;
+                        artistInfo += displayModule.returnCorrectImage(artist);
+                        artistInfo += `
+                    </div>
+                    <div class="artist-info">
+                        <h4>${artist.name}</h4>
+                        <h5>${artist.gender}</h5>
+                        <h5 class="born"><p>Born</p> ${artist.born}</h5>
+                        <h5 class="country"><p>in ${artist.countryBorn}</p></h5>
+
+                        <h5 class="genres"><p>Genres</p> ${artist.genres}</h5>
+                    </div>
+                    
+                </div>
+                <div class="delete-button">
+                    <div class="spotify-url">
+                        <h5><p>Link to Spotify</p> ${artist.spotifyURL}</h5>
+                    </div>
+                    <button id="deleteArtist" data-id="${artist._id}">Delete Artist</button>
+                </div>
+            </div>
+
+            `;
             outputDiv.innerHTML = artistInfo;
         },
         displayNewTrack: function(track){
