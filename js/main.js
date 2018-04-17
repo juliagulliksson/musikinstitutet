@@ -167,7 +167,7 @@ class Comment {
                     'Content-Type': 'application/json'
                 },
             })
-            .then((response) => response.json())
+        .then((response) => response.json())
     }
 }
 
@@ -773,9 +773,6 @@ let buttonEvents = (function(){
                 newArtist.addNew()
                 .then((artist) => {
                     buttonEvents.getIndividualArtist(artist._id);
-                    if(artist.new == false){
-                        console.log("Artist already exists");
-                    }
                 });
             }else{
                 displayModule.formErrorMessages(submitButton, "Save");

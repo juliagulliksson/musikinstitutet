@@ -35,7 +35,6 @@ li{
     list-style-type: none;
 }
 
-
 %delete-button{
     margin: 0px auto; 
     margin-top: 15px; 
@@ -77,8 +76,8 @@ li{
    .header-image{
        background-image: url("../images/header-image.jpg");
        background-repeat: no-repeat;
-       background-position: center; 
-       background-size: 100%;
+       background-size: cover;
+       height: 250px;
    }
 }
 
@@ -98,15 +97,14 @@ li{
         }
         .navigation.show{
             display: inline-block;
+        }
+        .navigation{
+            display: none;
             position: sticky;
             z-index: 1000;
             background-color: $lightBorderColor; 
             width: 50%;
             text-align: left;
-           
-        }
-        .navigation{
-            display: none;
         }
             ul{
                 margin: 0px;
@@ -429,8 +427,6 @@ li{
             }
         }
     }
-   
-
     button{
         @extend %delete-button; 
     }
@@ -494,7 +490,6 @@ li{
             color: $white; 
         }
     }
-
     .playlist-comment-div{
         margin-top: 15px; 
         background-color: $lightBorderColor; 

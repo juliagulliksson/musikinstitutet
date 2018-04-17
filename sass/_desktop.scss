@@ -37,6 +37,9 @@ main{
         overflow-x: none;
         overflow-y: none; 
     }
+    .navigation.show{
+        @include flex();
+    }
         ul{
             margin: 0px 0px 0px 20px;
             display: inline-flex; 
@@ -50,7 +53,6 @@ main{
             }
         }
     }
-
         .nav-list{
             @include flex-basis(80%);
         }
