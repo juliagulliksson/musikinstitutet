@@ -404,7 +404,7 @@ const displayModule = (function(){
                     <label for="searchByTitle">Title</label>
                     <input type="radio" value="genres" id="searchByGenre" name="searchOption">
                     <label for="searchByGenre">Genre</label>
-                    <button id="searchPlaylistButton">Search</button>
+                    <input type="submit" id="searchPlaylistButton" value="Search">
                 </form>
             </div>
 
@@ -1120,8 +1120,7 @@ let bindEvents = (function(){
                     displayModule.displayLoader();
                 }
             });
-
-            let playlistDropdownButtons = document.querySelectorAll('button');
+            let playlistDropdownButtons = outputDiv.querySelectorAll('button');
 
             for(let button of playlistDropdownButtons){
                 button.addEventListener('click', function(){  
